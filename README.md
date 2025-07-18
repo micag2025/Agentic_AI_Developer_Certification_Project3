@@ -163,7 +163,7 @@ Comprehensive documentation is provided, including:
 2. Launch the [Streamlit](https://docs.streamlit.io/) app:
    ```bash
    streamlit run src/app.py
-  ```        
+          
 3. Open your browser to the local Streamlit URL (usually http://localhost:8501).        
 
 You can now interact with the LangGraph-Orchestrated Research Assistant for Ready Tensor!  
@@ -181,7 +181,7 @@ This will:
 ### Example validated profile guardrails-ai
 The outputs can be found in the directory layout outputs/ 
 
-Sample validated output:
+Sample validated by Guardrails output:
 ```json
 {
   "tools": ["LangGraph", "Microsoft AutoGen"],
@@ -190,12 +190,11 @@ Sample validated output:
   "task_types": ["AI Agent", "Autonomous Agents", "Multi-Agent System"],
   "results": []
 }
-
+```
 Explanation:
 If evaluation_methods is empty, it indicates the publication lacks evaluation details or the model did not extract any.
 
 Reasons may include:
-
 No evaluation section in the text
 LLM extraction limitations
 Preprocessing/truncation
@@ -203,46 +202,6 @@ Schema-constrained validation
  - Guardrails validated it using the .rail schema.    
  - The output matched the expected format, even if some fields (like evaluation_methods) were empty — which is allowed.    
 
-
-- Selection `Evaluation Methods` for publ _Core concepts of Agentic AI and AI agents.txt_ 
-
-
-
-
-In the case, the output from the LLM (validated by Guardrails) is:
-
-```
-json
-{ 
-  "tools": ["LangGraph", "Microsoft AutoGen"],  
-  "evaluation_methods": [],  
-  "datasets": [],
-  "task_types": ["AI Agent", "Autonomous Agents", "Multi-Agent System"],
-  "results": []
-}
-```
-If the user selected evaluation_methods, but the corresponding output is an empty list, here's the correct interpretation:
-
-✅ Explanation
-**"No evaluation methods were detected or extracted from the given publication content by the LLM."**
-
-This can happen due to several reasons:
-
-🔍 Why evaluation_methods Might Be Empty
-**1 The publication content lacks evaluation details.**  
-- It's possible the text provided doesn't include sections like “Evaluation”, “Metrics”, “Experiments”, etc.
-
-**LLM extraction limitations.**
-
-- The LLM might have overlooked subtle mentions of evaluation methods or misunderstood their presence due to vague or implicit phrasing.  
-
-**Preprocessing (truncation).**  
-
-- If the publication text was truncated (as you have MAX_CHARS = 12000), the evaluation section may have been cut off.  
-
-**Schema-constrained validation (Guardrails).**  
-
-- If the raw model output had malformed or invalid data under evaluation_methods, Guardrails would sanitize it and return an empty list (as per schema constraints).  
 
 ### Example Observability	Python logging, node tracing, monitoring      
 TO BE ENCLOSED    
@@ -252,7 +211,6 @@ TO BE ENCLOSED
 
 ### Example Documentation	README, screenshots, docstrings, diagram  
 TO BE ENCLOSED    
-
 
 
 ## License
