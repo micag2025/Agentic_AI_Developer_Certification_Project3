@@ -157,7 +157,7 @@ TO BE ENCLOSED
    .\.venv\Scripts\activate      # Windows
    ```
 3. **Set up environment variables**  
-   Following `.env.example` Enclose your OpenAI API key and TAVILY API key  in a `.env` file in your the project root:
+   Following `.env.example` enclose your OpenAI API key and TAVILY API key  in a `.env` file in your the project root:
 
    ```env
    OPENAI_API_KEY=your_openai_api_key_here
