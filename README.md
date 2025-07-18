@@ -58,7 +58,7 @@ The repository demonstrates best practices for agentic AI development, from init
 - `datasets`: Benchmarks used  
 - `task_types`: Types of tasks addressed  
 - `results`: Key findings
-- `user query': DECIDE WHETHER THIS SHOULD BE ENCLOSED OR NOT
+- `user query`: DECIDE WHETHER THIS SHOULD BE ENCLOSED OR NOT
 
 All fields must be present for validation. Structured, machine-readable JSON enables downstream analytics and reproducibility.
 
@@ -154,31 +154,17 @@ Comprehensive documentation is provided, including:
    python3 -m venv .venv
    source .venv/bin/activate   # Linux/macOS
    .\.venv\Scripts\activate    # Windows
-  ```
+  
 
 ### Running the Application
 
 1. Ensure `project_1_publications.json` is present in `data/`.
+  > _Note:_ The `sample dataset` is available in the "Datasets" section of the related publication.  
 2. Launch the [Streamlit](https://docs.streamlit.io/) app:
    ```bash
    streamlit run src/app.py
-  ```
-
-## Running the Application  
-1. **Prepare data**    
-   Ensure `project_1_publications.json` is present in the data/ directory (or your configured DATA_DIR).
-      > _Note:_ The `sample dataset` is available in the "Datasets" section of the related publication.
-
-2. **Launch the App**     
-   Run [Streamlit](https://docs.streamlit.io/) from the project root:  
-    
-   ```      
-   bash    
-   streamlit run src/app.py    
-   ```    
-   
-3. **Access the Interface**          
-   Open your browser to the local Streamlit URL (usually http://localhost:8501).        
+  ```        
+3. Open your browser to the local Streamlit URL (usually http://localhost:8501).        
 
 You can now interact with the LangGraph-Orchestrated Research Assistant for Ready Tensor!  
 
@@ -220,38 +206,7 @@ Schema-constrained validation
 
 - Selection `Evaluation Methods` for publ _Core concepts of Agentic AI and AI agents.txt_ 
 
-``` 
-json 
-TO BE ENCLOSED 
-```
 
-- Selection `Datasets` for publ _Core concepts of Agentic AI and AI agents.txt_ 
-
-``` 
-json 
-TO BE ENCLOSED 
-```
-
-- Selection `Tasks Types` for publ _Core concepts of Agentic AI and AI agents.txt_ 
-
-``` 
-json 
-TO BE ENCLOSED 
-```
-
-- Selection `Results` for publ _Core concepts of Agentic AI and AI agents.txt_ 
-
-``` 
-json 
-TO BE ENCLOSED 
-```
-
-- Selection `Other(custom)` for publ _Core concepts of Agentic AI and AI agents.txt_ 
-
-`` 
-json 
-TO BE ENCLOSED 
-```
 
 
 In the case, the output from the LLM (validated by Guardrails) is:
