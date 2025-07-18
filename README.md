@@ -29,13 +29,6 @@ _Summary of Additions_
 | Documentation                  | README, screenshots, docstrings, diagram                |
 
 
-_Note_ Test dependencies are keeping separated from runtime dependencies (`requirements.txt`) since production systems don't need the test tools. Therefore, by using a `requirements-test.txt` , it is more clear what is needed during development and testing. 
-
-The `requirements-test.txt` file contains a list of packages needed for testing. You can install this with: 
-```
-pip install -r requirements-test.txt
-```
-
 ## Productionize the multi-agent system   
 
 ### [Guardrails](https://hub.guardrailsai.com/)  
@@ -65,36 +58,104 @@ _Example of how the same prompt behaves:
 
 Step-by-Step Integration Plan (task)  
 1 Install `guardrails-ai`    
-2 Create a `.rail` schema for publications (rails/profile_extraction.rail)  
+2 Create a `.rail` schema for publications (rails/profile_extraction.rail) including as fields tools, evaluation methods, datasets, tasks tyoes, results (still to be enclosed Other(queries))    
 3 Update PublicationExplorer.analyze_pub1() & .analyze_pub2() to use Guard  (src/explorer.py)
 4 Validate the output before updating state  
 
-`outputs/` 
-1. Validated Profiles (Guardrails-validated JSONs):  
-validated_profile_pub1_<timestamp>.json  
-validated_profile_pub2_<timestamp>.json  
-
-2. Full Comparison Results (from Streamlit app):  
-comparison_<pub1>_vs_<pub2>_<timestamp>.json  
-comparison_<pub1>_vs_<pub2>_<timestamp>.html  
-
-3. Optional Debug/Log Files:  IT HAS NOT BEEN YET ENCLOSED
-Raw LLM outputs if needed for auditability.  
-Guardrails validation logs or trace reports.  
-
-The system will now validate outputs that contain:  
-- **tools** : Lists the software frameworks or libraries explicitly extracted from the publication.    
-- **evaluation_methods**: Captures the performance metrics or evaluation strategies described.         
-- **datasets** : Reflects benchmark datasets used in the study for training/evaluation.    
-- **task_types** :   
-- **results** :   
+The system will now validate outputs that contain:    
+- **tools** : Lists the software frameworks or libraries explicitly extracted from the publication.      
+- **evaluation_methods**: Captures the performance metrics or evaluation strategies described.           
+- **datasets** : Reflects benchmark datasets used in the study for training/evaluation.          
+- **task_types** : Lists the types of tasks addressed in the paper.      
+- **results** : Captures key findings and performance outcomes.   
 
 Each of these lists must be present in the model output for it to pass validation.  
-
 This JSON is structured, machine-readable, and validated, so you can confidently pass it to downstream analytics or use it in reproducibility workflows. 
  
 
-## Example validated profile guardrails-ai
+### Observability	Python logging, node tracing, monitoring  
+TO BE ENCLOSED   
+
+### Deployment	Streamlit Cloud, Docker, or CLI runner  
+TO BE ENCLOSED  
+
+### Documentation	README, screenshots, docstrings, diagram  
+TO BE ENCLOSED
+
+
+**Workflow:** 
+
+
+## Repository Structure  
+```text
+/Agentic_AI_Developer_Certification_Project3-main
+├── LICENSE
+├── README.md # Project overview and instructions
+├── requirements-test.txt      # List of packages needed for development and testing
+├── requirements.txt           # Project dependencies / # Example environment file storing secret API keys
+├── .gitignore        	      # This file specifies the files and folders that should be ignored by Git. 
+├── data/
+│   ├── project_1_publications.json  # Sample Ready Tensor dataset
+│   ├── sample_publications/         # Directory containing input publication `.txt` files
+│   │   ├── <publication1 .txt>      #     ↳ Each text file represents a single publication 
+│   │   ├── <publication2 .txt> 
+│   │   ├──
+├── docs/
+│   ├── Untitled diagram _ Mermaid Chart-2025-07-09-115351.png   #  ↳output Mermaid diagram (flowchart) in png
+│   ├── langgraph_flowchart.mmd     #  ↳ output file Mermaid diagram (flowchart)
+│   ├── publication_flowchart.png   #  ↳ output image file Graphiz
+├── examples_screens/
+│   ├── <screenshot .jpeg>   # Section of screenshot of example usage of the StreamLit interface 
+│   ├──
+├── outputs/
+│   ├── comparison_<pub1>_vs_<pub2>_<timestamp>.json  # Full Comparison Results (from Streamlit app)
+│   ├── comparison_<pub1>_vs_<pub2>_<timestamp>.html  # Full Comparison Results (from Streamlit app)
+│   ├── validated_profile_pub1_<timestamp>.json  # Validated Profiles (Guardrails-validated JSONs)
+│   ├── validated_profile_pub2_<timestamp>.json  # Validated Profiles (Guardrails-validated JSONs)
+│   ├──
+├── src/
+│   ├── app.py                          # Main Streamlit App
+│   ├── explorer.py                     # LLM-based publication comparison engine
+│   ├── generate_flowchart_graphviz.py  # Generates a Graphviz PNG diagram of the LangGraph orchestration flow
+│   ├── generate_flowchart_mermaid.py   # Generates a Mermaid diagram of the LangGraph orchestration flow
+│   ├── loader.py                       # Converts JSON into individual .txt files
+│   ├── paths.py                        # Centralized path definitions
+│   ├── utils.py                        # Helper functions for path and string handling
+│   ├── docs/
+│   │   ├── langgraph_flowchart.mmd
+│   │   ├── publication_flowchart.png
+│   ├── rails/
+│   │   ├── profile_extraction.rail  # 
+```
+
+
+
+## Prerequisites
+
+
+## Installation
+_Note_ Test dependencies are keeping separated from runtime dependencies (`requirements.txt`) since production systems don't need the test tools. Therefore, by using a `requirements-test.txt` , it is more clear what is needed during development and testing. 
+
+The `requirements-test.txt` file contains a list of packages needed for testing. You can install this with: 
+```
+pip install -r requirements-test.txt
+```
+
+## Running the Application  
+To debug `Guardrails` within the full app flow (realistic testing) (to test Guardrails in production context):    
+
+- Run the full Streamlit application:  
+```
+bash
+streamlit run src/app.py
+```
+This will:  
+- Trigger the PublicationExplorer pipeline
+- Automatically invoke analyze_pub1 and analyze_pub2  
+- Print the raw vs. validated outputs in the terminal (because of the print() statements)
+
+## Usage Examples   
+### Example validated profile guardrails-ai
 The outputs can be found in the directory layout outputs/ 
 
 - Selection `Usage Tool` for publ _Core concepts of Agentic AI and AI agents.txt_ 
@@ -183,77 +244,14 @@ This can happen due to several reasons:
 
 - If the raw model output had malformed or invalid data under evaluation_methods, Guardrails would sanitize it and return an empty list (as per schema constraints).  
 
+### Example Observability	Python logging, node tracing, monitoring      
+TO BE ENCLOSED    
 
-### Observability	Python logging, node tracing, monitoring  
-TO BE ENCLOSED   
+### Example Deployment	Streamlit Cloud, Docker, or CLI runner  
+TO BE ENCLOSED    
 
-### Deployment	Streamlit Cloud, Docker, or CLI runner  
-TO BE ENCLOSED  
-
-### Documentation	README, screenshots, docstrings, diagram  
-TO BE ENCLOSED
-
-
-
-
-
-**Workflow:** 
-
-
-## Repository Structure  
-```text
-/Agentic_AI_Developer_Certification_Project3-main
-├── LICENSE
-├── README.md # Project overview and instructions
-├── requirements-test.txt      # List of packages needed for development and testing
-├── requirements.txt           # Project dependencies / # Example environment file storing secret API keys
-├── .gitignore        	      # This file specifies the files and folders that should be ignored by Git. 
-├── data/
-│   ├── project_1_publications.json  # Sample Ready Tensor dataset
-│   ├── sample_publications/         # Directory containing input publication `.txt` files
-│   │   ├── <publication1 .txt>      #     ↳ Each text file represents a single publication 
-│   │   ├── <publication2 .txt> 
-│   │   ├──
-├── docs/
-│   ├── Untitled diagram _ Mermaid Chart-2025-07-09-115351.png   #  ↳output Mermaid diagram (flowchart) in png
-│   ├── langgraph_flowchart.mmd     #  ↳ output file Mermaid diagram (flowchart)
-│   ├── publication_flowchart.png   #  ↳ output image file Graphiz
-├── examples_screens/
-│   ├── <screenshot .jpeg>   # Section of screenshot of example usage of the StreamLit interface 
-│   ├──
-├── outputs/
-│   ├── comparison_<pub1>_vs_<pub2>_<timestamp>.json  # Full Comparison Results (from Streamlit app)
-│   ├── comparison_<pub1>_vs_<pub2>_<timestamp>.html  # Full Comparison Results (from Streamlit app)
-│   ├── validated_profile_pub1_<timestamp>.json  # Validated Profiles (Guardrails-validated JSONs)
-│   ├── validated_profile_pub2_<timestamp>.json  # Validated Profiles (Guardrails-validated JSONs)
-│   ├──
-├── src/
-│   ├── app.py                          # Main Streamlit App
-│   ├── explorer.py                     # LLM-based publication comparison engine
-│   ├── generate_flowchart_graphviz.py  # Generates a Graphviz PNG diagram of the LangGraph orchestration flow
-│   ├── generate_flowchart_mermaid.py   # Generates a Mermaid diagram of the LangGraph orchestration flow
-│   ├── loader.py                       # Converts JSON into individual .txt files
-│   ├── paths.py                        # Centralized path definitions
-│   ├── utils.py                        # Helper functions for path and string handling
-│   ├── docs/
-│   │   ├── langgraph_flowchart.mmd
-│   │   ├── publication_flowchart.png
-│   ├── rails/
-│   │   ├── profile_extraction.rail  # 
-```
-
-
-
-## Prerequisites
-
-
-## Installation
-
-
-## Running the Application  
-
-
-## Usage Examples 
+### Example Documentation	README, screenshots, docstrings, diagram  
+TO BE ENCLOSED    
 
 
 
