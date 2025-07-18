@@ -134,13 +134,13 @@ TO BE ENCLOSED
    cd Agentic_AI_Developer_Certification_Project3  
    ```
 2. **Install dependencies**   
-   Install required packages (preferably in a virtual environment):
+   Install runtime dependencies (`requirements.txt`) (preferably in a virtual environment):
 
    ```
    bash
    pip install -r requirements.txt
    ```
-   _Note_ Test dependencies are keeping separated from runtime dependencies (`requirements.txt`) since production systems don't need the test tools. Therefore, by using a `requirements-test.txt` , it is more clear what is needed during development and testing.     
+   > _Note_ Test dependencies are keeping separated from runtime dependencies (`requirements.txt`) since production systems don't need the test tools. Therefore, by using a `requirements-test.txt` , it is more clear what is needed during development and testing.     
 
    The `requirements-test.txt` file contains a list of packages needed for testing. You can install this with:  
    ```
@@ -301,6 +301,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 
 ## Contact Information 
-If you encounter bugs, have questions, or would like to request a new feature, please [open an issue](https://github.com/micag2025/Agentic_AI_Developer_Certification_Project2/issues) on this repository.  
+If you encounter bugs, have questions, or would like to request a new feature, please [open an issue](https://github.com/micag2025/Agentic_AI_Developer_Certification_Project3/issues) on this repository.  
 Contributions and feedback are welcome!
 
