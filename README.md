@@ -1,84 +1,87 @@
 # Agentic AI Developer Certification: Productionizing LangGraph-Orchestrated Research Assistant for Ready Tensor
 
-This repository is part of the **Agentic AI Developer Certification program** by [Ready Tensor](https://www.readytensor.ai)
-and it is linked to both the publications: **Productionizing Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor** and **Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor** on [Ready Tensor](https://www.readytensor.ai).
+This repository is part of the **Agentic AI Developer Certification program** by [Ready Tensor](https://www.readytensor.ai).
+It is based on the publications:
+- **Agentic AI Developer Certification: Productionizing LangGraph-Orchestrated Research Assistant for Ready Tensor**
+- **Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor** [Add full titles and links if available]
+
+This project demonstrates how to enhance a multi-agent system with robustness, safety, and deployment features, reflecting a full lifecycle from ideation to production.
 
 
-## Project Description  
-To productionize the multi-agent system created in **Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor** by 
-adding robustness, safety, and deployment features through the use of `Guardrails`, `Observability`, `Deployment`, 
-`Documentation`. This project reflects the full lifecycle of agentic AI development—from ideation to deployment. 
+## Project Description
 
-## Features  
-The following additions have been enclosed in the project2:   
-• **Guardrails**: Input/output validation, prompt protection, or structured response constraints.   
-• **Observability**: Basic logging, user feedback capture, or instrumentation (e.g., using 
-LangSmith or custom logs).   
-• **Deployment**: Lightweight deployment via (FastAPI, Gradio, or) Streamlit; Hosted locally or on 
-a cloud service (Render, Hugging Face, etc.).   
-• **Documentation**: Clearly stated limitations and assumptions; Usage guide or demo 
-walkthrough; Safety and monitoring considerations.  
+This project builds on the multi-agent system developed for Ready Tensor (enclose link), enhancing it for production use by integrating:
+- **Guardrails:** Input/output validation, prompt protection, and structured response constraints.
+- **Observability:** Logging, feedback capture, and instrumentation.
+- **Deployment:** Streamlit-based app, Docker support, and cloud hosting options.
+- **Documentation:** Limitations, usage guides, walkthroughs, and safety considerations.
 
-_Summary of Additions_
+The repository demonstrates best practices for agentic AI development, from initial design to real-world deployment.
 
-|Area                            | Tools / Practices                                       |
-|--------------------------------|---------------------------------------------------------|
-| Guardrails                     | Input validat, LangChain parsers, file checks           | to be checked Guardrais.ai vs guardrais.py
-| Observability                 | Python logging, node tracing, monitoring                 |
-| Deployment                     | Streamlit Cloud, Docker, or CLI runner                  |
-| Documentation                  | README, screenshots, docstrings, diagram                |
+
+## Features
+
+| Area          | Tools / Practices                                    |
+|---------------|------------------------------------------------------|
+| Guardrails    | Input validation, LangChain parsers, file checks, Guardrails-AI |
+| Observability | Python logging, node tracing, monitoring             |
+| Deployment    | Streamlit Cloud, Docker, CLI runner                  |
+| Documentation | README, screenshots, docstrings, diagrams            |
 
 
 ## Productionize the multi-agent system   
 
-### [Guardrails](https://hub.guardrailsai.com/)  
+### Guardrails
 
-_Summary Comparison_ 
+[Guardrails-AI](https://hub.guardrailsai.com/) is used to enforce structured, validated outputs from LLMs.
 
-|Feature                   | Without Guardrails-AI                                                               |With Guardrails-AI
-|--------------------------|-------------------------------------------------------------------------------------|----------------
-|Output format             |   Free-form text / Raw LLM output (possibly unstructured, noisy)                    | Strict, schema-validated JSON / Structured, validated, and optionally corrected   
-|Input flexibility         |   High                                                                              |Moderate (requires `.rail` or schema)
-|Retry on invalid format   |   No                                                                                | Yes
-|Production-safety         |   Risk of LLM drift                                                                 | Robust
-|Dev speed                 |   Quick                                                                             | Requires setup effort
+#### Comparison Without Guardrails-AI and With Guardrails-AI    
 
-The use of `guardrails-ai` (LLM Output Schema Validator): 
-- Enforces that LLM output matches a structured format  
-- Uses `.rail` (or Pydantic-like schemas() to validate:  
-  - JSON structure  
-  - Fields are non-empty    
-  - Strings follow a regex pattern    
-- Can regenerate LLM responses until they conform
+| Feature              | Without Guardrails-AI         | With Guardrails-AI                |
+|----------------------|------------------------------|-----------------------------------|
+| Output format        | Free-form, unstructured text  | Schema-validated JSON             |
+| Input flexibility    | High                         | Moderate (requires schema)        |
+| Retry on invalid     | No                           | Yes                               |
+| Production-safety    | Risk of LLM drift            | Robust                            |
+| Dev speed            | Fast                         | Requires setup effort             |
 
-_Step-by-Step Integration Plan (task)_    
- 1 Install `guardrails-ai`      
- 2 Create a `.rail` schema for publications (rails/profile_extraction.rail) including as fields tools, evaluation methods, datasets, tasks tyoes, results (still to be enclosed Other(queries))      
- 3 Update PublicationExplorer.analyze_pub1() & .analyze_pub2() to use Guard  (src/explorer.py)  
- 4 Validate the output before updating state    
+#### Integration Steps
 
-The system will now validate outputs that contain:    
-- **tools** : Lists the software frameworks or libraries explicitly extracted from the publication.      
-- **evaluation_methods**: Captures the performance metrics or evaluation strategies described.           
-- **datasets** : Reflects benchmark datasets used in the study for training/evaluation.          
-- **task_types** : Lists the types of tasks addressed in the paper.      
-- **results** : Captures key findings and performance outcomes.   
+1. Install `guardrails-ai`.
+2. Create a `.rail` schema for publication profiling.
+3. Update relevant analysis functions (e.g., `PublicationExplorer.analyze_pub1()`, `PublicationExplorer.analyze_pub2()`). / (src/explorer.py)      
+4. Validate outputs before updating state.
 
-Each of these lists must be present in the model output for it to pass validation.  
-This JSON is structured, machine-readable, and validated, so you can confidently pass it to downstream analytics or use it in reproducibility workflows. 
- 
+**Validated output includes:**  
+- `tools`: Frameworks/libraries extracted from publication  
+- `evaluation_methods`: Metrics or strategies described  
+- `datasets`: Benchmarks used  
+- `task_types`: Types of tasks addressed  
+- `results`: Key findings
+- `user query': DECIDE WHETHER THIS SHOULD BE ENCLOSED OR NOT
 
-### Observability	Python logging, node tracing, monitoring  
-TO BE ENCLOSED   
-
-### Deployment	Streamlit Cloud, Docker, or CLI runner  
-TO BE ENCLOSED  
-
-### Documentation	README, screenshots, docstrings, diagram  
-TO BE ENCLOSED
+All fields must be present for validation. Structured, machine-readable JSON enables downstream analytics and reproducibility.
 
 
+### Observability
+
+Basic logging and monitoring are implemented via Python’s logging module and node tracing. Future enhancements will include integration with dedicated observability platforms (e.g., LangSmith). TO BE ENCLOSED  
+
+### Deployment
+
+The application can be run locally via Streamlit, or deployed to cloud platforms like Streamlit Cloud, Docker, or Hugging Face Spaces. TO BE ENCLOSED    
+
+### Documentation (README, screenshots, docstrings, diagram) 
+
+Comprehensive documentation is provided, including:
+- Usage instructions
+- Screenshots of the Streamlit interface
+- Docstrings in code
+- Architectural diagrams (Mermaid, Graphviz)
+
+  
 ## Repository Structure  
+
 ```text
 /Agentic_AI_Developer_Certification_Project3-main
 ├── LICENSE
@@ -126,50 +129,47 @@ TO BE ENCLOSED
 * Python 3.10+
 * An [Openai API](https://platform.openai.com/account/api-keys) key and a [Tavily API](https://www.tavily.com/) key (OPENAI_API_KEY and TAVILY_API_KEY environment variable) 
 
+
 ## Installation
-1. **Clone the repo** and be sure you're on the `main` branch:
 
-   ```
-   bash
+1. **Clone the repository**
+   ```bash
    git clone https://github.com/micag2025/Agentic_AI_Developer_Certification_Project3
-   cd Agentic_AI_Developer_Certification_Project3  
-   ```
-2. **Install dependencies**   
-   Install runtime dependencies (`requirements.txt`) (preferably in a virtual environment):
+   cd Agentic_AI_Developer_Certification_Project3
 
-   ```
-   bash
+2. **Install dependencies**
+     ```bash
    pip install -r requirements.txt
-   ```
-   > _Note_ Test dependencies are keeping separated from runtime dependencies (`requirements.txt`) since production systems don't need the test tools. Therefore, by using a `requirements-test.txt` , it is more clear what is needed during development and testing.     
+   # For testing:
+   pip install -r requirements-test.txt
+     ```
 
-   The `requirements-test.txt` file contains a list of packages needed for testing. You can install this with:  
-   ```
-   bash  
-   pip install -r requirements-test.txt  
-   ```
-
-3. **Create and activate a virtual environment (recommended):**            
-    ```
-    bash
-   python3 -m venv .venv
-   source .venv/bin/activate       # Linux / macOS
-   .\.venv\Scripts\activate      # Windows
-   ```
+   > _Note_ Test dependencies are keeping separated from runtime dependencies (`requirements.txt`) since production systems don't need the test tools. Therefore, by using a `requirements-test.txt` , it is more clear what is needed during development and testing. The `requirements-test.txt` file contains a list of packages needed for testing.
+  
 3. **Set up environment variables**  
-   Following `.env.example` enclose your OpenAI API key and TAVILY API key  in a `.env` file in your the project root:
+  Copy `.env.example` to .env and add your OpenAI and Tavily API keys.
 
-   ```env
-   OPENAI_API_KEY=your_openai_api_key_here
-   TAVILY_API_KEY=your_tavily_api_key_here
- 
-   ```
+4. **(Recommended) Use a virtual environment**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate   # Linux/macOS
+   .\.venv\Scripts\activate    # Windows
+  ```
+
+### Running the Application
+
+1. Ensure `project_1_publications.json` is present in `data/`.
+2. Launch the [Streamlit](https://docs.streamlit.io/) app:
+   ```bash
+   streamlit run src/app.py
+  ```
+
 ## Running the Application  
 1. **Prepare data**    
    Ensure `project_1_publications.json` is present in the data/ directory (or your configured DATA_DIR).
       > _Note:_ The `sample dataset` is available in the "Datasets" section of the related publication.
 
-3. **Launch the App**     
+2. **Launch the App**     
    Run [Streamlit](https://docs.streamlit.io/) from the project root:  
     
    ```      
@@ -177,40 +177,43 @@ TO BE ENCLOSED
    streamlit run src/app.py    
    ```    
    
-4. **Access the Interface**          
+3. **Access the Interface**          
    Open your browser to the local Streamlit URL (usually http://localhost:8501).        
 
 You can now interact with the LangGraph-Orchestrated Research Assistant for Ready Tensor!  
 
 
-## Running the Application  
-To debug `Guardrails` within the full app flow (realistic testing) (to test Guardrails in production context):    
+To debug `Guardrails` integration, run the app as above and monitor the terminal for raw vs. validated outputs.
 
-- Run the full Streamlit application:  
-  ```    
-   bash  
-   streamlit run src/app.py  
-  ```  
 This will:  
 - Trigger the PublicationExplorer pipeline
 - Automatically invoke analyze_pub1 and analyze_pub2  
 - Print the raw vs. validated outputs in the terminal (because of the print() statements)
 
+
 ## Usage Examples   
 ### Example validated profile guardrails-ai
 The outputs can be found in the directory layout outputs/ 
 
-- Selection `Usage Tool` for publ _Core concepts of Agentic AI and AI agents.txt_ 
-  - Generated a raw LLM output like:  
+Sample validated output:
+```json
+{
+  "tools": ["LangGraph", "Microsoft AutoGen"],
+  "evaluation_methods": [],
+  "datasets": [],
+  "task_types": ["AI Agent", "Autonomous Agents", "Multi-Agent System"],
+  "results": []
+}
 
-  ```
- json   
- { 
-  "tools": ["LangGraph", "Microsoft AutoGen"],  
-  "evaluation_methods": [],  
-  "datasets": []  
- }
-```  
+Explanation:
+If evaluation_methods is empty, it indicates the publication lacks evaluation details or the model did not extract any.
+
+Reasons may include:
+
+No evaluation section in the text
+LLM extraction limitations
+Preprocessing/truncation
+Schema-constrained validation
  - Guardrails validated it using the .rail schema.    
  - The output matched the expected format, even if some fields (like evaluation_methods) were empty — which is allowed.    
 
