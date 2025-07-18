@@ -5,7 +5,7 @@ and it is linked to both the publications:**Productionizing Agentic AI Developer
 
 
 ## Project Description  
-To productionize the multi-agent system created in (Project 2) **Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor** by 
+To productionize the multi-agent system created in **Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor** by 
 adding robustness, safety, and deployment features through the use of `Guardrails`, `Observability`, `Deployment`, 
 `Documentation`. This project reflects the full lifecycle of agentic AI development—from ideation to deployment. 
 
@@ -14,7 +14,7 @@ The following additions have been enclosed in the project2:
 • **Guardrails**: Input/output validation, prompt protection, or structured response constraints.   
 • **Observability**: Basic logging, user feedback capture, or instrumentation (e.g., using 
 LangSmith or custom logs).   
-• **Deployment**: Lightweight deployment via FastAPI, Gradio, or Streamlit; Hosted locally or on 
+• **Deployment**: Lightweight deployment via (FastAPI, Gradio, or) Streamlit; Hosted locally or on 
 a cloud service (Render, Hugging Face, etc.).   
 • **Documentation**: Clearly stated limitations and assumptions; Usage guide or demo 
 walkthrough; Safety and monitoring considerations.  
@@ -35,13 +35,13 @@ _Summary of Additions_
 
 _Summary Comparison_ 
 
-|Feature                   | Without Guardrails-AI               |With Guardrails-AI
-|--------------------------|-------------------------------------|----------------
-|Output format             |   Free-form text                    | Strict, schema-validated JSON
-|Input flexibility         |   High                              |Moderate (requires `.rail` or schema)
-|Retry on invalid format   |   No                                | Yes
-|Production-safety         |   Risk of LLM drift                 | Robust
-|Dev speed                 |   Quick                             | Requires setup effort
+|Feature                   | Without Guardrails-AI                                                               |With Guardrails-AI
+|--------------------------|-------------------------------------------------------------------------------------|----------------
+|Output format             |   Free-form text / Raw LLM output (possibly unstructured, noisy)                    | Strict, schema-validated JSON / Structured, validated, and optionally corrected   
+|Input flexibility         |   High                                                                              |Moderate (requires `.rail` or schema)
+|Retry on invalid format   |   No                                                                                | Yes
+|Production-safety         |   Risk of LLM drift                                                                 | Robust
+|Dev speed                 |   Quick                                                                             | Requires setup effort
 
 The use of `guardrails-ai` (LLM Output Schema Validator): 
 - Enforces that LLM output matches a structured format  
@@ -51,16 +51,11 @@ The use of `guardrails-ai` (LLM Output Schema Validator):
   - Strings follow a regex pattern    
 - Can regenerate LLM responses until they conform
 
-_Example of how the same prompt behaves:
-
-- _Without guardrails-ai_: Raw LLM output (possibly unstructured, noisy)    
-- _With guardrails-ai_: Structured, validated, and optionally corrected    
-
-Step-by-Step Integration Plan (task)  
-1 Install `guardrails-ai`    
-2 Create a `.rail` schema for publications (rails/profile_extraction.rail) including as fields tools, evaluation methods, datasets, tasks tyoes, results (still to be enclosed Other(queries))    
-3 Update PublicationExplorer.analyze_pub1() & .analyze_pub2() to use Guard  (src/explorer.py)
-4 Validate the output before updating state  
+_Step-by-Step Integration Plan (task)_    
+ 1 Install `guardrails-ai`      
+ 2 Create a `.rail` schema for publications (rails/profile_extraction.rail) including as fields tools, evaluation methods, datasets, tasks tyoes, results (still to be enclosed Other(queries))      
+ 3 Update PublicationExplorer.analyze_pub1() & .analyze_pub2() to use Guard  (src/explorer.py)  
+ 4 Validate the output before updating state    
 
 The system will now validate outputs that contain:    
 - **tools** : Lists the software frameworks or libraries explicitly extracted from the publication.      
@@ -81,9 +76,6 @@ TO BE ENCLOSED
 
 ### Documentation	README, screenshots, docstrings, diagram  
 TO BE ENCLOSED
-
-
-**Workflow:** 
 
 
 ## Repository Structure  
@@ -129,11 +121,9 @@ TO BE ENCLOSED
 ```
 
 
-
 ## Prerequisites
 * Python 3.10+
-* An OpenAI API key and a Tavily API key (OPENAI_API_KEY and TAVILY_API_KEY environment variable) 
-
+* An [Openai API](https://platform.openai.com/account/api-keys) key and a [Tavily API](https://www.tavily.com/) key (OPENAI_API_KEY and TAVILY_API_KEY environment variable) 
 
 ## Installation
 1. **Clone the repo** and be sure you're on the `main` branch:
@@ -158,8 +148,7 @@ TO BE ENCLOSED
    pip install -r requirements-test.txt  
    ```
 
-3. **Create and activate a virtual environment (recommended):**      
-   
+3. **Create and activate a virtual environment (recommended):**            
     ```
     bash
    python3 -m venv .venv
@@ -180,8 +169,8 @@ TO BE ENCLOSED
       > _Note:_ The `sample dataset` is available in the "Datasets" section of the related publication.
 
 3. **Launch the App**     
-   Run Streamlit from the project root:  
-  
+   Run [Streamlit](https://docs.streamlit.io/) from the project root:  
+    
    ```      
    bash    
    streamlit run src/app.py    
