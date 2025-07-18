@@ -82,10 +82,11 @@ TO BE ENCLOSED
 ```text
 /Agentic_AI_Developer_Certification_Project3-main
 ├── LICENSE
-├── README.md # Project overview and instructions
+├── README.md                  # Project overview and instructions
 ├── requirements-test.txt      # List of packages needed for development and testing
 ├── requirements.txt           # Project dependencies / # Example environment file storing secret API keys
-├── .gitignore        	      # This file specifies the files and folders that should be ignored by Git. 
+├── .gitignore        	       # This file specifies the files and folders that should be ignored by Git.
+├── .env.example        	     # This file specifies the OPEN API keys required.
 ├── data/
 │   ├── project_1_publications.json  # Sample Ready Tensor dataset
 │   ├── sample_publications/         # Directory containing input publication `.txt` files
@@ -105,13 +106,13 @@ TO BE ENCLOSED
 │   ├── validated_profile_pub1_<timestamp>.json  # Validated Profiles (Guardrails-validated JSONs)
 │   ├── validated_profile_pub2_<timestamp>.json  # Validated Profiles (Guardrails-validated JSONs)
 │   ├──
-├── src/
+├── src/                                # This directory holds the source code for the project. It is further divided into various subdirectories:
 │   ├── app.py                          # Main Streamlit App
 │   ├── explorer.py                     # LLM-based publication comparison engine
 │   ├── generate_flowchart_graphviz.py  # Generates a Graphviz PNG diagram of the LangGraph orchestration flow
 │   ├── generate_flowchart_mermaid.py   # Generates a Mermaid diagram of the LangGraph orchestration flow
 │   ├── loader.py                       # Converts JSON into individual .txt files
-│   ├── paths.py                        # Centralized path definitions
+│   ├── paths.py                        # Centralized path definitions / This file includes paths to files used in the project.
 │   ├── utils.py                        # Helper functions for path and string handling
 │   ├── docs/
 │   │   ├── langgraph_flowchart.mmd
