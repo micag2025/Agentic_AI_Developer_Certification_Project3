@@ -131,24 +131,76 @@ TO BE ENCLOSED
 
 
 ## Prerequisites
+* Python 3.10+
+* An OpenAI API key and a Tavily API key (OPENAI_API_KEY and TAVILY_API_KEY environment variable) 
 
 
 ## Installation
-_Note_ Test dependencies are keeping separated from runtime dependencies (`requirements.txt`) since production systems don't need the test tools. Therefore, by using a `requirements-test.txt` , it is more clear what is needed during development and testing. 
+1. **Clone the repo** and be sure you're on the `main` branch:
 
-The `requirements-test.txt` file contains a list of packages needed for testing. You can install this with: 
-```
-pip install -r requirements-test.txt
-```
+   ```
+   bash
+   git clone https://github.com/micag2025/Agentic_AI_Developer_Certification_Project3
+   cd Agentic_AI_Developer_Certification_Project3  
+   ```
+2. **Install dependencies**   
+   Install required packages (preferably in a virtual environment):
+
+   ```
+   bash
+   pip install -r requirements.txt
+   ```
+   _Note_ Test dependencies are keeping separated from runtime dependencies (`requirements.txt`) since production systems don't need the test tools. Therefore, by using a `requirements-test.txt` , it is more clear what is needed during development and testing.     
+
+   The `requirements-test.txt` file contains a list of packages needed for testing. You can install this with:  
+   ```
+   bash  
+   pip install -r requirements-test.txt  
+   ```
+
+3. **Create and activate a virtual environment (recommended):**      
+   
+    ```
+    bash
+   python3 -m venv .venv
+   source .venv/bin/activate       # Linux / macOS
+   .\.venv\Scripts\activate      # Windows
+   ```
+3. **Set up environment variables**  
+   Enclose your OpenAI API key and TAVILY API key  to a `.env` file in your the project root:
+
+   ```env
+   OPENAI_API_KEY=your_openai_api_key_here
+   TAVILY_API_KEY= your_tavily_api_key_here
+ 
+   ```
+## Running the Application  
+1. **Prepare data**    
+   Ensure `project_1_publications.json` is present in the data/ directory (or your configured DATA_DIR).
+      > _Note:_ The `sample dataset` is available in the "Datasets" section of the related publication.
+
+3. **Launch the App**     
+   Run Streamlit from the project root:  
+  
+   ```      
+   bash    
+   streamlit run src/app.py    
+   ```    
+   
+4. **Access the Interface**          
+   Open your browser to the local Streamlit URL (usually http://localhost:8501).        
+
+You can now interact with the LangGraph-Orchestrated Research Assistant for Ready Tensor!  
+
 
 ## Running the Application  
 To debug `Guardrails` within the full app flow (realistic testing) (to test Guardrails in production context):    
 
 - Run the full Streamlit application:  
-```
-bash
-streamlit run src/app.py
-```
+  ```    
+   bash  
+   streamlit run src/app.py  
+  ```  
 This will:  
 - Trigger the PublicationExplorer pipeline
 - Automatically invoke analyze_pub1 and analyze_pub2  
