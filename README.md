@@ -125,7 +125,7 @@ TO BE ENCLOSED
 │   │   ├── langgraph_flowchart.mmd
 │   │   ├── publication_flowchart.png
 │   ├── rails/
-│   │   ├── profile_extraction.rail  # 
+│   │   ├── profile_extraction.rail  # .rail schema for publication profiling  
 ```
 
 
