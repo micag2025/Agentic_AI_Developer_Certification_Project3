@@ -232,7 +232,56 @@ Schema-constrained validation
 
 
 ### Example Observability	Python logging, node tracing, monitoring      
-TO BE ENCLOSED    
+The output can be foung in /logs 
+
+The logs confirm that your full multi-agent system is running flawlessly with Guardrails + Observability in place. Here's a structured breakdown of what this means and next actions:
+
+✅ Summary of Log Behavior
+🔐 Guardrails Output (for both publications)
+| Field               | Publication 1                       | Publication 2                            |
+| ------------------ | ------------------------------------ | ---------------------------------------- |
+| tools              | 	["LangGraph", "Microsoft AutoGen"]  |["PyTorch"]                               |
+| evaluation_methods | ❌ Empty → filtered out              | ❌ Empty → filtered out                 |
+| datasets           | ❌ Empty → filtered ou               | ❌ Empty → filtered out                 |
+| task_types         | ✅ Present                           |✅ Present               |
+| results            | ❌ Empty → filtered ou               | ❌ Empty → filtered out                 |
+
+✅ Guardrails successfully removed empty fields from the final validated output, keeping your state clean and safe for downstream processing.
+
+📂 Output Files Created
+bash
+
+outputs/
+├── validated_profile_pub1_20250802_152830.json
+├── validated_profile_pub2_20250802_152831.json
+These contain the validated subset of the original profile—only populated fields.
+
+📈 Graph Execution: All Nodes
+analyze_pub1 → ✅  
+analyze_pub2 → ✅  
+compare → ✅  
+aggregate_trends → ✅    
+summarize → ✅  
+fact_check → ✅  
+react_agent_tool → ✅  
+
+All are clearly logged and show no signs of error or exception.
+
+🔍 Log Output Interpretation
+You’re logging like a production-grade system:
+
+✅ Structured  
+
+- function, line, module, process, thread, etc.
+
+✅ Informative  
+
+- Timestamps  
+
+- Clean tagging: 📊, 📈, 📝, 🔍, 🤖  
+
+✅ Validated Output vs Raw  
+You're capturing both Raw: model responses and the Validated: subset. 
 
 ### Example Deployment	Streamlit Cloud, Docker, or CLI runner  
 TO BE ENCLOSED    
