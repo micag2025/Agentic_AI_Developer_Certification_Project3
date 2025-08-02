@@ -66,6 +66,31 @@ All fields must be present for validation. Structured, machine-readable JSON ena
 ### Observability
 
 Basic logging and monitoring are implemented via Python’s logging module and node tracing. Future enhancements will include integration with dedicated observability platforms (e.g., LangSmith). TO BE ENCLOSED  
+To productionize the multi-agent system, Observability is a crucial pillar. It enables you to monitor, trace, and debug your application effectively during real-world deployment.
+
+Observability in Multi-Agent Systems
+Below is a complete solution that integrates logging, metrics, and execution tracing to provide observability across your PublicationExplorer system.
+
+#### Key Observability Features  
+
+
+| Feature         | Tool/Technique                       | Purpose                                  |
+| --------------- | ------------------------------------ | ---------------------------------------- |
+| Structured Logs | Python’s `logging` + JSON formatting | Centralized log collection + readability |
+| Metrics         | `prometheus_client` (optional)       | Export request counts, latency, etc.     |
+| Tracing         | `uuid` session ID + node info        | Track LLM invocation paths & failures    |
+
+#### Step-by-Step Implementation  
+1. Install Logging Tools    
+2. Create logger.py  
+
+Enhancements to Include
+- Structured logging using loguru  
+- Session traceability using uuid  
+- Centralized logs to both console and file  
+- Logging across all major graph nodes  
+
+
 
 ### Deployment
 
@@ -103,7 +128,9 @@ Comprehensive documentation is provided, including:
 ├── examples_screens/
 │   ├── <screenshot .jpeg>   # Section of screenshot of example usage of the StreamLit interface 
 │   ├──
-├── outputs/
+├── logs/                               # Runtime log output (excluded from Git)
+│   └── pipeline.log
+├── outputs/                            # Final validated profiles and comparisons
 │   ├── comparison_<pub1>_vs_<pub2>_<timestamp>.json  # Full Comparison Results (from Streamlit app)
 │   ├── comparison_<pub1>_vs_<pub2>_<timestamp>.html  # Full Comparison Results (from Streamlit app)
 │   ├── validated_profile_pub1_<timestamp>.json  # Validated Profiles (Guardrails-validated JSONs)
@@ -117,11 +144,12 @@ Comprehensive documentation is provided, including:
 │   ├── loader.py                       # Converts JSON into individual .txt files
 │   ├── paths.py                        # Centralized path definitions / This file includes paths to files used in the project.
 │   ├── utils.py                        # Helper functions for path and string handling
+│   ├── logger.py                       # Centralized log configuration (to be used in the Observability)
 │   ├── docs/
 │   │   ├── langgraph_flowchart.mmd
 │   │   ├── publication_flowchart.png
-│   ├── rails/
-│   │   ├── profile_extraction.rail  # .rail schema for publication profiling  
+│   ├── rails/                          # Guardrails XML schemas
+│   │   ├── profile_extraction.rail     # .rail schema for publication profiling  (to be used in the Guardrails)
 ```
 
 
