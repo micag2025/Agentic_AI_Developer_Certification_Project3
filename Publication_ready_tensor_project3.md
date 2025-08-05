@@ -60,7 +60,8 @@ This project is structured on a modular LangChain-based pipeline in which each f
 ## Features
 
 ## Installation Instructions
-This pubblication has a GitHub code repository attached under the "Code" section.
+This pubblication has a GitHub code repository attached under the "Code" section.  
+
 
 ## Running the Application
 
