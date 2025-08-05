@@ -9,46 +9,93 @@
 ## Dataset: project_1_publications.json
 
 ## TL;DR
-The Ready Tensor Publication Explorer is an advanced AI-powered tool that utilizes Retrieval-Augmented Generation (RAG) techniques to automate the handling of a sample dataset that contains Ready Tensor technical documentation. By leveraging RAG models, the system delivers accurate and context-aware responses to (natural language) user queries. Integrating OpenAI embeddings, semantic search capabilities, and a user-friendly interface, this tools offers a scalable and efficient solution for Ready Tensor users, developers, researchers, and organizations searching streamlined access to documentation resources enclosed in the Ready Tensor platform by exploring its contents and asking questions.
+TO BE DRAFTED 
 
 ## Tool Overview & Architecture
 This project uses a sample dataset and is built around (is structured on) a modular LangChain-based pipeline.
 
-Sample Dataset:
+### Sample Dataset:
 A collection of 35 Ready Tensor publications, each of them characterised by id, username, license, title, and publication description. There are 6 types of licenses; 27 publications use “MIT” or “CC”, the rest are “none” or missing. Under MIT/CC, reuse is permitted for open source projects.
 
-Features & Modules:
+### Features & Modules:
 This project is structured on a modular LangChain-based pipeline in which each feature is mapped to the specific tool or module implementing it:
 
-Feature	Tool / Library / Module
-Prompt formulation	LangChain PromptTemplate
-Vector store retrieval	Chroma Vector Database
-LLM-generated response	OpenAI GPT-3.5/4 via LangChain
-Document ingestion & embedding	LangChain DocumentLoader, OpenAI Embeddings, Chroma
-Minimal UI for interaction	Streamlit (or Flask/FastAPI as implemented)
-Example queries, retrieval, response eval	LangChain Chains & Evaluators
-Session-based memory/intermediate reasoning	LangChain ReAct, ConversationBuffer
-Workflow: The LangChain-based pipeline is designed to:
 
-Generate/process user prompts
-Retrieve relevant content using Chroma
-Use Large Language Models (LLMs) for context-aware responses
-Ingest/index documentation into vector DB
-Offer user interface for interaction
-Support session memory and intermediate reasoning TO BE VERIFIED
-Enable example queries for validation
-The core workflow and system architecture of the application are illustrated in the following flowchart.
-flowchart_modified
+### Workflow: The LangChain-based pipeline is designed to:
 
-Features
-Automated Documentation Ingestion: Efficient extraction and processing of Ready Tensor publications (while preserving structure).
-Vector Database Storage (Chroma): Fast, reliable embedding storage and retrieval.
-Semantic Search (OpenAI Embeddings): Intelligent, context-aware lookup for relevant documentation.
-RAG-Based Q&A: Contextually precise answers to user queries about publications.
-Minimal UI: Simple, interactive interface (for exploration).
-Scalable and Fast: Handles large datasets with quick indexing and retrieval.
-Installation Instructions
+
+
+## Features
+
+## Installation Instructions
 This pubblication has a GitHub code repository attached under the "Code" section.
+
+## Running the Application
+
+
+### Example UI Screenshots
+
+
+### Usage Examples
+
+
+## References
+- [LangChain](https://www.langchain.com/langchain)                 
+- [Openai API](https://platform.openai.com/account/api-keys)
+- [MIT Licence](https://opensource.org/license/mit)
+- [Streamlit](https://docs.streamlit.io/)               
+- [Ready Tensor Certifications](https://app.readytensor.ai/hubs/ready_tensor_certifications)
+- [Technical Evaluation Rubric](https://app.readytensor.ai/publications/WsaE5uxLBqnH)
+- [Engage and Inspire: Best Practices for Publishing on Ready Tensor](https://app.readytensor.ai/publications/engage_and_inspire_best_practices_for_publishing_on_ready_tensor_SBgkOyUsP8qQ)
+- [The Open Source Repository Guide: Best Practices for Sharing Your AI/ML and Data Science Projects](https://app.readytensor.ai/publications/best-practices-for-ai-project-code-repositories-0llldKKtn8Xb)
+
+
+## Contributing
+We welcome contributions to improve the Ready Tensor Publication Explorer!
+
+1. **Fork** the [GitHub repository](https://github.com/Joshua-Abok/rag_apk)
+2. **Create a feature branch:**
+   ```bash
+   git checkout -b your-feature-name
+   ```
+3. **Commit and push your changes**
+4. **Submit a Pull Request** and describe your contribution.
+
+Please follow our code style and guidelines. For questions or suggestions, [open an issue](LINK TO BE ENCLOSED).
+
+### Future Implementations
+We are actively seeking contributors who want to help implement and/or propose the following future features:
+
+
+
+Feel free to suggest more ideas by opening an issue or starting a discussion!  For bug reports or feature requests, [open an issue](LINK TO BE ENCLOSED). For general questions or share your thoughts, start a [comment](LINK TO BE ENCLOSED).
+
+
+## License
+This publication is licensed under the [MIT License](LICENSE).
+
+
+## Contact
+michelaagostini73@gmail.com
+
+
+## Acknowledgments
+This project is part of the **Agentic AI Developer Certification**  program by the [Ready Tensor](https://www.readytensor.ai). We appreciate the contributions of the Ready Tensor developer community for their guidance and contributions. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Prerequisites: Python 3.10+, pip, and access to the referenced dataset.
 
