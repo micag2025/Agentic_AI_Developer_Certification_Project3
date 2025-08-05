@@ -7,6 +7,12 @@ It is based on the publications:
 
 This project demonstrates how to enhance a multi-agent system with robustness, safety, and deployment features, reflecting a full lifecycle from ideation to production.
 
+Requirements:
+- Contains production-ready code with comprehensive testing suite  
+- Includes detailed setup, deployment, and usage documentation  
+- Demonstrates security measures and monitoring capabilities  
+- Provides working UI application with clear user workflows  
+
 
 ## Project Description
 
