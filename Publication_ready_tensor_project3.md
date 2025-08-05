@@ -9,7 +9,7 @@
 ## Dataset: project_1_publications.json
 
 ## TL;DR
-Take your multi-agent system from Module 2 and transform it into a production-grade AI application — tested, safe, user-ready, and portfolio-worthy. This project is based on the multi-agent system built in Module 2: Build a Multi-Agent System. The objective is to take the Module 2 multi-agent prototype and transform it into a production-ready application that meets professional software standards. Thus, the objective of this project is to demonstrate the ability to prepare an agentic AI system for real-world use by enhancing it with the following capabilities:  
+The multi-agent system developed in the Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor (from Module 2) has been transformed it into a production-grade AI application — tested, safe, user-ready, and portfolio-worthy. This project is based on the multi-agent system built in the Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor (from Module 2). The objective is to take the Module 2 multi-agent prototype and transform it into a production-ready application that meets professional software standards. Thus, the objective of this project is to demonstrate the ability to prepare an agentic AI system for real-world use by enhancing it with the following capabilities:  
 - Production Readiness: Transform your prototype into a robust, deployable system    
 - Quality Assurance: Implement comprehensive testing strategies for multi-agent workflows    
 - Security & Safety: Add guardrails, input validation, and safety mechanisms    
@@ -108,7 +108,8 @@ You can now interact with the LangGraph-Orchestrated Research Assistant for Read
 - [LangChain](https://www.langchain.com/langchain)
 - [LangGraph](https://www.langchain.com/langgraph)                  
 - [Openai API](https://platform.openai.com/account/api-keys)
-- [Tavily](https://www.tavily.com/)  
+- [Tavily](https://www.tavily.com/)
+- [Guardrails-AI](https://hub.guardrailsai.com/)  
 - [MIT Licence](https://opensource.org/license/mit)
 - [Streamlit](https://docs.streamlit.io/)
 - [Mermaid](https://mermaid.js.org/)               
