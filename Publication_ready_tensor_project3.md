@@ -61,10 +61,41 @@ This project is structured on a modular LangChain-based pipeline in which each f
 
 ## Installation Instructions
 This pubblication has a GitHub code repository attached under the "Code" section.  
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/micag2025/Agentic_AI_Developer_Certification_Project3
+   cd Agentic_AI_Developer_Certification_Project3
 
+2. **Install dependencies**
+     ```bash
+   pip install -r requirements.txt
+   # For testing:
+   pip install -r requirements-test.txt
+     ```
 
-## Running the Application
+   > _Note_ Test dependencies are keeping separated from runtime dependencies (`requirements.txt`) since production systems don't need the test tools. Therefore, by using a `requirements-test.txt` , it is more clear what is needed during development and testing. The `requirements-test.txt` file contains a list of packages needed for testing.
+  
+3. **Set up environment variables**  
+  Copy `.env.example` to .env and add your OpenAI and Tavily API keys.
 
+4. **(Recommended) Use a virtual environment**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate   # Linux/macOS
+   .\.venv\Scripts\activate    # Windows
+  
+
+### Running the Application
+
+1. Ensure `project_1_publications.json` is present in `data/`.
+  > _Note:_ The `sample dataset` is available in the "Datasets" section of the related publication.  
+2. Launch the [Streamlit](https://docs.streamlit.io/) app:
+   ```bash
+   streamlit run src/app.py
+          
+3. Open your browser to the local Streamlit URL (usually http://localhost:8501).        
+
+You can now interact with the LangGraph-Orchestrated Research Assistant for Ready Tensor!  
 
 ### Example UI Screenshots
 
@@ -73,14 +104,18 @@ This pubblication has a GitHub code repository attached under the "Code" section
 
 
 ## References
-- [LangChain](https://www.langchain.com/langchain)                 
+- [Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X)  
+- [LangChain](https://www.langchain.com/langchain)
+- [LangGraph](https://www.langchain.com/langgraph)                  
 - [Openai API](https://platform.openai.com/account/api-keys)
+- [Tavily](https://www.tavily.com/)  
 - [MIT Licence](https://opensource.org/license/mit)
-- [Streamlit](https://docs.streamlit.io/)               
+- [Streamlit](https://docs.streamlit.io/)
+- [Mermaid](https://mermaid.js.org/)               
 - [Ready Tensor Certifications](https://app.readytensor.ai/hubs/ready_tensor_certifications)
 - [Technical Evaluation Rubric](https://app.readytensor.ai/publications/WsaE5uxLBqnH)
 - [Engage and Inspire: Best Practices for Publishing on Ready Tensor](https://app.readytensor.ai/publications/engage_and_inspire_best_practices_for_publishing_on_ready_tensor_SBgkOyUsP8qQ)
-- [The Open Source Repository Guide: Best Practices for Sharing Your AI/ML and Data Science Projects](https://app.readytensor.ai/publications/best-practices-for-ai-project-code-repositories-0llldKKtn8Xb)
+
 
 
 ## Contributing
