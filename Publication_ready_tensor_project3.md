@@ -144,7 +144,7 @@ This publication is licensed under the [MIT License](LICENSE).
 
 
 ## Contact
-michelaagostini73@gmail.com
+michelaagostini73@gmail.com, OTHER CONTACTS? 
 
 
 ## Acknowledgments
