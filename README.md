@@ -1,9 +1,9 @@
 # Agentic AI Developer Certification: Productionizing LangGraph-Orchestrated Research Assistant for Ready Tensor
 
 This repository is part of the **Agentic AI Developer Certification program** by [Ready Tensor](https://www.readytensor.ai).
-It is based on the publications:
+It is based on the following publications:
 - **Agentic AI Developer Certification: Productionizing LangGraph-Orchestrated Research Assistant for Ready Tensor**
-- **Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor** [Add full titles and links if available]
+- **[Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X)**  
 
 This project demonstrates how to enhance a multi-agent system with robustness, safety, and deployment features, reflecting a full lifecycle from ideation to production.
 
