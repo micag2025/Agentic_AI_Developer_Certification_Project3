@@ -137,11 +137,11 @@ Comprehensive documentation is provided, including:
 ├── logs/                               # Runtime log output (excluded from Git)
 │   └── pipeline.log
 ├── outputs/                            # Final validated profiles and comparisons
-│   ├── comparison_<pub1>_vs_<pub2>_<timestamp>.json  # Full Comparison Results (from Streamlit app)
-│   ├── comparison_<pub1>_vs_<pub2>_<timestamp>.html  # Full Comparison Results (from Streamlit app)
-│   ├── validated_profile_pub1_<timestamp>.json  # Validated Profiles (Guardrails-validated JSONs)
-│   ├── validated_profile_pub2_<timestamp>.json  # Validated Profiles (Guardrails-validated JSONs)
-│   ├──
+│   ├── profiles/         ← Validated profiles (from Guardrails)
+│   │   └── validated_profile_pub1_*.json
+│   └── comparisons/      ← Comparison results (HTML + JSON)
+│       ├── comparison_pub1_vs_pub2_*.json
+│       └── comparison_pub1_vs_pub2_*.html
 ├── src/                                # This directory holds the source code for the project. It is further divided into various subdirectories:
 │   ├── app.py                          # Main Streamlit App
 │   ├── explorer.py                     # LLM-based publication comparison engine
