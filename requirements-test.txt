@@ -1,0 +1,6 @@
+# This file contains the dependencies required for testing the project.
+guardrails-ai==0.3.2
+
+
+# Logging
+loguru==0.7.2

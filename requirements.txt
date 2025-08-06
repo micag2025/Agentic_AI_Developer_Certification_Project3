@@ -1,0 +1,27 @@
+#gradio
+#langchain.chat_models
+#langchain.schema
+
+
+#python-dotenv
+#langgraph
+#langchain
+#langchain-core
+#langchain-openai
+#tavily-python
+#pydantic
+#graphviz
+#ipython
+#requests
+
+#openai
+#-U langchain-openai
+
+streamlit==1.35.0
+python-dotenv==1.0.1
+langchain-openai==0.1.7
+langgraph==0.0.42
+langchain-core==0.1.53
+langchain-community==0.0.28
+tavily-python==0.3.2
+
