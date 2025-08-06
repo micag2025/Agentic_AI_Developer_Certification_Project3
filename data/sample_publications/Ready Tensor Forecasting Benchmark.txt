@@ -1,0 +1,176 @@
+Ready Tensor Forecasting Benchmark
+
+Id:
+EeNv3K1byb1V20OLZbBOd
+
+Username:
+ready-tensor
+
+License:
+cc-by-sa
+
+Publication_description:
+
+![publication-narrow.webp](publication-narrow.webp)--DIVIDER--# Ready Tensor Forecasting Benchmark
+
+## Abstract
+
+The purpose of this project is to provide a comprehensive and systematic evaluation of forecasting models across diverse time series datasets. This project aims to help researchers and practitioners identify effective forecasting models tailored to different data characteristics, while highlighting the strengths of various model categories, from tabular and neural network models to advanced foundational models. By benchmarking models on 24 real-world datasets with varying time frequencies and covariates, we examine model performance in realistic forecasting scenarios.
+
+Our findings reveal that tabular models, specifically extra trees and random forest, and neural network models such as PatchMixer, Variational Encoder and NBeats consistently exhibit superior performance. Among the foundational forecasting models, the Chronos models, leveraging large-scale, pretrained techniques, demonstrate exceptional zero-shot learning capabilities, achieving high performance even on datasets not included in their training corpus. This underscores the significant potential of foundational models in enhancing forecasting accuracy and generalization across various domains.
+
+Despite the advanced capabilities of these models, naive benchmarks remain indispensable for evaluating model complexity against forecasting efficacy, particularly in scenarios lacking clear seasonal patterns, such as yearly-frequency datasets. This benchmark project highlights the evolving landscape of time series forecasting, where the integration of large-scale, pretrained models like Chronos is poised to redefine industry standards for accuracy and applicability.
+
+## Introduction
+
+The purpose of the "Ready Tensor Forecasting Benchmark" project is to establish a comprehensive, evolving benchmark that enables clear comparisons of forecasting models across a wide range of real-world scenarios. By comparing a growing collection of model types—including naive (baseline), statistical, machine learning, neural network, and hybrid approaches—this project aims to help researchers and practitioners identify the most effective models for specific forecasting tasks, with an emphasis on accuracy, adaptability, and efficiency.
+
+This project focuses on univariate forecasting, predicting a single response variable while accommodating exogenous features (covariates) to improve accuracy. Using 24 diverse datasets with time frequencies ranging from hourly to yearly and synthetic datasets, we explore a broad spectrum of scenarios, distinguishing datasets by temporal characteristics and covariate types, from static and historical to future-oriented variables. This variety provides a realistic setting to examine model performance under different conditions, enabling users to choose models that best meet their forecasting needs.
+
+Our evaluation relies on metrics like RMSE, MAE, RMSSE, and MASE, where RMSSE and MASE are especially valuable for comparing performance relative to simple naive forecasts. This evolving benchmark continually incorporates new models, staying current with advances in forecasting technology and ensuring practical relevance for users looking to optimize their forecasting strategies.
+
+## Models and Categories
+
+In this project, forecasting models are systematically selected from five distinct categories based on their underlying methodologies and typical use cases. This categorization facilitates a clearer comparison of model performances across different types of time series data. Below is an overview of each category along with examples to illustrate the diversity of models considered:
+
+### 1. Naive Models
+
+Naive models establish the baseline for forecasting performance, utilizing straightforward prediction strategies based on historical data trends.
+
+**Examples:** Naive Mean, Naive Drift, Naive Seasonal.
+
+### 2. Statistical Models
+
+These models employ traditional statistical methods to analyze and forecast time series data, capturing explicit components such as trend and seasonality.
+
+**Examples:** ARIMA (AutoARIMA), Theta, BATS.
+
+### 3. Hybrid (Statistical + Machine Learning) Models
+
+This category includes models that combine elements of both statistical and machine learning approaches to leverage the strengths of each in forecasting applications. These hybrids aim to improve forecast accuracy and reliability by integrating statistical models' interpretability with machine learning models' adaptability.
+
+**Examples:** Prophet (combines decomposable time series models with machine learning techniques), D-Linear Forecaster in GluonTS (merges linear statistical forecasting with machine learning enhancements).
+
+### 4. Machine Learning Models
+
+Machine Learning models apply various algorithmic approaches learned from data to predict future values, including both regression and classification techniques tailored for forecasting.
+
+**Examples:** Random Forest, Gradient Boosting Machines (GBM), Support Vector Machines (SVM), Elastic Net Regression.
+
+### 5. Neural-Network Models
+
+Utilizing deep learning architectures, Neural-Network models are adept at modeling complex and non-linear relationships within large datasets.
+
+**Examples:** NBeats, RNN (LSTM), Convolutional Neural Networks (CNN), PatchTST, TSMixer, Transformer models.
+
+### 6. Foundational Models for Time Series Forecasting
+
+Foundational models utilize large-scale, pretrained techniques to forecast across diverse domains. They are trained on tokenized time series data and apply transformer-based learning. These models, like the Chronos series from Amazon and Moirai from Salesforce, are remarkable due to their zero-shot prediction and robust generalization capabilities.
+
+**Examples:** Chronos from Amazon and Moirai from SalesForce.
+
+## Model Implementations
+
+Our approach to implementing forecasting models was designed to ensure comparability and objectivity across the benchmarking process. Key aspects of our model implementations include:
+
+#### Generic Implementations
+
+Models were implemented generically without special alterations for specific datasets or engaging in dataset-specific feature engineering.
+
+#### Open-Source Libraries
+
+Where feasible, we utilized established open-source libraries such as Darts, GluonTS, Skforecast, and Nixtla. These libraries provided robust preprocessing and model implementations. For specific comparisons, we also developed a number of custom models to supplement the analysis alongside these library-based implementations.
+
+#### Preprocessing Variability
+
+Performance differences may partly arise from the diverse preprocessing features of these libraries.
+
+#### Hyper-parameter Tuning
+
+For each model, we aimed to identify hyper-parameters that were effective on a global level, across all datasets, without pursuing dataset-specific tuning. Dataset specific hyper-parameter tuning for each model would be cost-prohibitive considering the large number of datasets and models involved in this benchmark. This approach may have inherently favored simpler models with fewer hyper-parameters to adjust.
+
+#### Chronos and Moirai
+
+In the case of foundational models such as Chronos and Moirai, the training function effectively acts as a no-op (no operation). These models are zero-shot learners, pre-trained on a vast array of time series data, and thus require no additional training when applied to new datasets within our benchmark.
+
+## Dataset Characteristics: Frequencies and Covariates
+
+In our project, datasets are not only categorized by their temporal frequencies but also distinguished by the presence and types of covariates they include. This classification acknowledges the complexity of real-world forecasting tasks, where additional information (exogenous variables) can significantly influence model performance.
+
+The list of datasets is as follows:
+
+| Dataset                                             |      Dataset Industry       | Time Granularity | Series Length | # of Series | # Past Covariates | # Future Covariates | # Static Covariates |
+| --------------------------------------------------- | :-------------------------: | :--------------: | :-----------: | :---------: | :---------------: | :-----------------: | :-----------------: |
+| Air Quality KDD 2018                                |    Environmental Science    |      hourly      |    10,898     |     34      |         5         |          0          |          0          |
+| Airline Passengers                                  |  Transportation / Aviation  |     monthly      |      144      |      1      |         0         |          0          |          0          |
+| ARIMA Process                                       |      None (Synthetic)       |      other       |      750      |     25      |         0         |          0          |          0          |
+| Atmospheric CO2 Concentrations                      |    Environmental Science    |     monthly      |      789      |      1      |         0         |          0          |          0          |
+| Australian Beer Production                          |  Food & Beverage / Brewing  |    quarterly     |      218      |      1      |         0         |          0          |          0          |
+| Avocado Sales                                       |    Agriculture and Food     |      weekly      |      169      |     106     |         7         |          0          |          1          |
+| Bank Branch Transactions                            |     Finance / Synthetic     |      weekly      |      169      |     32      |         5         |          1          |          2          |
+| Climate Related Disasters Frequency                 |       Climate Science       |      yearly      |      43       |     50      |         6         |          0          |          0          |
+| Daily Stock Prices                                  |           Finance           |      daily       |     1,000     |     52      |         5         |          0          |          0          |
+| Daily Weather in 26 World Cities                    |         Meteorology         |      daily       |     1,095     |     25      |        16         |          0          |          1          |
+| GDP per Capita Change                               |    Economics and Finance    |      yearly      |      58       |     89      |         0         |          0          |          0          |
+| Geometric Brownian Motion                           |      None (Synthetic)       |      other       |      504      |     100     |         0         |          0          |          0          |
+| M4 Forecasting Competition Sampled Daily Series     |        Miscellaneous        |      daily       |     1,280     |     60      |         0         |          0          |          0          |
+| M4 Forecasting Competition Sampled Hourly Series    |        Miscellaneous        |      hourly      |      748      |     35      |         0         |          0          |          0          |
+| M4 Forecasting Competition Sampled Monthly Series   |        Miscellaneous        |     monthly      |      324      |     80      |         0         |          0          |          0          |
+| M4 Forecasting Competition Sampled Quarterly Series |        Miscellaneous        |    quarterly     |      78       |     75      |         0         |          0          |          0          |
+| M4 Forecasting Competition Sampled Yearly Series    |        Miscellaneous        |      yearly      |      46       |     100     |         0         |          0          |          0          |
+| Online Retail Sales                                 |     E-commerce / Retail     |      daily       |      374      |     38      |         1         |          0          |          0          |
+| PJM Hourly Energy Consumption                       |           Energy            |      hourly      |    10,223     |     10      |         0         |          0          |          0          |
+| Random Walk Dataset                                 |      None (Synthetic)       |      other       |      500      |     70      |         0         |          0          |          0          |
+| Seattle Burke Gilman Trail                          |       Urban Planning        |      hourly      |     5,088     |      4      |         0         |          0          |          4          |
+| Sunspots                                            |  Astronomy / Astrophysics   |     monthly      |     2,280     |      1      |         0         |          0          |          0          |
+| Multi-Seasonality Timeseries With Covariates        |      None (Synthetic)       |      other       |      160      |     36      |         1         |          2          |          3          |
+| Theme Park Attendance                               | Entertainment / Theme Parks |      daily       |     1,142     |      1      |         0         |         56          |          0          |
+
+More information regarding each of the 24 datasets can be found in this public repository: https://github.com/readytensor/rt-datasets-forecasting.
+
+## Evaluation Method
+
+- **Train/Test Split**: We use a simple train/test split along the temporal dimension, ensuring models are trained on historical data and assessed on unseen future data. This approach, chosen for its computational efficiency and the breadth of datasets, avoids cross-validation to reduce computational load. With a benchmark involving 24 datasets, the risk of over-fitting is lowered.
+
+## Metrics
+
+- **RMSE (Root Mean Squared Error):** Measures the square root of the average squared differences between forecasted and actual values.
+- **RMSSE (Root Mean Squared Scaled Error):** A scaled version of RMSE, dividing a model's RMSE by the RMSE from the Naive Mean Forecast Model, which predicts using the historical mean.
+- **MAE (Mean Absolute Error):** Calculates the average magnitude of the errors between forecasted and actual values.
+- **MASE (Mean Absolute Scaled Error):** Scales MAE by dividing the model's MAE by the MAE from the Naive Mean Forecast Model.
+- **sMAPE (Symmetric Mean Absolute Percentage Error):** A symmetric measure that calculates the percentage error between forecasted and actual values.
+- **WAPE (Weighted Absolute Percentage Error):** Measures the accuracy of a model by calculating the percentage error weighted by actual values.
+- **R-squared:** Indicates the proportion of the variance in the dependent variable that is predictable from the independent variable(s).
+
+RMSSE and MASE are particularly emphasized for their ability to provide context-relative performance assessments, scaling errors against those of a simple benchmark (the Naive Recent Window Mean Forecast Model) to ensure comparability across different scales and series characteristics.
+
+**Note**:  
+Training and inference times for all models on all datasets have been collected and are being analyzed. Detailed results will be available on this page soon, providing insights into computational efficiency alongside accuracy metrics.
+
+## Key Results
+
+The benchmarking results are summarized in the following heatmap based on the RMSSE metric. Lower RMSSE scores indicate better forecasting performance.
+
+![Forecasting Models Performance Heatmap](https://github.com/readytensor/rt_forecasting_benchmark/blob/main/outputs/forecasting_models_heatmap.png?raw=true)
+
+The heatmap visualizes the benchmarking results for 50 selected models out of a total pool of 92 (as of April 30, 2024). Models were selectively included based on performance, uniqueness, and fairness criteria. Specifically, models that performed significantly worse than others, such as the Fast Fourier Transform, were excluded. To avoid redundancy, only the best implementation of models appearing multiple times across different libraries (e.g., XGBoost in Scikit-Learn, Skforecast, MLForecast) is featured.
+
+The results can be summarized as follows:
+
+- **Machine-learning Models:** Extra trees and random forest models demonstrate the best overall performance.
+- **Neural Networks:** PatchMixer, Variational Encoder, CNN, NBeats, PatchTST, and MLP emerged as top neural network models, with Variational Encoder showing the best results, notably including pretraining on synthetic data.
+- **Simpler Models:** DLinear and Ridge regression models show strong performance, highlighting efficiency in specific contexts.
+- **Statistical Model:** TBATS stands out among statistical models for its forecasting accuracy.
+- **Foundational Models:** The Chronos-T5-Large model, within the Chronos family, ranks among the top performers. This performance showcases the model's exceptional zero-shot learning capabilities, highlighting its robust generalization and forecasting accuracy across unseen datasets. The Moirai Large and Base models perform well, although not as competitively as the Chronos models.
+- **Yearly Datasets:** On yearly datasets, none of the advanced models surpassed the performance of the naive mean model, highlighting the difficulty of forecasting with datasets that lack conspicuous seasonal patterns commonly found in higher frequency datasets.
+
+**Note on Pretraining:**  
+The NBeats model improved in performance upon pretraining on synthetic data. This highlights pretraining on synthetic data or other real-world datasets as a promising avenue for enhancing neural network models' forecasting capabilities. This approach warrants further exploration to potentially boost the performance of other neural network architectures in this benchmark.
+
+**Note on Chronos Model Performance:** While the Chronos models exhibit impressive zero-shot capabilities, it's important to acknowledge potential train/test leakage. The Chronos training corpus includes a large collection of publicly available datasets, such as samples from the M4 competition and synthetic datasets. Given our benchmark includes similar datasets, there's a possibility some of our benchmark datasets were part of Chronos's training set. However, with 24 datasets in total, the majority of our benchmark datasets likely remain distinct from the Chronos training corpus, preserving the integrity of our evaluation.
+
+## Project Summary
+
+Tabular models like extra trees and random forest are the top performers in our study, closely followed by neural network models such as PatchMixer, Variational Encoder, CNN and NBeats. The Chronos family of foundational models, also rank near the top of the scoreboard. The Chronos models are zero-shot learners, meaning they can perform well on datasets that were not part of their training corpus. Their highly competitive performance underscores the potential of large-scale, pre-trained models in forecasting. Naive models continue to play a crucial role as benchmarks, reminding us that complexity does not always equate to superior performance, particularly on datasets with yearly frequencies.
+
+

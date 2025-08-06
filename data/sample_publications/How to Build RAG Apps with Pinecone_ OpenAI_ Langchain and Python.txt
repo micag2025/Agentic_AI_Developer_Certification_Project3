@@ -1,0 +1,493 @@
+How to Build RAG Apps with Pinecone, OpenAI, Langchain and Python
+
+Id:
+sBFzhbX4GpeQ
+
+Username:
+3rdson
+
+License:
+none
+
+Publication_description:
+![2023-11-Retrieval-augmented-generation-what-it-is-and-why-its-a-hot-topic-for-enterprise-AI-Blog-1.webp](2023-11-Retrieval-augmented-generation-what-it-is-and-why-its-a-hot-topic-for-enterprise-AI-Blog-1.webp)
+
+## Pre-requisites :
+> 1. Before jumping into the discussion, it’s important to have a foundational understanding of **RAG**, which stands for **Retrieval Augmented Generation**. If you’re unfamiliar with this concept, you can read more about it [here](https://www.datacamp.com/blog/what-is-retrieval-augmented-generation-rag).
+
+> 2. To follow along with this tutorial, you need to install some libraries. So just create a requirements.txt file and put the information below there.
+
+
+```python
+unstructured
+tiktoken
+pinecone-client
+pypdf
+openai
+langchain
+python-dotenv
+```
+
+> 3. Open your terminal or command prompt navigate to the directory containing your `requirements.txt` file and run `pip install -r requirements.txt`
+
+> This will install all the libraries listed in the `requirements.txt` file
+
+> 4. Create a `.env` file and put your **OpenAI** and **Pinecone API key** there just like I did in the code sample below
+
+> You can get your Pinecone API key [here](https://app.pinecone.io/organizations/-NuPZdGGQlmy8gJiXBOK/projects/3596318c-5320-4481-b0b5-54f46cfaf015/keys) and your OpenAI API key [here](https://platform.openai.com/api-keys)
+
+```python
+OPENAI_API_KEY="your openAI api key here"
+PINECONE_API_KEY="your pinecone api key here"
+```
+> 5. Open the Python file you will be working with, write the following code there to load your environment variables
+
+```python
+import os
+from dotenv import load_dotenv
+
+load_dotenv
+
+# Acessing the various API KEYS
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+EMBEDDINGS = OpenAIEmbeddings(api_key=os.environ["OPENAI_API_KEY"])
+PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
+```
+
+**Now you are good to go**
+
+
+![1_7pw-tzH1lPiIr66RK8ZxeQ.webp](1_7pw-tzH1lPiIr66RK8ZxeQ.webp)
+
+## Why Pinecone Is My Preferred Vector Database
+There are many vector databases to choose from while building RAG apps you learn more about them [here](https://www.datacamp.com/blog/the-top-5-vector-databases#5-of-the-best-vector-databases-in-2023-theli) but I will always suggest Pinecone because:
+
+> 1. Pinecone is a cloud-based vector database platform that has been purpose-built to tackle the unique challenges associated with high-dimensional data.
+> 2. It is already hosted so you don’t need to bother about hosting the database after building your application.
+> 3. It is a fully managed database that allows you to focus on building your RAG app rather than worrying about infrastructure such as RAM, ROM, and STORAGE, as well as how to scale it.It is highly scalable and allows real-time data ingestion with low-latency search.
+
+### The two downsides of using Pinecone are that :
+
+> 1. It is not open source (but that is a small price to pay for salvation😅)
+
+> 2. Working with their latest serverless index feature together with Langchain can be stressful due to the lack of comprehensive documentation.
+
+**That’s why I’m writing this article. So that by following my steps and my code samples, you’ll be able to build RAG apps and easily adapt them to suit your needs.**
+
+## Building RAG Apps: A Step-By-Step Guide
+To build any RAG application regardless of the Vector Database, Large Language Model(LLM), Embedding Model, or programming language, below are the steps you need to follow.
+
+> ## I have divided the steps into two parts:
+
+**Part 1:** Reading, processing and storing the data and vectors in a vector database.
+
+**Part 2:** Answering queries using the information in the vector database.
+
+# Below are the steps for Part 1:
+1. Read the files (PDFs, txt, CSV, docs, etc.) where the texts are stored — This will help you to further work with them.
+2. Divide the texts into chunks — So they can be fed into your embedding model.
+
+3. Embed the chunked texts into vectors using the embedding model of your choice — So they can be stored in the vector database.
+
+4. Combine the embeddings and the chunked text- So you can upsert them into the vector database.
+
+5. Upsert/Push the vectors and text to the database — So you can query the database later.
+
+## For the second part:
+1. **Embed your query/question —** This will help convert your questions into vectors before querying the database.
+2. **Query the database —** This is where the users send the query vectors to the vector database.
+3. **Pass the answers from the vector database to your LLM —** This will help provide a better and more readable answer for your users.
+
+
+## PART ONE: Reading, Processing and Storing the Data and Vectors in a Vector Database
+1. **Read the Files (PDFs, Txt, CSV, Docs, etc.) Where the Texts are Stored**
+Most of the time when you are working on a RAG application, you will either have your text data in a Txt file, PDF, or any other suitable format. You will need to read it into your Python script so that you can perform further processing on it.
+
+>The sample code below is a function designed to read PDF files and display only the page content using the LangChain PyPDF library. However, you can replace it with any other library of your choice for reading PDF files or any other files.
+
+```python
+from langchain_community.document_loaders.pdf import PyPDFDirectoryLoader
+
+def read_doc(directory: str) -> list[str]:
+    "Function to read the PDFs from a directory.
+
+    Args:
+        directory (str): The path of the directory where the PDFs are stored.
+
+    Returns:
+        list[str]: A list of text in the PDFs.
+    """
+    # Initialize a PyPDFDirectoryLoader object with the given directory
+    file_loader = PyPDFDirectoryLoader(directory)
+    
+    # Load PDF documents from the directory
+    documents = file_loader.load()
+    
+    # Extract only the page content from each document
+    page_contents = [doc.page_content for doc in documents]
+    
+    return page_contents
+
+
+# Call the function
+full_document = read_doc("the folder path where your pdfs are stored/")
+```
+
+> One common issue you might encounter is related to corrupted or improperly formatted PDF files. The simplest way to troubleshoot this problem is to identify the problematic PDF file systematically. Here’s how you can approach it:
+
+> First, organize your PDF collection into folders, each containing a manageable number of files, say 10, 20, 50, or 100, depending on the size of your collection. Then, run the processing function on each folder separately, passing the folder name as an argument.
+
+> If the function executes successfully without any errors for a particular folder, it suggests that the problematic PDF is not present in that folder. However, if the function encounters an error while processing a specific folder, it indicates that the issue lies within that folder.
+
+> To pinpoint the exact PDF causing the error, you can recursively divide the problematic folder into smaller subsets and repeat the process. Continue dividing the subsets until you isolate the specific PDF file that’s causing the error.
+
+> Once identified, you have two options: either delete the problematic PDF or attempt to rectify the issue by copying and pasting its content into a new PDF file.
+
+> This methodical approach of dividing and testing your PDF collection systematically allows you to efficiently identify and address any errors encountered while processing multiple PDF files otherwise you can try using any other PDF reader.One common issue you might encounter is related to corrupted or improperly formatted PDF files. The simplest way to troubleshoot this problem is to identify the problematic PDF file systematically. Here’s how you can approach it:
+
+> First, organize your PDF collection into folders, each containing a manageable number of files, say 10, 20, 50, or 100, depending on the size of your collection. Then, run the processing function on each folder separately, passing the folder name as an argument.
+
+> If the function executes successfully without any errors for a particular folder, it suggests that the problematic PDF is not present in that folder. However, if the function encounters an error while processing a specific folder, it indicates that the issue lies within that folder.
+
+> To pinpoint the exact PDF causing the error, you can recursively divide the problematic folder into smaller subsets and repeat the process. Continue dividing the subsets until you isolate the specific PDF file that’s causing the error.
+
+> Once identified, you have two options: either delete the problematic PDF or attempt to rectify the issue by copying and pasting its content into a new PDF file.
+
+> This methodical approach of dividing and testing your PDF collection systematically allows you to efficiently identify and address any errors encountered while processing multiple PDF files otherwise you can try using any other PDF reader.
+
+## 2. Divide the Texts into Chunks
+After successfully reading the PDF files, the next step is to divide the text into smaller chunks. This step is crucial because the chunked texts will be passed into the embedding model for processing.
+
+Breaking down the texts into manageable chunks serves several purposes. First, it ensures that the embedding model can efficiently process the information without overwhelming its capacity. Many embedding models have limits on the input size they can handle, so dividing the texts into smaller pieces ensures compatibility.
+
+Additionally, chunking the texts allows for more granular representation and retrieval of information. By breaking down the content into logical segments, you can associate specific information with its corresponding chunk, enabling more precise and relevant responses to queries.
+
+The chunking process can be tailored to your specific needs and the nature of your data. For example, you might choose to divide the texts based on sections, paragraphs, or even sentence boundaries, depending on the level of granularity required for your application.
+
+It’s important to strike a balance between chunk size and information completeness. Smaller chunks may provide more granular information but may lack context, while larger chunks may provide more context but could be less precise in pinpointing specific details.
+
+> You can learn more about chunk size and how to chunk texts [here](https://towardsdatascience.com/how-to-chunk-text-data-a-comparative-analysis-3858c4a0997a?gi=09d77fc91e12).
+
+> The sample code below is a function designed to chunk your PDFs, each chunk having a maximum chunk size of 1000.
+
+```python
+def chunk_text_for_list(docs: list[str], max_chunk_size: int = 1000) -> list[list[str]]:
+    """
+    Break down each text in a list of texts into chunks of a maximum size, attempting to preserve whole paragraphs.
+
+    :param docs: The list of texts to be chunked.
+    :param max_chunk_size: Maximum size of each chunk in characters.
+    :return: List of lists containing text chunks for each document.
+    """
+
+    def chunk_text(text: str, max_chunk_size: int) -> List[str]:
+        # Ensure each text ends with a double newline to correctly split paragraphs
+        if not text.endswith("\n\n"):
+            text += "\n\n"
+        # Split text into paragraphs
+        paragraphs = text.split("\n\n")
+        chunks = []
+        current_chunk = ""
+        # Iterate over paragraphs and assemble chunks
+        for paragraph in paragraphs:
+            # Check if adding the current paragraph exceeds the maximum chunk size
+            if (
+                len(current_chunk) + len(paragraph) + 2 > max_chunk_size
+                and current_chunk
+            ):
+                # If so, add the current chunk to the list and start a new chunk
+                chunks.append(current_chunk.strip())
+                current_chunk = ""
+            # Add the current paragraph to the current chunk
+            current_chunk += paragraph.strip() + "\n\n"
+        # Add any remaining text as the last chunk
+        if current_chunk:
+            chunks.append(current_chunk.strip())
+        return chunks
+
+    # Apply the chunk_text function to each document in the list
+    return [chunk_text(doc, max_chunk_size) for doc in docs]
+
+
+# Call the function
+chunked_document = chunk_text_for_list(docs=full_document)
+```
+
+> When you call this function, it should return a list containing a list of strings. If you decide not to use my function, just head over to [this article](https://towardsdatascience.com/how-to-chunk-text-data-a-comparative-analysis-3858c4a0997a) to see other ways you can chunk your text data to suit your needs.
+
+## 3. Embed the Chunked Texts Into Vectors Using the Embedding Model of Your Choice
+Now that you have chunked the texts into smaller segments, the next step is to pass these chunks through an embedding model to obtain their vector representations. The embedding model maps the textual information into high-dimensional vector spaces, where semantic similarities and relationships are preserved.
+
+The choice of embedding model can vary based on your requirements and preferences. Some popular options include pre-trained models like BERT, GPT, or specialized models tailored for specific domains or tasks.
+
+> The function below generates the vector embeddings for the chunked texts using *“text-embedding-ada-002"* from OpenAIEmbeddings but you can use any other embedding model of your choice. You can learn more about OpenAI Embeddings and pricing [here](https://openai.com/api/pricing/).
+
+```python
+from langchain.embeddings.openai import OpenAIEmbeddings
+
+def generate_embeddings(documents: list[any]) -> list[list[float]]:
+    """
+    Generate embeddings for a list of documents.
+
+    Args:
+        documents (list[any]): A list of document objects, each containing a 'page_content' attribute.
+
+    Returns:
+        list[list[float]]: A list containig a list of embeddings corresponding to the documents.
+    """
+    embedded = [EMBEDDINGS.embed_documents(doc) for doc in documents]
+    return embedded
+
+
+# Run the function
+chunked_document_embeddings = generate_embeddings(documents=chunked_document)
+
+# Let's see the dimension of our embedding model so we can set it up later in pinecone
+print(len(chunked_document_embeddings)
+```
+> While executing this function, you should not encounter any errors. However, if you do face issues, please check if your chunked text is a list of strings and not any other data type. The `embed_documents` method expects a list of strings as input, and providing any other data type may result in an error.
+
+
+## 4. Combine the Embeddings and the Chunked Text
+Now that you have your embeddings ready, you need to combine the embeddings and the chunked text so that you can upsert them to the database. Additionally, you need a unique ID for each chunk to identify and associate the relevant information.
+
+> In the first function below, I used the `sha256` algorithm from `hashlib` to create a unique ID for each of the chunks. If you don’t know what `sha256` does, you can check this [article](https://www.simplilearn.com/tutorials/cyber-security-tutorial/sha-256-algorithm).
+
+> I now called the first function inside the second function so that I could create the unique ID and afterwards create a dictionary containing the `embeddings`, `unique IDs` and `metadata.`
+
+> Also, I used `"values": embeddings[0]` because our embedding is stored in a list of a list and I only need the inner list to be passed into the Pinecone’s upsert function later so that is why I used `embeddings[0].` If your embedding is in a list and not a list of a list, you can simply use embeddings.
+
+```python
+import hashlib
+
+def generate_short_id(content: str) -> str:
+    """
+    Generate a short ID based on the content using SHA-256 hash.
+
+    Args:
+    - content (str): The content for which the ID is generated.
+
+    Returns:
+    - short_id (str): The generated short ID.
+    """
+    hash_obj = hashlib.sha256()
+    hash_obj.update(content.encode("utf-8"))
+    return hash_obj.hexdigest()
+
+
+def combine_vector_and_text(
+    documents: list[any], doc_embeddings: list[list[float]]
+) -> list[dict[str, any]]:
+    """
+    Process a list of documents along with their embeddings.
+
+    Args:
+    - documents (List[Any]): A list of documents (strings or other types).
+    - doc_embeddings (List[List[float]]): A list of embeddings corresponding to the documents.
+
+    Returns:
+    - data_with_metadata (List[Dict[str, Any]]): A list of dictionaries, each containing an ID, embedding values, and metadata.
+    """
+    data_with_metadata = []
+
+    for doc_text, embedding in zip(documents, doc_embeddings):
+        # Convert doc_text to string if it's not already a string
+        if not isinstance(doc_text, str):
+            doc_text = str(doc_text)
+
+        # Generate a unique ID based on the text content
+        doc_id = generate_short_id(doc_text)
+
+        # Create a data item dictionary
+        data_item = {
+            "id": doc_id,
+            "values": embedding[0],
+            "metadata": {"text": doc_text},  # Include the text as metadata
+        }
+
+        # Append the data item to the list
+        data_with_metadata.append(data_item)
+
+    return data_with_metadata
+
+
+# Call the function
+data_with_meta_data = combine_vector_and_text(documents=chunked_document, doc_embeddings=chunked_document_embeddings) 
+```
+
+By combining the embeddings, unique_ID and text before upserting, you streamline the retrieval process and ensure the relevant text is readily available alongside similar embeddings found during searches. This approach simplifies the overall process and potentially improves efficiency by leveraging the vector database’s optimized storage and retrieval mechanisms.
+
+## 5. Upload/Push the Vectors and Text to the Database
+Now that you have your embeddings, unique IDs and chunked data ready, you need to push(upsert) them to Pinecone.
+
+> Note: The embeddings are used for efficient similarity search, while the text is the original content retrieved when a relevant match is found during the search.
+
+## To achieve this, you need to take the following steps:
+1. Login to [pinecone.io](https://www.pinecone.io/)
+2. Create a [serverless index](https://app.pinecone.io/organizations/-NuPZdGGQlmy8gJiXBOK/projects/3596318c-5320-4481-b0b5-54f46cfaf015/create-index/serverless)
+
+> Note: While creating an index, you need to specify your **index name**(the name you want to give your index), **the metrics**(you can select cosine) and **the dimension of your embedding model**(for **text-embedding-ada-002,** it is **1536**).
+
+> If you are using any other model, endeavour to find the dimension of your embedding model and input it as your dimension. You can know the dimension from the `len` function we ran after embedding the chunked data or you can simply google it.
+
+> **Now in your Python file, connect to the index using the code below**
+
+```python
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=PINECONE_API_KEY)
+index = pc.Index("write the name of your index here")
+```
+
+After you have connected your index, you can proceed to store (upsert) the vectors, unique IDs, and the corresponding chunked texts in the vector database.
+
+> **You can use the function below to `upsert` the data to Pinecone**
+
+```python
+def upsert_data_to_pinecone(data_with_metadata: list[dict[str, any]]) -> None:
+    """
+    Upsert data with metadata into a Pinecone index.
+
+    Args:
+    - data_with_metadata (List[Dict[str, Any]]): A list of dictionaries, each containing data with metadata.
+
+    Returns:
+    - None
+    """
+    index.upsert(vectors=data_with_metadata)
+
+# Call the function
+upsert_data_to_pinecone(data_with_metadata= data_with_meta_data)
+```
+
+> Note: There is a size limit on the data that can be upserted into Pinecone at once (around 4MB), so don’t try to upsert your whole data in a single operation. Instead, partition your data into smaller batches and upsert them sequentially.
+
+Now that you have completed the first part of the process, which is the main work for the RAG (Retrieval-Augmented Generation) app, the next step is to query the vector database and retrieve relevant information from it.
+
+We can now head over to the second part which involves: Answering queries using the information in the vector database.
+
+# PART TWO: Answering Queries Using the Information in the Vector Database
+## 1. Embed Your Query/Question
+Before you can send a question or query to the database, you need to embed it, just like you embedded the documents. The vector obtained from embedding the question will then be sent to the database, and using similarity search, the most relevant information will be retrieved.
+
+The process of embedding the query is similar to how you embed the text chunks during the data preparation stage. You’ll use the same embedding model to generate a vector representation of the query, capturing its semantic meaning and context.
+
+It’s important to use the same embedding model and configuration that you used for embedding the text chunks. Consistency in the embedding process ensures that the query embedding and the stored embeddings reside in the same vector space, enabling meaningful comparisons and similarity calculations.
+
+Once you have the query embedding, you can proceed to the next step of sending it to the vector database for similarity search and retrieval of relevant information.
+
+
+Below is a function you can use to embed your query
+
+```python
+def get_query_embeddings(query: str) -> list[float]:
+    """This function returns a list of the embeddings for a given query
+
+    Args:
+        query (str): The actual query/question
+
+    Returns:
+        list[float]: The embeddings for the given query
+    """
+    query_embeddings = EMBEDDINGS.embed_query(query)
+    return query_embeddings
+
+# Call the function
+query_embeddings = get_query_embeddings(query="Your question goes here")
+```
+
+> If you noticed, here I used `EMBEDDINGS.embed_query()` but when I was embedding the chunked document I used `EMBEDDINGS.embed_documents().`  This is because `EMBEDDINGS.embed_documents()` is used for a list of texts and our chunked document is a list of texts while `EMBEDDINGS.embed_query()` is used for queries. You can read more about it here on [Langchain Docs](https://python.langchain.com/docs/modules/data_connection/text_embedding/).
+
+## 2. Query the Database
+After you have embedded the question/query, you need to send the query embeddings to the Pinecone database, where they will be used for similarity search and retrieval of relevant information.
+
+The query embeddings serve as the basis for finding the most similar embeddings stored in the database. Pinecone provides efficient similarity search capabilities, allowing you to query the vector database with the query embedding and retrieve the top-k most similar embeddings, along with their associated metadata (in this case, the chunked texts).
+
+> Below is a function you can use to query the Pinecone database. It returns a list of dictionaries containing the Unique ID, the metadata (chunked text), the score and the values.
+
+```python
+def query_pinecone_index(
+    query_embeddings: list, top_k: int = 2, include_metadata: bool = True
+) -> dict[str, any]:
+    """
+    Query a Pinecone index.
+
+    Args:
+    - index (Any): The Pinecone index object to query.
+    - vectors (List[List[float]]): List of query vectors.
+    - top_k (int): Number of nearest neighbors to retrieve (default: 2).
+    - include_metadata (bool): Whether to include metadata in the query response (default: True).
+
+    Returns:
+    - query_response (Dict[str, Any]): Query response containing nearest neighbors.
+    """
+    query_response = index.query(
+        vector=query_embeddings, top_k=top_k, include_metadata=include_metadata
+    )
+    return query_response
+
+# Call the function
+answers = query_pinecone_index(query_embeddings=query_embeddings)
+```
+
+The `top_k` parameter determines how many top similar embeddings and associated texts to retrieve from the Pinecone database. A higher `top_k` value yields more potential answers but increases the risk of irrelevant results, while a lower value yields fewer but more precise answers.
+
+Choose `top_k` judiciously based on your needs. For complex/diverse queries needing multiple perspectives, a higher `top_k` may be better. For specific/focused queries, a lower `top_k` prioritizing precision over recall might be preferable.
+
+Experiment with different `top_k` values and evaluate the relevance and usefulness of retrieved information, considering dataset size and diversity. A larger, more varied dataset may benefit from a higher `top_k,` while a smaller, focused dataset could perform well with a lower `top_k.`
+
+Continuously assess `top_k`’s impact on response quality to optimize your RAG app’s performance in providing relevant and comprehensive responses.
+
+## 3. Pass the Answers From the Vector Database to Your LLM
+Now that you have obtained a dictionary containing the answer, you need to extract the answer text from the dictionary and pass it through a Large Language Model (LLM) to generate a better and more coherent response.
+
+> Below is the code and function that can help you extract the text from the dictionary and then pass it into the function together with a prompt.
+
+```python
+from langchain.llms import OpenAI
+from langchain.prompts import PromptTemplate
+
+LLM = OpenAI(temperature=0, model_name="gpt-3.5-turbo-instruct") # Adjust the temperature to your taste
+
+# Extract only the text from the dictionary before passing it to the LLM
+text_answer = " ".join([doc['metadata']['text'] for doc in query_response['matches']])
+
+prompt = f"{text_answer} Using the provided information, give me a better and summarized answer"
+
+def better_query_response(prompt: str) -> str:
+    """This function returns a better response using LLM
+    Args:
+        prompt (str): The prompt template
+
+    Returns:
+        str: The actual response returned by the LLM
+    """
+    better_answer = LLM(prompt)
+
+# Call the function
+final_answer = better_query_response(prompt=prompt)
+```
+
+> In the sample code above, I used a simple prompt. However, you can enhance the response quality by adjusting the prompt using a prompt template and system prompt. These provide the LLM with additional context and instructions on how to behave.
+
+> A prompt template structures the prompt, specifying the task, context, and desired response format. A system prompt sets the overall tone, persona, or behaviour the LLM should adopt.
+
+> Combining a well-crafted prompt template and system prompt gives the LLM more context, leading to more coherent and relevant responses aligned with your application’s needs. However, crafting effective prompts requires experimentation and fine-tuning for the specific use case and LLM capabilities.
+
+> Let me just tell you this: what makes your RAG app stand out is the prompting, as it has a 90% chance of determining the quality of responses you get from the LLM so learn how to prompt properly.
+
+Now that you have tested and validated your RAG app, you can build APIs for it using any framework of your choice. Building APIs will enable seamless integration of your RAG app’s capabilities, such as querying the vector database, retrieving relevant information, and generating responses using the LLM, with other applications or user interfaces. Popular web frameworks like Flask, Django, FastAPI, or Express.js can be used to develop robust and scalable RESTful or GraphQL APIs. Exposing your RAG app through well-designed APIs will unlock its potential for a wide range of applications.
+
+> Note: While building your RAG app, the potential errors I mentioned earlier were the ones I encountered. However, by following the code samples provided, you should not face any issues, as these were the solutions I implemented to rectify the errors. The only potential error you might encounter is during the PDF reading process, which could be caused by improperly formatted PDF files. Nonetheless, by adhering to the outlined steps, you should be able to resolve such issues effectively.
+
+>  HAPPY RAGING🤗🚀
+
+You can always reach me on
+
+[X 3rdSon__](https://x.com/3rdSon__)
+
+[LinkedIn Victory Nnaji](https://www.linkedin.com/in/3rdson/)
+
+[GitHub 3rd-Son](https://www.GitHub.com/3rd-Son)
+
+

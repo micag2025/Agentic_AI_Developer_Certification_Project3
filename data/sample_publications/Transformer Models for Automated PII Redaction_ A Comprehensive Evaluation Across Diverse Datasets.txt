@@ -1,0 +1,109 @@
+Transformer Models for Automated PII Redaction: A Comprehensive Evaluation Across Diverse Datasets
+
+Id:
+8eAX8A1gfdkJ
+
+Username:
+ready-tensor
+
+License:
+cc-by-sa
+
+Publication_description:
+
+![personal-records_tiny.jpg](personal-records_tiny.jpg) --DIVIDER--# TL;DR
+We automated PII redaction using transformer models like RoBERTa and DeBERTa, assessing their effectiveness on five datasets. RoBERTa was selected for its balance of performance and efficiency. The study introduced a redaction script combining RoBERTa, regex, and the Faker library to ensure data privacy by replacing real PII with fictitious yet plausible data.--DIVIDER--# Introduction
+In today’s digital age, the protection of Personally Identifiable Information (PII) has become a crucial concern for organizations and individuals alike. The increasing prevalence of digital records and the growing reliance on data-driven technologies have elevated the risk of exposing sensitive personal data. Unauthorized access to PII can lead to privacy breaches, identity theft, and significant legal and financial repercussions. As the amount of digital data grows, manual methods for PII redaction are no longer feasible, demanding more efficient, automated solutions.
+
+In this study, we tackle the challenge of automatically identifying and redacting PII using state-of-the-art transformer models. We trained six different models—ALBERT, DistilBERT, BERT, RoBERTa, T5, and DeBERTa—on five datasets to evaluate their effectiveness in detecting and redacting various types of PII. Our aim is to provide a comprehensive comparison of these models' performance and to present a robust approach to ensuring the security and privacy of personal data in large-scale digital documents.--DIVIDER--# Datasets
+
+Our study utilizes five datasets for training and evaluation, The [n2c2 2014 (National NLP Clinical Challenges)](https://portal.dbmi.hms.harvard.edu/projects/n2c2-2014/) dataset specifically focuses on the de-identification of protected health information (PHI) in medical records and is widely recognized in clinical natural language processing research. However, it is important to note that the n2c2 2014 dataset is not publicly available. Access can be requested through the provided link.
+
+Key characteristics of the n2c2 dataset:
+
+Origin: The dataset was originally created for the n2c2 de-identification challenge, which encourages advancements in automatically removing personal health information from medical records.
+
+Entities: The n2c2 dataset includes several types of PHI, including:
+
+- PERSON (consolidated from PATIENT and DOCTOR)
+- LOCATION
+- DATE
+- PHONE
+- EMAIL
+- Additional entities like AGE, IDNUM, and HOSPITAL
+
+The comprehensive nature of the dataset, with its wide variety of PHI types, allows for a detailed evaluation of PHI redaction techniques. We focused on the most critical types of PII—PERSON, LOCATION, PHONE_NUMBER, DATE, and EMAIL—in our redaction models, ensuring a manageable yet impactful scope for model training and validation.
+--DIVIDER--In addition to the n2c2 dataset, we expanded our study by incorporating four more datasets to enhance the diversity of data and evaluate the performance of our models across different domains. These datasets include a mixture of real-world and synthetic data, focusing on PII detection and redaction in various contexts.
+
+[CoNLL-2003](https://huggingface.co/datasets/eriktks/conll2003)
+The CoNLL-2003 dataset is widely used for Named Entity Recognition (NER) tasks. While primarily focused on identifying entities such as PERSON, LOCATION, ORGANIZATION, and MISC, it serves as a useful benchmark for training models on real-world text, helping improve general PII detection capabilities.
+
+[PII Masking 300k](https://huggingface.co/datasets/ai4privacy/pii-masking-300k)
+This dataset contains real and synthetic text samples with a variety of PII types, such as PERSON, LOCATION, PHONE_NUMBER, EMAIL, and more. While the full dataset contains 300,000 samples across multiple languages, we specifically used only the English text, reducing the dataset size to approximately 37,000 samples. This subset allowed us to focus on English PII redaction while maintaining a manageable dataset size.
+
+[Synthetic PII Finance Multilingual](https://huggingface.co/datasets/gretelai/synthetic_pii_finance_multilingual)
+This dataset is designed for multilingual PII redaction tasks in the financial domain, offering a diverse set of texts with financial jargon and various types of PII such as PERSON, DATE, IDNUM, PHONE_NUMBER, and LOCATION. Its multilingual nature allows models to generalize across languages, increasing the scope of PII detection.
+
+[Synthetic PII Dataset](https://github.com/microsoft/presidio-research/blob/master/data/synth_dataset_v2.json) (Presidio)
+The final dataset we used is available through Microsoft’s Presidio tool under its official GitHub repository. This dataset contains synthetic text annotated with various types of PII. It provides a valuable resource for evaluating PII detection and redaction models in a controlled and diverse synthetic environment.--DIVIDER--# Results
+
+In this evaluation, we will focus on macro recall as the main metric because, in Named Entity Recognition (NER), recall is often the most important metric. This is due to the fact that missing important entities (false negatives) can have significant consequences in real-world applications, making it crucial to maximize the identification of all relevant entities.
+
+:::info{title="Info"}
+# What is Macro Recall?
+
+**Macro recall** calculates the recall for each class independently and then takes the unweighted average across all classes. This means that each class contributes equally to the final recall score, regardless of how many instances are in each class. 
+
+It is particularly useful in tasks like **Named Entity Recognition (NER)**, where you want to ensure that the model performs well across both majority and minority classes. In NER, failing to detect an entity (false negative) can have a significant impact, which is why macro recall is often a key focus.
+
+:::
+
+
+## Macro Recall for models/datasets
+![macro_recall.svg](macro_recall1.svg)
+
+Following the comparison of the overall performance of our models across various datasets, we have chosen to concentrate our evaluation efforts on the CoNLL-2003 dataset. This dataset is recognized as a well-established benchmark in the field, making it ideal for a detailed assessment of our PII redaction capabilities. By focusing on this dataset, we aim to provide a clear and standardized measure of our model's effectiveness and efficiency in handling sensitive information.
+
+## Macro Metrics on CoNLL2003 dataset
+![conll2003_metrics.svg](conll2003_metrics.svg)
+
+## Macro Recall per Class
+![conll2003_recall_per_class.svg](conll2003_recall_per_class1.svg)
+
+
+In our evaluation, DeBERTa and RoBERTa perform very closely. However, DeBERTa is the largest model, requiring significantly more time and computational resources for training. Given that RoBERTa offers nearly the same level of performance but is smaller in size and more efficient to train, we have chosen RoBERTa for PII redaction.
+
+
+On the other hand, T5 performs the weakest among the models. Its architecture, designed for sequence-to-sequence tasks rather than token-level predictions, likely affects its effectiveness in PII redaction. The need for more complex generation tasks makes T5 less suited for the focused, entity-specific nature of PII redaction, resulting in lower overall performance.
+
+
+Additionally, the detailed metrics per label for all models/datasets are available in **`scores.zip`** file in the resources section.
+--DIVIDER--# Redaction of Personally Identifiable Information (PII)
+To develop a universally applicable PII redactor that enhances the privacy and security of any dataset, we developed a script that leverages the RoBERTa model and regular expressions to redact specific types of personally identifiable information (PII). The redaction process involves two key components: the RoBERTa model identifies names, addresses, and dates, while regex patterns focus on detecting and redacting phone numbers, emails, and URLs. Below are the steps involved:
+
+Regex Patterns: We crafted precise regex patterns to pinpoint emails, phone numbers, and URLs within the textual data. These patterns are tailored to detect a variety of formats, ensuring comprehensive coverage and robust detection.
+
+RoBERTa Model: The RoBERTa model is utilized to identify more complex PII elements such as names, addresses, and dates. This AI-driven approach enhances the accuracy of PII detection beyond the capabilities of regex alone.
+
+Faker Library: To replace identified PII, we use the Faker library, which generates realistic yet fictitious data mimicking the original information's structure. This maintains the text’s integrity and utility while ensuring all sensitive details are securely anonymized.
+
+Search and Replace Functionality: Our script incorporates a dual mechanism where PII elements identified by either the RoBERTa model or regex patterns are replaced with corresponding fake data from Faker. This ensures that no real PII remains in the text, significantly reducing privacy risks while preserving the document's readability and format.
+
+Implementation: The implementation process is straightforward, involving the reading of text data, the application of the RoBERTa and regex identification methods, and the replacement of detected PII with Faker-generated data. This methodical approach ensures that the modified text remains practical for use without compromising on privacy.--DIVIDER--# Usage
+
+For using the model on you own data, download the [github repository](https://github.com/readytensor/rt_roberta_pii_redactor) and follow the `usage ` section in the readme.
+
+# Example
+
+You can see the redacted text in yellow and the text used as replacement in green:
+--DIVIDER--
+![redaction-example.png](redaction-example.png)--DIVIDER--# Summary
+
+In this study, we address the challenge of automatically redacting Personally Identifiable Information (PII) using transformer models. Given the growing risk of privacy breaches in the digital era, efficient PII redaction is crucial. We evaluated six models—ALBERT, DistilBERT, BERT, RoBERTa, T5, and DeBERTa—across five datasets, including the widely used n2c2 2014 dataset, to measure their effectiveness in detecting and redacting PII. Our evaluation focused on macro recall due to its importance in ensuring that critical entities are not missed.
+
+The CoNLL-2003 dataset served as the primary benchmark for this evaluation, due to its popularity in Named Entity Recognition (NER). Additional datasets included PII Masking 300k, Synthetic PII Finance Multilingual, and the Synthetic PII Dataset from Microsoft's Presidio tool. These diverse datasets ensured that the models were evaluated across a range of contexts and data types.
+
+We found that DeBERTa and RoBERTa performed very closely, with RoBERTa being chosen for PII redaction due to its similar performance and smaller size, making it more practical for training and deployment. T5 was the weakest performer, likely due to its architecture being optimized for sequence-to-sequence tasks rather than token-level predictions.
+
+To enhance privacy, we developed a redaction script using RoBERTa, along with regular expressions and the Faker library. This script replaces detected PII elements such as emails and phone numbers with realistic fake data while maintaining the document's readability and format. The implementation is straightforward and available in the provided GitHub repository.
+

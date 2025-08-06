@@ -1,0 +1,103 @@
+Image compression with Auto-Encoders
+
+Id:
+4SAKUg8ciBuV
+
+Username:
+ready-tensor
+
+License:
+cc-by-sa
+
+Publication_description:
+
+![hero.png](hero.png)--DIVIDER--# Introduction to Auto-Encoders
+In the field of data compression, traditional methods have long dominated, ranging from lossless techniques such as ZIP file compression to lossy techniques like JPEG image compression and MPEG video compression. These methods are typically rule-based, utilizing predefined algorithms to reduce data redundancy and irrelevance to achieve compression. However, with the advent of advanced machine learning techniques, particularly Auto-Encoders, new avenues for data compression have emerged that offer distinct advantages over traditional methods in certain contexts.
+
+Auto-encoders are a class of neural network designed for unsupervised learning of efficient encodings by compressing input data into a condensed representation and then reconstructing the output from this representation. The primary architecture of an auto-encoder consists of two main components: an encoder and a decoder. The encoder compresses the input into a smaller, dense representation in the latent space, and the decoder reconstructs the input data from this compressed representation as closely as possible to its original form.
+
+
+--DIVIDER--![auto-encoder.png](auto-encoder.png)
+--DIVIDER--# Advantages Over Traditional Compression
+The flexibility and learning-based approach of Auto-Encoders provide several benefits over traditional compression methods:
+- **Adaptability**: Unlike traditional methods that rely on fixed algorithms, Auto-Encoders can learn from data, adapting their parameters to optimize for specific types of data or applications. This adaptability makes them particularly useful for complex data types for which traditional compression algorithms may not be optimized, such as high-dimensional data or heterogeneous datasets.
+- **Feature Learning**: Auto-Encoders are capable of learning to preserve important features in the data while still achieving compression. This is especially beneficial in domains like medical imaging or scientific data analysis, where preserving specific features can be more important than minimizing storage space or transmission bandwidth.
+- **Lossy Compression with Controlled Degradation**: Auto-Encoders offer lossy compression with adjustable quality. By tuning the network architecture and training parameters, we can balance compression ratio against reconstruction quality. This flexibility allows for fine-grained control over information loss, unlike many traditional methods which often have fixed or limited preset options for quality-compression trade-offs.
+- **Non-Linear Compression**: Unlike traditional algorithms such as Principal Component Analysis (PCA) or Singular Value Decomposition (SVD) that perform linear transformations, Auto-Encoders can model complex, non-linear relationships in the data. This capability allows for more efficient compression schemes that better capture the underlying data structure.
+- **Scalability**: Auto-Encoders offer excellent scalability for large datasets. Once trained, they can compress new data points quickly, with encoding time typically scaling linearly with input size. This makes them well-suited for applications involving high-volume data or real-time compression needs. Additionally, Auto-Encoders can be implemented efficiently on GPUs, further enhancing their performance on large-scale tasks.
+--DIVIDER--# Exploring Compression Capabilities of Auto-Encoders
+
+In the notebook included in the **Resources** section, an experimental framework is set up to investigate the compression capabilities of Auto-Encoders using the MNIST dataset. MNIST, a common benchmark in machine learning, consists of 60,000 grayscale images in 10 classes of size 28x28, providing a diverse range of handwritten digits for evaluating model performance.
+
+# Methodology
+For the image compression task, we utilize a convolutional autoencoder, leveraging the spatial hierarchy of convolutional layers to efficiently capture the patterns in image data. The autoencoder's architecture includes multiple convolutional layers in the encoder part to compress the image, and corresponding deconvolutional layers in the decoder part to reconstruct the image. The model is trained with the objective of minimizing the mean squared error (MSE) between the original and reconstructed images, promoting fidelity in the reconstructed outputs.
+
+# Experimental Setup
+The notebook details a systematic exploration of different sizes of the latent space, ranging from high-dimensional to low-dimensional representations. The goal is to understand how the dimensionality of the latent space affects both the compression percentage and the quality of the reconstruction. The compression percentage is calculated based on the ratio of the dimensions of the latent space to the original image dimensions, while the reconstruction error is measured using the MSE. We explore 4 scenarios of compression: 50%, 90%, 95% and 99%. 
+--DIVIDER--# Results
+
+## Original vs Reconstructed Images
+Let's examine a sample of images to visualize how the size reduction in the latent space affects the quality of reconstructed images:
+
+![compressed-images.png](compressed-images.png)
+
+As we increase the compression ratio, we observe:
+1. Increasing blur in reconstructed images
+2. At 99% compression:
+  - Digit "2" starts resembling an "8"
+  - Digit "4" looks like a "9"
+3. Most digits remain recognizable until extreme compression.
+
+This highlights the trade-off between compression efficiency and image fidelity.
+--DIVIDER--## Compression ratio vs MSE Loss 
+We now examine the relationship between compression ratio and reconstruction loss (MSE). Specifically, as the latent space is reduced, achieving higher compression percentages, the reconstruction error initially remains low, indicating effective compression. However, a marked increase in reconstruction error is observed as the latent dimension is further reduced beyond a certain threshold . This suggests a boundary in the compression capabilities of the autoencoder, beyond which the loss of information significantly impacts the quality of the reconstructed images.
+
+---
+
+![reconstruction_error.png](reconstruction_error.png)
+
+-----DIVIDER--The chart below illustrates the reconstruction error for each digit at 95% and 99% compression rates. 
+
+---
+
+![label_error.png](label_error.png)
+
+---
+
+Our analysis reveals that the digit "1" shows the lowest reconstruction error, while digit "2" exhibits the highest error at 95% compression, and digit "8" at 99% compression. However, it's crucial to understand that these results don't account for the total amount of information each digit contains, often visualized as the amount of "ink" or number of pixels used to write it.
+
+The lower error for digit "1" doesn't necessarily mean it's simpler to represent in latent space. Rather, even if all digits were equally complex to encode per unit of information, digits like "2" or "8" would naturally accumulate more total error because they contain more information (more "ink" or active pixels).
+
+For a fairer comparison, we would need to normalize the error by the amount of information in each digit. For instance, if we measured error per 100 pixels of "ink", we might find that the relative complexity of representing each digit in the latent space is more similar than the raw error suggests.--DIVIDER--## Comparing Distributions Using t-SNE
+
+Below is a scatter plot that visualizes the distribution of original images (blue points) and their reconstructed counterparts (red points) using t-SNE.  This visualization allows us to compare the high-dimensional structure of the original and reconstructed data in a 2D space.
+
+Key observations:
+
+1. At lower compression ratios, the blue and red points significantly overlap, indicating that the reconstructed images closely match the distribution of the original images. 
+2. As we increase the compression to 99%, we begin to see some divergence between the original and reconstructed distributions:
+  - The digit "1" shows the most noticeable separation between blue and red points at 99% compression, suggesting that this digit's reconstruction is most affected by extreme compression.
+   - Digits 3, 7, 8, and 9 also exhibit slight divergences at this high compression level, though less pronounced than digit "1".
+
+3. The degree of overlap between blue and red points serves as a visual indicator of reconstruction quality. Greater overlap suggests better preservation of the original data's structure, while separation indicates more significant information loss during compression.
+
+
+---
+
+![tsne.png](tsne.png)
+
+-----DIVIDER--:::info{title="Info"}
+## Regarding t-SNE
+
+t-SNE (t-distributed Stochastic Neighbor Embedding) is a popular technique for visualizing high-dimensional data in two or three dimensions. It's particularly effective at revealing clusters and patterns in complex datasets. t-SNE works by maintaining the relative distances between points in the original high-dimensional space when projecting them onto a lower-dimensional space. This means that points that are close together in the original data will tend to be close together in the t-SNE visualization, while distant points remain separated. This property makes t-SNE especially useful for exploring the structure of high-dimensional data, such as images or word embeddings, in a more interpretable 2D or 3D format. </br></br>
+
+In this tutorial, we're using t-SNE to compare the distributions of original images and their autoencoder reconstructions. By plotting both sets of data points on the same t-SNE chart (using different colors, e.g., blue for originals and red for reconstructions), we can visually assess the quality of the reconstruction. If the autoencoder is performing well, the blue and red points should significantly overlap, indicating that the original and reconstructed data have similar distributions. Conversely, if the points are clearly separated, it suggests that the reconstructions differ significantly from the originals, pointing to potential issues with the autoencoder's performance. </br></br>
+
+One might wonder why t-SNE, which can effectively reduce high-dimensional data to two or three dimensions for visualization, isn't directly used for data compression. There are two major limitations that make t-SNE unsuitable for this purpose:
+1.  Computational Complexity: t-SNE has a time complexity of O(n²), where n is the number of data points. This quadratic scaling makes it computationally expensive and impractical for large datasets.
+2. Non-Parametric Nature: t-SNE doesn't learn a parametric mapping between the high-dimensional and low-dimensional spaces. This means it can't directly transform new, unseen data points without recomputing the entire embedding.
+
+These limitations highlight why we use purpose-built compression techniques, such as Auto-Encoders, which offer better scalability and can efficiently process new data once trained.
+:::--DIVIDER--# Summary
+This publication investigated the efficacy of autoencoders as a tool for data compression, with a focus on image data represented by the MNIST dataset. Through systematic experimentation, we explored the impact of varying latent space dimensions on both the compression ratio and the quality of the reconstructed images. The primary findings indicate that autoencoders, leveraging their neural network architecture, can indeed compress data significantly while retaining a considerable amount of original detail, making them superior in certain aspects to traditional compression methods.
+

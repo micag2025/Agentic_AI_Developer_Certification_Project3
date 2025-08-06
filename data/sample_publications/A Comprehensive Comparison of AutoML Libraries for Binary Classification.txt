@@ -1,0 +1,185 @@
+A Comprehensive Comparison of AutoML Libraries for Binary Classification
+
+Id:
+TLqRdPFx8Bjt
+
+Username:
+ready-tensor
+
+License:
+cc-by-sa
+
+Publication_description:
+![AutoML.jpg](AutoML.jpg)
+
+# Introduction
+
+In the rapidly evolving world of machine learning, AutoML libraries have become essential tools for data scientists and machine learning engineers. These libraries automate the time-consuming process of model selection, hyperparameter tuning, and feature engineering, making it easier to develop high-performing models. 
+
+In this article, we will compare several popular AutoML libraries— AutoKeras, Auto-Sklearn, AutoGluon, H2o, FLAML, Lazy Predict, MLBox, mljar-supervised, TPOT, and PyCaret—on binary classification problems using the Ready Tensor platform.
+--DIVIDER--# Methodology
+
+To ensure a fair evaluation, we employed the standardized methods and Docker-based environment provided by the Ready Tensor platform. This platform ensures consistent dataset processing and benchmarking, allowing us to focus on the performance of the AutoML libraries without the influence of extraneous variables. We evaluated each library's performance on multiple datasets, using AUC (Area Under the Curve) as our primary metric, alongside training time and RAM usage as performance indicators. These metrics provide a comprehensive view of each model's ability to distinguish between classes, as well as its efficiency.
+
+The datasets used span a variety of domains, ensuring that our results are robust and generalizable. Each library was tasked with creating a binary classification model for each dataset, and the average AUC, training time, and RAM usage were recorded.
+
+## Preprocessing
+No additional preprocessing was performed on the datasets, as the AutoML libraries are designed to handle feature engineering, data cleaning, and other preprocessing tasks automatically.--DIVIDER--## Datasets
+
+| Dataset                                           | Industry                       | Observations | Features | Has Categorical Features? | Has Missing Values? | Balance Status |
+| ------------------------------------------------- | ------------------------------ | :----------: | :------: | :-----------------------: | :-----------------: | :------------: |
+| Breast Cancer - Wisconsin                         | Biosciences / Healthcare       |     569      |    32    |            no             |         no          |    Balanced    |
+| Concentric Spheres Dataset                        | None (synthetic)               |    3,000     |    9     |            no             |         yes         |    Balanced    |
+| In-vehicle coupon recommendation                  | E-commerce                     |    12,684    |    25    |            yes            |         yes         |    Balanced    |
+| Credit Approval                                   | Financial services             |     690      |    15    |            yes            |         yes         |    Balanced    |
+| Electrical Grid Stability Simulated Data Data Set | Energy                         |    10,000    |    13    |            no             |         no          |    Slighly Imbalanced   |
+| Employee Attrition dataset from PyCaret           | Miscellaneous / Human Resource |    14,999    |    9     |            yes            |         no          |    Slighly Imbalanced   |
+| Image Segmentation                                | Computer Vision                |    2,310     |    20    |            no             |         no          |    Imbalanced   |
+| Mushroom Data Set                                 | Biosciences                    |    8,124     |    22    |            yes            |         yes         |    Balanced    |
+| NBA binary classification dataset from Pycaret    | Sports                         |    1,294     |    21    |            no             |         no          |    Balanced    |
+| Online Shoppers Purchasing Intention              | E-commerce                     |    12,330    |    17    |            yes            |         no          |    Imbalanced   |
+| Spambase Data Set                                 | Technology / Internet Services |    4,601     |    57    |            no             |         no          |    Balanced    |
+| Spiral Dataset                                    | None (synthetic)               |     250      |    2     |            no             |         no          |    Balanced    |
+| Telco customer churn                              | Telecom                        |    7,043     |    20    |            no             |         yes         |    Imbalanced   |
+| Titanic Passenger Survival dataset                | Tourism / Transportation       |    1,309     |    10    |            yes            |         yes         |    Balanced    |
+| Exclusive-Or dataset                              | None (synthetic)               |    6,000     |    5     |            no             |         no          |    Balanced    |
+
+For more details about the dataset: https://github.com/readytensor/rt-datasets-binary-classification
+--DIVIDER--# Results
+
+## AUC Scores
+
+In this section we recorded AUC for each model across all datasets, 
+ranked from left to right for overall average score:
+
+| Dataset \ AutoML Library      | AutoGluon         | FLAML          |    TPOT          |     PyCaret           |    mljar-supervised               |  LazyPredict     |  H2O AutoML         |   Auto-sklearn                |   MLBox        |   AutoKeras        |  
+|---------------------|-------------|-------------|------------| ------------|  ------------|  ------------|  ------------|  ------------|  ------------|  ------------| 
+| Breast Cancer - Wisconsin| 0.969	|0.997	|0.99	|0.997|	0.992|	0.996|	0.995|	0.998|	0.994|	0.996|
+Concentric Spheres|0.988|	0.993|	0.99	|0.986|	0.991|	0.986|	0.994|	0.984|	0.994|	0.983|
+In-vehicle coupon recommendation|	0.844|	0.836|	0.792|	0.826|	0.835|	0.805|	0.831|	0.776|	0.823|	0.73|
+Credit Approval|	0.986|	0.918|	0.893|	0.907|	0.919|	0.845|	0.913|	0.892|	0.902|	0.857|
+Electrical Grid Stability Simulated Data|	0.995|	0.992	|0.996	|0.995	|0.989	|0.994|	0.987|	0.972|	0.986|	0.99|
+Employee Attrition dataset from PyCaret|	1|	0.991	|0.991|	0.99|	0.991|	0.99|	0.99|	0.991|	0.992|	0.737|
+Image Segmentation|	1|	1|	1|	1|	0.983|	0.999|	0.996|	1|	0.991|	1|
+Mushroom |	1	|1|	1|	1	|1	|1	|1|	1|	1|	1|
+NBA binary classification from Pycaret|	0.769|	0.746|	0.768|	0.765|	0.727|	0.759|	0.764|	0.729|	0.768|	0.745|
+Online Shoppers Purchasing Intention|	0.926|	0.932|	0.922	|0.92|	0.929|	0.918|	0.928|	0.933|	0.931|	0.903|
+Spambase|	1|	0.984|	0.988|	0.986	|0.986	|0.986|	0.988|	0.986|	0.988|	0.972|
+Spiral |0.998|	0.987|	1|	0.916|	0.881|	0.899|	0.896|	0.931|	0.765|	0.502|
+Telco customer churn|	0.862	|0.856|	0.841|	0.862|	0.846|	0.862|	0.866|	0.859|	0.863|	0.838|
+Titanic Passenger Survival |	0.86|	0.866|	0.852|	0.861|	0.859|	0.868|	0.855|	0.81|	0.864|	0.772|
+Exclusive-Or |0.962|	0.994|	0.97|	0.955|	0.972|	0.94|	0.778|	0.915|	0.487|	0.59|
+Average AUC over all the datasets |      0.944       |    0.939         |    0.933       |  0.931     |   0.927        |  0.923       |  0.919       |   0.918       | 0.89          |  0.841        |
+ 
+
+Most of the models produced AUC scores that were remarkably close, ranging between 0.94 and 0.92. 
+:::info{title="Insight"}
+AutoGluon secured the top spot with the highest AUC score
+:::
+
+Additionally, the majority of the packages demonstrated similarly close performance on imbalanced datasets, indicating their robustness and adaptability to varying data distributions.
+
+--DIVIDER--## Execution Time 
+
+The next two graphs further demonstrate the performance of the models regarding execution time in both training and prediction for the "In-vehicle coupon recommendation" dataset. This dataset recorded the highest execution time across all the datasets, providing a clear view of how each model performs under more time-intensive conditions.
+
+
+![Training_ET_bar_plot.png](Training_ET_bar_plot.png)
+
+
+:::info{title="Insight"}
+Lazy Predict scores the lowest training execution time, meanwhile AutoKeras, TPOT, mljar-supervised, Auto-Sklearn have high training execution times.
+:::
+
+![Prediction_ET_bar_plot.png](Prediction_ET_bar_plot.png)
+
+:::info{title="Insight"}
+mljar-supervised by far has the highest execution time for prediction.
+:::
+
+> *For more details about the execution times across all the models please check the appendix*
+--DIVIDER--## CPU RAM usage
+
+
+
+![CPU_Mem_bar_plot.png](CPU_Mem_bar_plot.png)
+
+:::info{title="Insight"}
+It's clear that mljar-supervised has the highest CPU memory usage
+:::
+
+> *For more details about the CPU memory usages across all the models please check the appendix*
+
+--DIVIDER--# Conclusion 
+
+
+While AutoML libraries promise to streamline the machine learning process, this comparison reveals that not all tools are created equal. The close AUC scores suggest that many of these libraries can effectively handle binary classification tasks, but the differences in execution time and resource consumption tell a more nuanced story. 
+
+Lazy Predict’s speed highlights its utility for rapid prototyping, yet its simplicity may not suit more complex tasks. Meanwhile, the slower prediction times of mljar-supervised might be acceptable in exchange for higher accuracy in some cases, but they could be a bottleneck in time-sensitive applications.
+
+AutoGluon's top AUC score positions it as a strong contender for those prioritizing predictive performance, yet its resource demands may not be ideal for every scenario. The slight edge in AUC scores across most models implies that AutoML has made significant strides, but it also raises the question: Are these tools truly ready to replace the nuanced decision-making of a skilled data scientist?
+
+In a field where every second and byte of RAM can impact performance and costs, the choice of an AutoML library must be as strategic as the problem itself. This analysis underscores the importance of balancing speed, accuracy, and resource efficiency when selecting the right tool for your specific needs. The promise of AutoML is clear, but the reality is that the choice of library can still significantly impact the success of your machine learning projects.
+
+--DIVIDER--# Appendix
+
+<br>
+
+## Execution Time - ET
+<br>
+<table>
+  <tr>
+    <th >Dataset \ AutoML Library</th>
+<th colspan="2">AutoGluon</th><th colspan="2">FLAML</th><th colspan="2">TPOT</th><th colspan="2">PyCaret</th><th colspan="2">mljar-supervised</th><th colspan="2">LazyPredict</th><th colspan="2">H2O AutoML</th><th colspan="2">Auto-Sklearn</th><th colspan="2">MLBox</th><th colspan="2">AutoKeras</th>
+
+<tr><th>Metric</th><td>Training ET</td><td>Prediction ET</td><td>Training ET</td><td>Prediction ET</td><td>Training ET</td><td>Prediction ET</td><td>Training ET</td><td>Prediction ET</td><td>Training ET</td><td>Prediction ET</td><td>Training ET</td><td>Prediction ET</td><td>Training ET</td><td>Prediction ET</td><td>Training ET</td><td>Prediction ET</td><td>Training ET</td><td>Prediction ET</td><td>Training ET</td><td>Prediction ET</td></tr>
+
+<tr><th>Breast Cancer - Wisconsin</th><td>27.13</td><td>0.14</td><td>60.09</td><td>0.17</td><td>59.83</td><td>0.13</td><td>21.26</td><td>0.29</td><td>194.74</td><td>29.59</td><td>1.73</td><td>0.24</td><td>40.22</td><td>5.79</td><td>182.1</td><td>6.6</td><td>5.73</td><td>0.8</td><td>143.77</td><td>1.0</td></tr>
+<tr><th>Concentric Spheres Dataset</th><td>36.91</td><td>5.68</td><td>60.3</td><td>0.14</td><td>109.92</td><td>0.16</td><td>28.86</td><td>0.31</td><td>196.64</td><td>20.57</td><td>3.85</td><td>0.25</td><td>52.44</td><td>5.88</td><td>175.48</td><td>1.04</td><td>9.41</td><td>0.46</td><td>408.55</td><td>0.88</td></tr>
+<tr><th>Credit Approval</th><td>27.95</td><td>0.54</td><td>60.2</td><td>0.18</td><td>68.78</td><td>0.13</td><td>29.32</td><td>0.64</td><td>193.22</td><td>25.99</td><td>1.72</td><td>0.25</td><td>24.17</td><td>6.19</td><td>177.73</td><td>2.72</td><td>18.83</td><td>1.25</td><td>52.8</td><td>0.9</td></tr>
+<tr><th>Electrical Grid Stability Simulated Data Data Set</th><td>136.32</td><td>5.87</td><td>61.66</td><td>0.18</td><td>499.87</td><td>0.08</td><td>58.92</td><td>0.31</td><td>200.16</td><td>19.22</td><td>11.66</td><td>0.25</td><td>121.8</td><td>6.42</td><td>176.23</td><td>4.47</td><td>16.11</td><td>0.78</td><td>634.69</td><td>0.97</td></tr>
+<tr><th>Employee Attrition dataset from PyCaret</th><td>84.27</td><td>0.6</td><td>60.35</td><td>0.17</td><td>369.85</td><td>0.2</td><td>53.86</td><td>0.48</td><td>202.49</td><td>19.48</td><td>12.7</td><td>0.34</td><td>111.57</td><td>6.76</td><td>178.27</td><td>6.06</td><td>28.01</td><td>1.07</td><td>968.18</td><td>1.16</td></tr>
+<tr><th>Exclusive-Or dataset</th><td>64.28</td><td>6.36</td><td>60.24</td><td>0.14</td><td>248.57</td><td>0.07</td><td>37.25</td><td>0.32</td><td>192.89</td><td>19.4</td><td>6.19</td><td>0.22</td><td>39.09</td><td>6.05</td><td>173.75</td><td>0.6</td><td>9.21</td><td>0.42</td><td>281.57</td><td>0.85</td></tr>
+<tr><th>Image Segmentation</th><td>29.39</td><td>0.32</td><td>60.09</td><td>0.17</td><td>116.05</td><td>0.15</td><td>25.56</td><td>0.33</td><td>202.42</td><td>21.62</td><td>2.81</td><td>0.23</td><td>73.3</td><td>5.97</td><td>177.6</td><td>6.15</td><td>11.77</td><td>0.67</td><td>285.32</td><td>0.93</td></tr>
+<tr><th>In-vehicle coupon recommendation</th><td>160.17</td><td>8.11</td><td>60.79</td><td>0.31</td><td>530.31</td><td>0.39</td><td>80.8</td><td>0.86</td><td>195.02</td><td>17.82</td><td>19.37</td><td>0.6</td><td>94.35</td><td>8.36</td><td>182.46</td><td>7.07</td><td>77.49</td><td>4.01</td><td>273.01</td><td>1.27</td></tr>
+<tr><th>Mushroom Data Set</th><td>80.05</td><td>0.38</td><td>60.18</td><td>0.2</td><td>157.03</td><td>0.16</td><td>54.11</td><td>0.73</td><td>197.1</td><td>20.67</td><td>5.2</td><td>0.42</td><td>204.96</td><td>7.37</td><td>179.83</td><td>9.53</td><td>59.15</td><td>2.86</td><td>244.23</td><td>1.23</td></tr>
+<tr><th>NBA binary classification dataset from Pycaret</th><td>25.71</td><td>6.17</td><td>60.13</td><td>0.17</td><td>98.32</td><td>0.16</td><td>22.44</td><td>0.29</td><td>198.42</td><td>21.25</td><td>2.16</td><td>0.23</td><td>32.71</td><td>6.03</td><td>175.21</td><td>0.7</td><td>6.86</td><td>0.55</td><td>118.38</td><td>0.85</td></tr>
+<tr><th>Online Shoppers Purchasing Intention </th><td>70.14</td><td>2.06</td><td>60.14</td><td>0.27</td><td>789.96</td><td>0.26</td><td>54.19</td><td>0.51</td><td>196.91</td><td>19.94</td><td>13.72</td><td>0.41</td><td>75.47</td><td>6.86</td><td>178.55</td><td>5.49</td><td>51.66</td><td>2.1</td><td>494.98</td><td>1.32</td></tr>
+<tr><th>Spambase Data Set</th><td>41.47</td><td>0.52</td><td>60.2</td><td>0.25</td><td>576.36</td><td>0.23</td><td>35.75</td><td>0.4</td><td>201.19</td><td>21.2</td><td>6.08</td><td>0.33</td><td>95.22</td><td>6.35</td><td>177.45</td><td>6.78</td><td>19.78</td><td>1.53</td><td>148.28</td><td>1.14</td></tr>
+<tr><th>Spiral Dataset</th><td>25.61</td><td>0.1</td><td>60.6</td><td>0.33</td><td>29.57</td><td>0.05</td><td>18.57</td><td>0.28</td><td>197.72</td><td>36.01</td><td>0.91</td><td>0.17</td><td>19.31</td><td>5.66</td><td>178.1</td><td>5.54</td><td>2.77</td><td>0.26</td><td>65.73</td><td>0.79</td></tr>
+<tr><th>Telco customer churn</th><td>48.07</td><td>6.51</td><td>60.13</td><td>0.19</td><td>330.72</td><td>0.27</td><td>51.61</td><td>0.68</td><td>194.87</td><td>19.78</td><td>8.52</td><td>0.33</td><td>58.81</td><td>6.89</td><td>183.17</td><td>4.26</td><td>38.0</td><td>1.41</td><td>256.81</td><td>0.99</td></tr>
+<tr><th>Titanic Passenger Survival dataset</th><td>31.11</td><td>2.14</td><td>60.08</td><td>0.17</td><td>46.37</td><td>0.1</td><td>24.4</td><td>0.41</td><td>202.03</td><td>22.25</td><td>1.91</td><td>0.21</td><td>25.89</td><td>5.86</td><td>176.09</td><td>6.55</td><td>10.96</td><td>0.46</td><td>178.77</td><td>0.89</td></tr>
+<tr><th>Average</th><td>59.24</td><td>3.03</td><td>60.35</td><td>0.2</td><td>268.77</td><td>0.17</td><td>39.79</td><td>0.46</td><td>197.72</td><td>22.32</td><td>6.57</td><td>0.3</td><td>71.29</td><td>6.43</td><td>178.13</td><td>4.9</td><td>24.38</td><td>1.24</td><td>303.67</td><td>1.01</td></tr>
+
+</table>
+--DIVIDER--## CPU Memory usage
+
+<br>
+
+
+<table>
+  <tr>
+    <th >Dataset \ AutoML Library</th>
+<th colspan="2">AutoGluon</th><th colspan="2">FLAML</th><th colspan="2">TPOT</th><th colspan="2">PyCaret</th><th colspan="2">mljar-supervised</th><th colspan="2">LazyPredict</th><th colspan="2">H2O AutoML</th><th colspan="2">Auto-Sklearn</th><th colspan="2">MLBox</th><th colspan="2">AutoKeras</th>
+
+<tr><td></td><td>Training CPU Mem</td><td>Prediction CPU Mem</td><td>Training CPU Mem</td><td>Prediction CPU Mem</td><td>Training CPU Mem</td><td>Prediction CPU Mem</td><td>Training CPU Mem</td><td>Prediction CPU Mem</td><td>Training CPU Mem</td><td>Prediction CPU Mem</td><td>Training CPU Mem</td><td>Prediction CPU Mem</td><td>Training CPU Mem</td><td>Prediction CPU Mem</td><td>Training CPU Mem</td><td>Prediction CPU Mem</td><td>Training CPU Mem</td><td>Prediction CPU Mem</td><td>Training CPU Mem</td><td>Prediction CPU Mem</td></tr>
+
+<tr><th>Breast Cancer - Wisconsin</th><td>69.61</td><td>2.96</td><td>4.19</td><td>3.07</td><td>4.88</td><td>2.49</td><td>12.46</td><td>4.13</td><td>235.7</td><td>453.81</td><td>2.0</td><td>3.95</td><td>3.07</td><td>2.98</td><td>35.96</td><td>100.81</td><td>3.24</td><td>4.67</td><td>10.02</td><td>6.23</td></tr>
+<tr><th>Concentric Spheres Dataset</th><td>75.32</td><td>58.47</td><td>7.94</td><td>3.16</td><td>4.47</td><td>5.82</td><td>13.41</td><td>4.58</td><td>157.18</td><td>335.87</td><td>2.1</td><td>5.47</td><td>3.73</td><td>3.78</td><td>17.64</td><td>25.99</td><td>4.68</td><td>4.07</td><td>9.48</td><td>5.88</td></tr>
+<tr><th>Credit Approval</th><td>71.94</td><td>11.84</td><td>3.32</td><td>2.74</td><td>4.69</td><td>3.99</td><td>12.8</td><td>6.2</td><td>186.65</td><td>408.91</td><td>2.46</td><td>4.98</td><td>3.26</td><td>2.73</td><td>18.7</td><td>41.94</td><td>3.88</td><td>5.68</td><td>9.92</td><td>6.16</td></tr>
+<tr><th>Electrical Grid Stability Simulated Data Data Set</th><td>118.44</td><td>62.26</td><td>11.73</td><td>5.92</td><td>7.67</td><td>2.54</td><td>15.63</td><td>5.1</td><td>150.23</td><td>339.96</td><td>5.69</td><td>14.94</td><td>3.34</td><td>3.18</td><td>72.5</td><td>270.72</td><td>8.09</td><td>5.41</td><td>11.12</td><td>6.27</td></tr>
+<tr><th>Employee Attrition dataset from PyCaret</th><td>79.69</td><td>13.55</td><td>18.47</td><td>5.51</td><td>10.5</td><td>6.21</td><td>21.15</td><td>12.47</td><td>158.23</td><td>343.8</td><td>15.83</td><td>17.25</td><td>3.36</td><td>3.24</td><td>63.91</td><td>235.24</td><td>15.13</td><td>11.22</td><td>13.74</td><td>6.93</td></tr>
+<tr><th>Exclusive-Or dataset</th><td>118.12</td><td>71.28</td><td>11.21</td><td>4.5</td><td>8.22</td><td>1.78</td><td>14.31</td><td>5.09</td><td>144.4</td><td>339.38</td><td>2.47</td><td>15.76</td><td>3.66</td><td>3.15</td><td>11.55</td><td>11.44</td><td>5.0</td><td>4.12</td><td>9.7</td><td>5.86</td></tr>
+<tr><th>Image Segmentation</th><td>70.97</td><td>7.44</td><td>5.28</td><td>3.09</td><td>5.83</td><td>2.47</td><td>12.97</td><td>4.32</td><td>160.37</td><td>347.06</td><td>3.03</td><td>4.46</td><td>4.04</td><td>4.21</td><td>32.72</td><td>95.67</td><td>5.15</td><td>4.54</td><td>9.71</td><td>5.97</td></tr>
+<tr><th>In-vehicle coupon recommendation</th><td>183.51</td><td>160.75</td><td>35.41</td><td>11.35</td><td>300.34</td><td>32.18</td><td>52.81</td><td>49.67</td><td>147.8</td><td>292.59</td><td>76.57</td><td>73.4</td><td>3.59</td><td>3.35</td><td>235.27</td><td>811.21</td><td>27.32</td><td>15.15</td><td>22.17</td><td>9.46</td></tr>
+<tr><th>Mushroom Data Set</th><td>78.66</td><td>8.62</td><td>8.21</td><td>4.2</td><td>158.0</td><td>3.44</td><td>37.05</td><td>9.73</td><td>158.49</td><td>337.16</td><td>49.03</td><td>26.64</td><td>1.57</td><td>1.51</td><td>59.87</td><td>160.75</td><td>15.2</td><td>10.35</td><td>17.36</td><td>7.54</td></tr>
+<tr><th>NBA binary classification dataset from Pycaret</th><td>73.93</td><td>69.95</td><td>4.71</td><td>3.15</td><td>4.72</td><td>6.87</td><td>12.88</td><td>4.19</td><td>154.63</td><td>335.97</td><td>2.19</td><td>5.99</td><td>3.59</td><td>3.08</td><td>11.47</td><td>10.94</td><td>4.18</td><td>4.34</td><td>9.45</td><td>5.87</td></tr>
+<tr><th>Online Shoppers Purchasing Intention </th><td>117.25</td><td>33.54</td><td>15.53</td><td>6.77</td><td>18.42</td><td>20.03</td><td>22.89</td><td>17.72</td><td>149.84</td><td>343.59</td><td>29.59</td><td>32.92</td><td>3.47</td><td>3.27</td><td>65.39</td><td>271.13</td><td>26.99</td><td>23.75</td><td>18.65</td><td>8.18</td></tr>
+<tr><th>Spambase Data Set</th><td>81.78</td><td>12.15</td><td>16.0</td><td>6.31</td><td>10.67</td><td>7.34</td><td>20.96</td><td>5.69</td><td>162.84</td><td>346.17</td><td>12.19</td><td>12.56</td><td>4.01</td><td>3.31</td><td>56.79</td><td>224.29</td><td>15.08</td><td>11.14</td><td>13.24</td><td>6.7</td></tr>
+<tr><th>Spiral Dataset</th><td>69.99</td><td>1.66</td><td>3.35</td><td>5.97</td><td>3.7</td><td>1.33</td><td>12.85</td><td>4.6</td><td>268.4</td><td>541.23</td><td>1.39</td><td>3.59</td><td>1.75</td><td>1.56</td><td>31.58</td><td>88.57</td><td>2.51</td><td>2.97</td><td>9.05</td><td>5.73</td></tr>
+<tr><th>Telco customer churn</th><td>113.11</td><td>62.06</td><td>7.64</td><td>4.06</td><td>14.04</td><td>14.53</td><td>20.72</td><td>5.82</td><td>151.79</td><td>335.25</td><td>15.61</td><td>25.49</td><td>3.87</td><td>3.31</td><td>45.66</td><td>161.35</td><td>12.92</td><td>9.13</td><td>14.25</td><td>6.62</td></tr>
+<tr><th>Titanic Passenger Survival dataset</th><td>71.44</td><td>41.16</td><td>4.0</td><td>3.05</td><td>4.77</td><td>3.89</td><td>12.92</td><td>4.59</td><td>164.03</td><td>351.83</td><td>2.04</td><td>6.43</td><td>3.5</td><td>3.46</td><td>35.2</td><td>140.94</td><td>4.23</td><td>4.17</td><td>9.85</td><td>6.16</td></tr>
+<tr><th>Average</th><td>92.92</td><td>41.18</td><td>10.47</td><td>4.86</td><td>37.39</td><td>7.66</td><td>19.72</td><td>9.59</td><td>170.04</td><td>363.51</td><td>14.81</td><td>16.92</td><td>3.32</td><td>3.07</td><td>52.95</td><td>176.73</td><td>10.24</td><td>8.05</td><td>12.51</td><td>6.64</td></tr>
+
+</table>
+

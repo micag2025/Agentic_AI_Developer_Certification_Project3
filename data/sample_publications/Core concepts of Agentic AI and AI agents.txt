@@ -1,0 +1,333 @@
+Core concepts of Agentic AI and AI agents
+
+Id:
+82lYI7TWVtvP
+
+Username:
+3rdson
+
+License:
+cc-by
+
+Publication_description:
+![AIClips675547-1024x585.png](AIClips675547-1024x585.png)
+
+Over the past year, there has been immense hype and discussion around AI, particularly **GenAI**, **Agentic AI**, and **RAG systems**. This buzz has sparked significant shifts across industries, with everyone scrambling to understand: *What exactly are agents? What defines "agentic AI"?* How do we distinguish an AI system as "agentic" versus a non-agentic tool?
+
+We’ve seen companies racing to adopt AI, startups pitching "agents-as-a-service," and a flood of new frameworks. But amid the noise, the fundamentals often get lost.
+
+That’s exactly why we’re breaking it all down in this article. In this article, we will be **explaining Agentic AI, AI agents, and recent GenAI trends** in the simplest way possible.
+
+Here’s what we’ll cover:
+1. **Agentic AI** – What makes it revolutionary?
+2. **AI Agents** – Core components that define them  
+3. **LLM Frameworks & Workflows** – The engine behind the magic  
+
+We’ll also unpack key concepts like: 
+- **Memory & Context Management** (How agents "remember")  
+- **Prompt Engineering** (How to instruct AI Agents)  
+- **Multi-Agent Communication** (When agents team up)  
+- **Real-World Applications** (Where agents *actually* shine today)  
+
+Stick with us until the end, we’ll make sure you walk away with clarity on how these pieces fit into the bigger AI landscape.
+
+![gen AI pub for all.webp](gen%20AI%20pub%20for%20all.webp)
+
+## **So, What Is Agentic AI?**
+To understand this, let's start with the basics: **What are AI agents?**
+
+**AI agents** are systems powered by AI (typically LLMs) that interact with software, data, *and even hardware* to achieve specific goals. Think of them as proactive problem-solvers: they autonomously complete tasks, make decisions, and adapt to new information with no micromanaging required.
+
+It's crucial to note that what makes a system truly "agentic" goes beyond just behavior, the implementation matters too. This is because traditional automated systems using if-else logic can mimic agent-like behavior, but true AI agents are distinguished by how their decisions are made. Instead of following pre-programmed conditional logic, they use LLMs to actively make decisions and determine their course of action. This fundamental difference in implementation (LLM-driven decision making versus traditional programming logic) is what sets genuine AI agents apart from sophisticated automation.
+
+Unlike basic chatbots or static AI tools, agents **plan** and **decide** independently (guided by the user's input) until they nail the best result.
+
+But how do they achieve this? 
+
+They achieve this through their brain(LLM).  The LLM lets them: 
+1. **Observe** their environment (e.g., data inputs, user requests).
+2. **Orient** themselves to understand how to use their tools.
+3. **Decide** on the optimal action.
+4. **Execute** that action.
+
+In short, they’re *goal-driven, self-directed systems* and Agentic AI is the field focused on building and refining these autonomous agents.
+
+---
+
+## **What’s an Autonomous Agent?**
+An autonomous agent is an advanced form of AI that can understand and respond to enquiries and then take action **without human intervention**.
+
+When given an objective, it can: 
+- Generate tasks for itself,  
+- Complete those tasks.
+- Move to the next one.
+...until the objective is fully achieved.
+
+---  
+
+## **Autonomous Agents vs. AI Agents**  
+While all autonomous agents are technically AI agents, **not all AI agents are autonomous**.
+
+Here’s the breakdown: 
+- **AI agents** include assistive tools like copilots, which rely on human input to complete tasks.
+- **Autonomous agents** work independently, needing little to no human involvement.
+
+But note that both can learn and make decisions based on new information, but **only autonomous agents** can chain multiple tasks in sequence.
+
+---
+
+### **Let’s See an AI Agent in Action**  
+Imagine an AI assistant that seamlessly manages tasks on your laptop like a virtual assistant built into your laptop.
+
+For example: 
+- You ask it, *“Do I have any emails from Abhy?”* The agent **interprets** your request, **decides** to connect to your Gmail API, scans your inbox, and instantly pulls up every email from Abhy.
+
+- Or, *“What’s trending in NYT news today?”* The agent **recognises** it needs to search the web, crawls trusted sources (like NYT’s API), and spits out a bullet-point summary of key trends.
+
+This system is called an “agent” because at **every step**, it uses its brain (the LLM) to:
+
+1. **Interpret** your goal
+2. **Decide** which tools (email, web search, calendar) to use
+3. **Execute** actions end-to-end 
+
+Unlike basic chatbots that wait for step-by-step commands, AI agents **autonomously bridge intent and outcome**. They leverage tools, analyse context, and keep iterating until the job’s done.
+
+*Note*: This example is **software-based**, but there are also **hardware-based AI agents** (physical ones), like robots or self-driving cars. These use cameras, mics, and sensors to capture real-world data—then act on it (e.g., a warehouse robot navigating around obstacles).
+
+---  
+
+##  **Agentic AI**  
+
+Now that we’ve nailed what agents are, agentic AI becomes straightforward.
+
+At it's core, **Agentic AI** is the *autonomy engine* for AI systems. It’s the intelligence and methodology that lets agents act independently, the “how” behind their ability to plan, decide, and execute without hand-holding. Think of it as the **framework** (and mindset) for building agents that truly “think for themselves.”
+
+---
+
+## **Core Components of AI Agents**  
+We’ll break down the core components into two categories:
+
+### **1. Architectural Components of AI Agents**  
+These are the foundational building blocks in every AI agent’s design. They include:
+
+**1. Large Language Models (LLMs): The Brain**  
+LLMs are the powerhouses behind AI agents similar to the human brain. They’re responsible for: 
+- Understanding user input
+- Deciding which tools to use  
+- Generating final answers after processing.
+
+**2. Tools Integration: The “Hands”**  
+Tools let AI agents interact with the digital world. In our earlier example, tools included Gmail APIs and web crawlers which was used to fetch data from external sources.
+
+**3. Memory Systems: The “Recall”**  
+Memory allows agents to retain and reuse information across interactions (think personalised context!). Without it, an agent is like a goldfish, forgetting every conversation instantly.
+
+### AI agents can have any of the following memories:
+
+1.  **Short-term Memory:** Keeps track of the ongoing conversation, enabling the Al to maintain coherence within a single interaction.
+
+2. **Long-term Memory:** Stores information across multiple interactions, allowing the Al to remember user preferences, past queries, and more. 
+
+#### Long term memory can further be split into 3 types
+
+- Episodic Memory: Remembers specific past events or interactions, enabling the Al to recall and reference previous exchanges.
+
+- Semantic Memory: Holds general knowledge and facts that the Al can draw upon to provide informed response
+
+- Procedural. Memory: This is defined as anything that has been codified intuit the AI agent by us. It may include the structure of the system prompt, the tools we provide the agent etc
+
+![1_l0oRfSsoJXjaexRmM3FQwg.png](1_l0oRfSsoJXjaexRmM3FQwg.png)
+
+---
+
+### **2. Cognitive Components of AI Agents**  
+These define how agents “think” and act: 
+
+**1. Perception: The “Senses”**  
+This is the AI agent’s ability to gather and interpret data from its surroundings. Much like human senses, perception allows the agent to ‘see’ and ‘hear’ the world around it.
+In the AI agent example above, the agent displayed the perception ability by interacting with APIs, databases, or web services to gather relevant information.
+
+**2. Reasoning: The “Logic”**  
+Once an AI agent has gathered the relevant data through perception, it needs to make sense of that data. This is where reasoning comes into play. Reasoning involves analysing the collected data, identifying patterns, and drawing conclusions. It’s the process that allows an AI agent to transform raw data into actionable insights
+
+**3. Action: The “Doing”**  
+This is the ability of the AI agent to bring it's decision to life. The ability to take action based on perception and reasoning is what truly makes an AI agent autonomous. Actions can be physical, like a robot moving an object, or digital, such as a software agent sending an email.
+
+**4. Feedback & Learning: The “Growth”**  
+One of the most fascinating aspect of AI agents is their ability to learn and improve over time. Learning allows AI agents to adapt to new situations, refine their decision-making processes, and become more efficient at their tasks.
+
+![PHOTO-2025-02-19-16-10-59.jpg](PHOTO-2025-02-19-16-10-59.jpg)
+
+---
+
+## **Multi-Agent Systems (MAS)**  
+Just like the name suggests, a **multi-agent system (MAS)** involves multiple AI agents teaming up to tackle tasks for a user or system. Instead of relying on one “do-it-all” agent, MAS uses a squad of specialised agents working together.
+
+Thanks to their flexibility, scalability, and domain expertise, MAS can solve **complex real-world problems**.
+
+---
+
+## **MAS Architectures**  
+### **1. Centralized Networks**  
+In centralised networks, a central unit contains the global knowledge base, connects the agents, and oversees their information. A strength of this structure is the ease of communication between agents and uniform knowledge. A weakness of the centrality is the dependence on the central unit; if it fails, the entire system of agents fails.
+
+**Example**: Like a conductor in an orchestra, directing every musician.
+
+### **2. Decentralized Networks**  
+In a decentralised network, there is no central agent or unit that controls the oversees information. The agents share information with their neighbour in a decentralised manner. Some benefits of decentralised networks are robustness and modularity. The failure of one agent does not cause the overall system to fail since there is no central unit. One challenge of decentralised agents is coordinating their behaviour to benefit other cooperating agents.
+
+**Example**: A flock of birds adjusting flight paths without a leader. 
+
+---
+
+## **Next Up: Building AI Agents**  
+Now that we’ve covered *what* AI agents are and *how* they work, let’s tackle the big question: 
+
+**How do you actually build one?** 
+(And which frameworks/libraries make it easier?)  
+
+---
+
+### **Building AI Agents: Frameworks & Tools**  
+Python dominates the AI/ML world, so familiarity with it unlocks countless SDKs and frameworks. But even non-coders can build agents using **drag-and-drop GUI tools**. Let’s break down the options:  
+
+---
+
+## **Code-Based Frameworks**  
+For developers who want granular control over workflows, memory, and multi-agent collaboration: 
+
+### **Code-Based Frameworks**  
+1. **LangGraph**  
+   Developed by the team behind LangChain, LangGraph takes things further by letting you design AI workflows as *visual graphs*. Imagine building a customer support system where one agent handles initial queries, another escalates complex issues, and a third schedules follow-ups; all connected like nodes on a flowchart. It’s perfect for multi-step processes that need to "remember" where they are in a task.  
+🔗 [Docs](https://langchain-ai.github.io/langgraph/) | [GitHub](https://github.com/langchain-ai/langgraph)
+
+2. **Microsoft AutoGen**  
+   AutoGen is Microsoft’s answer to collaborative AI. With Microsoft AutoGen, you can have a system where one agent writes code, another reviews it for errors, and a third tests the final script. These agents debate, self-correct, and even use tools like APIs or calculators. It is ideal for coding teams or research projects where multiple perspectives matter.  
+🔗 [Docs](https://microsoft.github.io/autogen/stable/) | [GitHub](https://github.com/microsoft/autogen)
+
+3. **CrewAI**  
+   CrewAI organizes agents into specialized roles, like a startup team. For example, a "Researcher" agent scours the web for data, a "Writer" drafts a report, and an "Editor" polishes it. They pass tasks back and forth, refining their work until it’s ready to ship with no micromanaging required.  
+🔗 [Docs](https://docs.crewai.com/introduction) | [GitHub](https://github.com/crewAIInc/crewAI)
+
+4. **LlamaIndex**  
+   Formerly called GPT Index, LlamaIndex acts like a librarian for your AI agents. If you need your agent to reference a 100-page PDF, a SQL database, and a weather API, LlamaIndex is the framework to go to. It helps it fetch and connect data from all these sources, ensuring responses are informed and accurate.  
+🔗 [Docs](https://docs.llamaindex.ai/en/stable/) | [GitHub](https://github.com/run-llama/llama_index)
+
+5. **Pydantic AI**  
+   Built by the Pydantic team, this framework acts as a data validator for your AI workflows. If your agent interacts with APIs, Pydantic AI checks that inputs and outputs match the expected data format. Like ensuring a date field isn’t accidentally filled with text. No more "garbage in, garbage out" chaos.  
+🔗 [Docs](https://ai.pydantic.dev/) | [GitHub](https://github.com/pydantic/pydantic-ai)
+
+6. **OpenAI Swarm**  
+   OpenAI’s experimental Swarm framework explores how lightweight AI agents can solve tasks collaboratively. One agent gathers data, another analyzes it, and a third acts on it. It’s not ready for production yet but it's worth mentioning.
+🔗  [GitHub](https://github.com/openai/swarm)
+
+---
+
+### **Visual (GUI) Frameworks**  
+1. **Rivet**  
+   Rivet is like digital LEGO for AI. You just have to drag and drop nodes to connect ChatGPT to your CRM, add a "send email" action, and voilà, you’ve built an agent that auto-replies to customer inquiries. Perfect for business teams who want automation without coding.  
+🔗 [Website](https://rivet.ironcladapp.com/)
+
+2. **Vellum**  
+   Vellum is the Swiss Army knife for prompt engineers. It allows you to test 10 versions of a prompt side-by-side, see which one gives the best results, and deploy it to your agent; all through a clean interface. It’s like A/B testing for AI workflows.  
+🔗 [Website](https://www.vellum.ai/)
+
+3. **Langflow**  
+   Langflow is the drag and drop alternative to LangChain. You can just drag a "web search" node into your workflow, link it to a "summarize" node, and watch your agent turn a 10-article search into a crisp summary. It is great for explaining AI logic to your CEO.  
+🔗 [Website](https://www.langflow.org/)
+
+4. **Flowise AI**  
+   Flowise AI is the open-source cousin of Langflow. You can use it to build a chatbot that answers HR questions by just linking your company handbook to an LLM—no coding, just drag, drop, and deploy.  
+🔗 [Website](https://flowiseai.com/)
+
+5. **Chatbase**  
+   Chatbase lets you train a ChatGPT-like assistant on your own data. Upload your FAQ PDFs, tweak the design to match your brand, and embed it on your website. It’s like having a 24/7 customer service rep who actually reads the manual.  
+🔗 [Website](https://www.chatbase.co/)
+
+### **Here are some Factors to consider before choosing a Framework**  
+1. **Use Case**  
+   What’s your agent’s job? A coding assistant needs AutoGen’s teamwork, while a document chatbot thrives with Langflow’s simplicity.  
+
+2. **Criticality**  
+   Are you building a mission-critical system? Opt for battle-tested tools like LangGraph. If experimenting, try experimental frameworks like Swarm.  
+
+3. **Team Skills**  
+   If you have Python pros in your team, then go for code-based frameworks but if don't have Python pros in your team, GUI tools like Rivet or Chatbase will save the day.  
+
+4. **Time/Budget**  
+   Need it yesterday? No-code tools speed things up. Got resources? Custom code offers long-term flexibility.  
+
+5. **Integration**  
+   If you would need to plug in connectors like Slack API, Jira API etc, check if the framework supports those connectors out-of-the-box.  
+
+6. **AIOps**  
+   If you will scale to a thousand users, prioritize frameworks with built-in monitoring, logging, and auto-scaling.  
+
+---
+
+## **LLM Workflows: The “Conductor” Behind the Magic**  
+ LLM workflows are essentially a series of interconnected processes that ensure an AI system can understand user intent, maintain context, break down tasks, collaborate among agents, and ultimately deliver actionable results. Think of LLM workflows as the *recipe* your AI agents follow. Just like baking a cake requires mixing, baking, and frosting steps, LLM workflows chain prompts, tools, and logic into a sequence. 
+
+For example, a customer support agent might:  
+1. **Analyze** a user’s complaint,  
+2. **Search** past tickets for similar issues,  
+3. **Draft** a response, and  
+4. **Escalate** if it’s urgent.  
+Frameworks like LangGraph or Microsoft AutoGen let you orchestrate these steps like a playlist with less coding headaches.  
+
+---
+
+## **Context Management: How Agents “Remember”**  
+Context management is the mechanism by which an AI system keeps track of ongoing interactions and relevant data. It ensures that the conversation or task remains coherent over multiple turns.
+Ever chatted with a bot that forgets your name two messages later? *That’s bad context management*. Modern agents use **memory systems** to retain details across interactions. 
+
+For instance:  
+- A travel agent remembers your allergy to seafood when booking restaurants.  
+- A project manager agent tracks deadlines from prior chats.  
+Tools like LlamaIndex or LangChain’s memory modules act as the agent’s “sticky notes”, keeping conversations coherent and personalized.  
+
+---
+
+### **Prompt Engineering: Talking to AI Like a Pro**  
+Prompt engineering involves crafting and refining the inputs given to an LLM so that it produces the most relevant and accurate outputs. Prompt engineering isn’t just typing questions. It’s **crafting instructions LLMs can’t ignore**. For example:  
+- *Weak prompt*: “Summarize this article.” → Gets a generic response.  
+- *Strong prompt*: “Summarize this article in 3 bullet points for a CEO. Focus on financial risks.” → Gold.  
+Tools like Vellum or PromptFlow help you test and refine prompts like a mad scientist.  
+
+---
+
+### **Task Planning & Decomposition: Breaking Down the Impossible**  
+Agents don’t solve “Plan my wedding” in one go. They **chop big tasks into bite-sized steps**:  
+1. Book venue → 2. Create guest list → 3. Order cake → 4. Send invites.  
+Task planning and decomposition involve breaking down a complex problem or query into smaller, more manageable subtasks. This methodical approach helps AI systems tackle complicated challenges step by step.
+CrewAI’s role-based agents excel here.
+
+---
+
+### **Multi-Agent Communication: When Bots Team Up**  
+Multi-agent communication refers to the way multiple AI agents interact and share information with one another to collaboratively solve a problem. This is particularly useful in systems designed to handle complex or distributed tasks.
+Picture a hospital where one agent diagnoses symptoms, another checks drug interactions, and a third books follow-ups. **Multi-agent systems** let specialists collaborate:  
+- **Centralized**: Like a CEO assigning tasks (AutoGen’s manager-worker teams).  
+- **Decentralized**: Like Uber drivers coordinating via an app (OpenAI Swarm’s experimental approach).  
+
+---
+
+### **Real-World Applications: Where Agents *Actually* Shine**  
+- **Customer Support**: Chatbots that resolve 80% of queries without humans.  
+- **Healthcare**: Diagnostic agents cross-referencing symptoms with medical journals.
+- **Finance**: Fraud-detection agents scanning transactions in real time.  
+- **Logistics**: Warehouse robots coordinating deliveries (physical agents + decentralized MAS).  
+
+Even **creatives** use them—like AI writing teams drafting blog outlines while you sip coffee.  
+
+---
+
+## **Wrapping Up: The Future is Agentic**  
+We've covered a lot of ground; from the basics of AI agents to the nitty-gritty of building them. Here's the key takeaway: **Agentic AI isn't just another tech buzzword**. It's a fundamental shift in how we interact with AI systems.
+
+Whether you're a developer diving into frameworks like LangGraph and AutoGen, or a business leader exploring no-code tools like Rivet and Chatbase, there's never been a better time to jump into the agentic AI revolution.
+
+Remember: The best AI agent isn't necessarily the most complex one. It's the one that **solves real problems** while being reliable, scalable, and (most importantly) actually useful in the real world.
+
+*The future of AI isn't just about smarter algorithms, it's about systems that think, plan, and act with purpose*. And that future is already here.
+

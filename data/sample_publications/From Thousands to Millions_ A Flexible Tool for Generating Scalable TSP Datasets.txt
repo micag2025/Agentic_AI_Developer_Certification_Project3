@@ -1,0 +1,293 @@
+From Thousands to Millions: A Flexible Tool for Generating Scalable TSP Datasets
+
+Id:
+dLPDzlkDb51e
+
+Username:
+ready-tensor
+
+License:
+cc-by-sa
+
+Publication_description:
+
+![tsp_problems_chart.png](tsp_problems_chart.png)--DIVIDER--# TL;DR
+We present an open-source tool for generating large-scale Traveling Salesman Problem (TSP) datasets in an efficient format, overcoming TSPLIB limitations. The tool is flexible and supports extensive training data generation, enabling modern ML approaches like Large Language Models (LLMs) for TSP solving.--DIVIDER--# Introduction and Motivation
+The Traveling Salesman Problem (TSP) is a well-studied NP-hard problem with applications in logistics, circuit board manufacturing, and DNA sequencing. Effective tools like Concorde and Gurobi provide strong solutions, setting high benchmarks for new approaches.
+
+Our project explores the potential of Large Language Models (LLMs) in solving TSP. While LLMs are not typically used for NP-hard problems, we aim to push their boundaries in combinatorial optimization. Benchmarking LLMs against established solvers like Concorde allows us to evaluate their effectiveness in this challenging domain.
+
+To train data-hungry models like LLMs, access to large-scale datasets that can be efficiently processed is crucial. However, existing datasets and formats, such as TSPLIB, are limited in scale, flexibility, and efficiency, making them less suitable for training modern machine learning models. To address these limitations, we have developed a tool for generating large-scale TSP datasets, enabling the creation of extensive training data and providing a flexible resource for the optimization community.
+
+In the following sections, we will detail the structure and usage of our tool, describe the datasets we've generated, and discuss potential extensions and future work.--DIVIDER--# Evaluating TSP Dataset Formats
+
+In developing our TSP dataset generator, we conducted a thorough evaluation of various data formats to find the optimal balance between efficiency, flexibility, and accessibility. This process involved assessing several options, including JSON, YAML, CSV, and more specialized formats like HDF5. Each format presented its own set of advantages and challenges:
+
+1. **HDF5**: While highly efficient for large datasets, it requires specialized libraries and is not easily human-readable, limiting accessibility.
+
+2. **CSV**: Simple and widely supported, but lacks the flexibility to represent complex metadata and nested structures efficiently.
+
+3. **YAML**: More efficient than JSON in terms of file size, but reading and writing operations were notably slower in our tests.
+
+4. **JSON**: Offers a good balance of human readability, flexibility, and widespread support across programming languages and tools.
+
+After careful consideration of these options, we ultimately chose JSON as our data format. While not the most efficient in terms of raw storage, JSON provides several advantages that align with our goals:
+
+1. Human Readability: JSON files can be easily inspected and understood without specialized tools.
+2. Flexibility: JSON's structure allows for easy addition of metadata and complex nested data.
+3. Wide Support: Most programming languages and data processing tools have built-in JSON support.
+4. Balance of Performance: While not the most efficient, JSON offers reasonable performance for reading and writing operations.--DIVIDER--# Configuring the TSP Dataset Generator
+
+Our TSP dataset generator uses JSON configuration files to provide a flexible and intuitive setup process. There are two main configuration files:
+
+1. `tsp_scenarios.json`: This file defines the various TSP generation scenarios.
+2. `dataset_gen_config.json`: This file specifies the general settings for dataset generation.
+--DIVIDER--## TSP Scenario Configuration
+
+The `tsp_scenarios.json` file allows users to define multiple TSP scenarios. Each scenario is uniquely named and includes parameters such as the number of examples, the number of nodes, and the coordinate space for sampling. Here's an example configuration:
+
+```json
+{
+  "version": "1.0.0",
+  "generation_scenarios": {
+    "tsp_10_50k_u_100x100": {
+      "description": "TSP with 10 nodes, 50,000 examples, uniformly sampled in a 100x100 coordinate space.",
+      "num_examples": 50000,
+      "num_nodes": 10,
+      "sampling_method": "uniform",
+      "coordinate_space": {
+        "x_start": 0,
+        "x_end": 100,
+        "y_start": 0,
+        "y_end": 100
+      },
+      "seed": 42
+    }
+  }
+}
+```
+
+The key `"tsp_10_50k_u_100x100"` refers to the scenario name defined by the user. The naming convention is defined in a section below. Key parameters include:
+- The `"generation_scenarios"` object contains a list of scenarios, each identified by a unique key (e.g., `"tsp_10_50k_u_100x100"`).
+- `"num_examples"`: The number of TSP instances to generate.
+- `"num_nodes"`: The number of nodes (cities) in each TSP instance.
+- `"sampling_method"`: The method used for generating node coordinates (currently supports "uniform").
+- `"coordinate_space"`: Defines the boundaries for node placement.
+- `"seed"`: Ensures reproducibility of the generated datasets.--DIVIDER--## General Configuration
+The `dataset_gen_config.json` file controls the overall dataset generation process, specifying which scenario to run, how many samples to store per file, and metadata about the dataset:
+
+```json
+{
+  "scenario": "tsp_10_50k_u_100x100",
+  "num_samples_per_file": 10000,
+  "metadata": {
+    "description": "Synthetic TSP problems generated for algorithm testing.",
+    "creator": {
+      "name": "ReadyTensor Inc.",
+      "url": "https://www.readytensor.ai",
+      "email": "contact@readytensor.ai"
+    },
+    "license": "CC BY-SA 4.0"
+  }
+}
+```
+
+This file specifies:
+
+- `"scenario"`: The scenario to use from `tsp_scenarios.json`.
+- `"num_samples_per_file"`: The number of samples to include in each output file, allowing for efficient data management.
+- `"metadata"`: Represents metadata about the dataset, including description, creator information, and licensing.
+
+By adjusting these configuration files, users can easily generate TSP datasets tailored to their specific research or benchmarking needs, from small-scale test sets to large-scale training datasets, with flexible control over how the data is split across files.
+--DIVIDER--:::info{title="Info"}
+The `num_samples_per_file` parameter is particularly important for managing large datasets efficiently. It determines how the generated samples are batched into separate files. For example, if the total number of examples (num_examples in `tsp_scenarios.json`) is 100,000 and num_samples_per_file is set to 10,000, the generator will create 10 separate files, each containing 10,000 TSP problem instances. This batching approach allows for easier data handling, especially when working with machine learning frameworks that use data generators for training.
+:::--DIVIDER--
+## JSON Structure for Generated TSP Datasets
+
+Having selected JSON as our data format  for generated TSP datasets, we designed a structure that efficiently represents TSP problems while providing comprehensive metadata. Here's an example of our JSON structure for a generated dataset:--DIVIDER--```json
+{
+  "dataset_name": "tsp_10_50k_u_100x100",
+  "description": "TSP with 10 nodes, 50,000 examples, uniformly sampled in a 100x100 coordinate space.",
+  "total_count": 50000,
+  "total_parts": 5,
+  "part_number": 1,
+  "samples_in_part": 10000,
+  "number_of_nodes": 10,
+  "coordinate_space": {
+    "x_start": 0,
+    "x_end": 100,
+    "y_start": 0,
+    "y_end": 100
+  },
+  "sampling_method": "uniform",
+  "metadata": {
+    "description": "Synthetic TSP problems generated for algorithm testing.",
+    "creator": {
+      "name": "ReadyTensor Inc.",
+      "url": "https://www.readytensor.ai",
+      "email": "contact@readytensor.ai"
+    },
+    "license": "CC BY-SA 4.0"
+  },
+  "problems": [
+    {
+      "name": "476f819e919e34e5e38d08b7ccd0fa7b",
+      "node_coordinates": [
+        [17.9432, 24.2407],
+        [48.4047, 93.5308],
+        [48.746, 89.7431]
+        // ... more coordinates ...
+      ]
+    }
+    // ... more problems ...
+  ]
+}
+```--DIVIDER--Explanation:
+
+- `"dataset_name"` and `"description"`: provide context about the dataset.
+- `"total_count"`: specifies the total number of problem instances in the dataset.
+- `"total_parts"` and `"part_number"` indicate how the dataset is split across multiple files.
+- `"problems"`: is an array that stores the TSP problem instances, with each instance identified by a unique "name" and containing a list of "node_coordinates".
+--DIVIDER--:::info{title="Info"}
+Note that this example represents the first part (`"part_number": 1`) out of five total parts (`"total_parts": 5`) for the scenario "tsp_10_50k_u_100x100". Each part contains 10,000 samples (`"samples_in_part": 10000`), collectively making up the total 50,000 examples in the full dataset.
+:::--DIVIDER--Key features of this format include:
+
+1. Comprehensive Metadata: Each file includes detailed information about the dataset and its generation parameters.
+2. Batching Information: Clear details about how the dataset is split across files.
+3. Problem Specifications: Descriptions of the TSP instances' characteristics.
+4. Multiple Instances: The ability to store multiple TSP problems in a single file.
+5. Simple Coordinate Representation: Node coordinates are stored as arrays for easy parsing.
+
+This format allows researchers and practitioners to generate, store, and load large TSP datasets efficiently, facilitating comprehensive algorithm testing and machine learning model training while maintaining accessibility and ease of use.
+--DIVIDER--# Using the TSP Dataset Generator
+
+The TSP Dataset Generator allows you to create large-scale TSP datasets using flexible JSON configuration files. For detailed setup instructions, refer to the [GitHub repository](https://github.com/readytensor/rt_tsp_data_gen_publication), which is also linked in the **Models** section of this publication. 
+
+Below is a high-level overview of how to use the tool.
+
+**Step 1: Configure Your Scenarios**
+Before running the generator, set up your configuration files:
+
+- `tsp_scenarios.json`: Define the TSP scenarios, specifying parameters such as the number of nodes, problem instances, sampling method, and coordinate space.
+- `dataset_gen_config.json`: Specify the scenario to run, the number of samples per file, and metadata about the dataset.
+
+Refer to the Configuring the TSP Dataset Generator section for detailed instructions on setting up these files.
+
+**Step 2: Run the Generator**
+Once your configuration files are ready, generate your TSP datasets by running the following command:
+
+```bash
+python src/tsp_generator.py
+```
+
+The generator will use the configurations to create the datasets, splitting them into multiple files based on the specified settings.
+
+**Step 3: Access Your Generated Datasets**
+
+The generated datasets will be saved in the `data/` directory, organized by scenario name. Each file will contain multiple TSP problem instances and associated metadata.
+
+For more detailed setup instructions, including virtual environment creation and dependency installation, refer to the [README in the GitHub repository](https://github.com/readytensor/rt_tsp_data_gen_publication).
+--DIVIDER--# Datasets with Solutions
+
+In this section, we provide a detailed breakdown of the generated datasets and the solution files that accompany them. While our TSP dataset generator only creates the problem instances, for convenience, we are also sharing solved versions of these problems. These solutions were generated using the Concorde TSP solver and can be found in the "Resources" section of this publication.
+
+### Generated Datasets
+
+Our tool is flexible, allowing users to generate any number of samples for any number of cities. However, for convenience, we have chosen to generate and share the following six scenarios, as they are commonly used in the literature to benchmark TSP algorithms:
+
+- **10-city problems**: 50,000 samples
+- **20-city problems**: 50,000 samples
+- **25-city problems**: 50,000 samples
+- **50-city problems**: 50,000 samples
+- **100-city problems**: 50,000 samples
+- **200-city problems**: 50,000 samples
+
+Each dataset is stored in JSON format and is split into multiple files for easier handling. The structure of these files follows the format described in the **JSON Structure for TSP Datasets** section, which includes metadata, coordinate space specifications, and the node coordinates for each problem instance.
+
+### Concorde Solutions
+
+While our generator does not solve the TSP problems, we have pre-solved the generated datasets using the Concorde solver. Concorde is one of the most well-known and effective solvers for TSP, providing exact solutions for even large-scale instances. The solved problems are uploaded in the "Resources" section of this publication for easy access.
+
+The structure of the solution files extends the format of the problem files, adding a `solutions` key to each problem instance. Here’s an example:
+
+```json
+{
+  "dataset_name": "tsp_10_50k_u_100x100",
+  "description": "TSP with 10 nodes, 50,000 examples, uniformly sampled in a 100x100 coordinate space.",
+  "total_count": 50000,
+  "total_parts": 5,
+  "part_number": 1,
+  "samples_in_part": 10000,
+  "number_of_nodes": 10,
+  "coordinate_space": {
+    "x_start": 0,
+    "x_end": 100,
+    "y_start": 0,
+    "y_end": 100
+  },
+  "sampling_method": "uniform",
+  "metadata": {
+    "description": "Synthetic TSP problems generated for algorithm testing.",
+    "creator": {
+      "name": "ReadyTensor Inc.",
+      "url": "https://www.readytensor.ai",
+      "email": "contact@readytensor.ai"
+    },
+    "license": "CC BY-SA 4.0"
+  },
+  "problems": [
+    {
+      "name": "476f819e919e34e5e38d08b7ccd0fa7b",
+      "node_coordinates": [
+        [17.9432, 24.2407],
+        [48.4047, 93.5308],
+        [48.746, 89.7431]
+        // ... more coordinates ...
+      ],
+      "solutions": [
+        {
+          "method": "concorde",
+          "tour": [0, 4, 3, 5, 2, 1, 8, 9, 7, 6],
+          "distance": 279.9693758152819
+        }
+      ]
+    }
+    // ... more problems ...
+  ]
+}
+```
+
+In this format:
+
+- The `solutions` key is nested inside each individual problem, and it is a list to allow for multiple solutions from different methods or tools (e.g., Concorde, nearest neighbor, or custom algorithms).
+- The `tour` key represents the order of the nodes in the optimal tour.
+- The `distance` key provides the total distance of the tour, computed by the solver.
+
+This structure ensures that each problem instance can store multiple solutions, enabling researchers to compare different methods or approaches.
+
+### Accessing the Solved Datasets
+
+The solved datasets are available for download in the **Resources** section of this publication. These files are organized similarly to the original problem datasets, with each file containing a portion of the full dataset along with the corresponding solutions.
+
+This combination of generated problems and solved datasets offers a versatile resource for both testing new algorithms and benchmarking against known optimal solutions.
+--DIVIDER--
+## Future Work and Potential Extensions
+
+The datasets generated by our tool are just the beginning. In future work, we plan to use these datasets for training models, including exploring Large Language Models (LLMs) to solve TSP problems. While classical solvers like Concorde excel at solving TSP instances, training machine learning models on large-scale datasets presents an opportunity to develop new approaches, particularly for more complex or generalized versions of the problem.
+
+In addition to our focus on training LLMs, we are considering several potential extensions to the data generation process:
+
+- **Alternative Sampling Techniques**: Currently, our tool supports uniform sampling within a specified coordinate space. In the future, we plan to introduce more sophisticated sampling methods, such as Gaussian sampling, which could simulate clusters of cities, or clustered sampling to represent more realistic scenarios with varying densities of nodes. These alternative techniques would allow users to generate datasets that better match the characteristics of real-world problems.
+- **Scaling Up and Performance Improvements**: As users demand even larger datasets or more complex problem instances, we are exploring ways to further optimize the tool for performance and scalability. This may include parallel processing or optimizing the file structure for faster data access and storage.
+
+We believe that these enhancements will expand the tool's applicability and make it even more useful for researchers and practitioners working on TSP and related optimization problems.
+--DIVIDER--
+## Conclusion
+
+The TSP Dataset Generator provides a flexible, open-source solution for generating large-scale datasets tailored to specific problem configurations. By overcoming the limitations of traditional formats like TSPLIB, our tool enables the creation of extensive datasets that are both efficient and easy to manage. With the added benefit of storing multiple problem instances in a single file, it is well-suited for modern algorithm testing and machine learning applications.
+
+We invite the community to explore the tool, generate their own datasets, and contribute to its development. The GitHub repository is open for collaboration, and we encourage users to suggest improvements, add new features, or submit alternative sampling techniques. You can file issues or submit pull requests directly in the repository to help make the tool even better.
+
+Whether you are working on classical optimization algorithms or experimenting with new machine learning models, this tool offers a valuable resource to support your research. Together, we can continue to push the boundaries of TSP research and improve the tools available for solving one of the most challenging problems in combinatorial optimization.
+
+

@@ -1,0 +1,370 @@
+Beyond tracemalloc: A Comprehensive Resource Tracker for Python
+
+Id:
+wm6Jm52Y5pBu
+
+Username:
+ready-tensor
+
+License:
+cc-by-sa
+
+Publication_description:
+
+![ram.png](ram.png)--DIVIDER--# Introduction
+In the world of Python programming, especially in data science and machine learning, efficient memory management is crucial. As projects grow in complexity and scale, understanding and optimizing memory usage becomes increasingly important. However, tracking memory consumption in Python can be surprisingly tricky, particularly when working with libraries like NumPy and PyTorch that manage their own memory allocations.
+
+The built-in `tracemalloc` module in Python, while useful for many scenarios, falls short when dealing with these specialized libraries. This limitation can lead to significant underestimation of memory usage, potentially causing unexpected out-of-memory errors or suboptimal resource allocation.
+
+In this publication, we'll explore the challenges of accurate memory tracking in Python, demonstrate why common solutions like `tracemalloc` are insufficient for complex scenarios, and introduce a comprehensive resource tracking solution. This custom implementation not only addresses the shortcomings of standard memory profilers but also provides a more holistic view of resource usage, including CPU and GPU memory, as well as execution time.
+
+Whether you're optimizing machine learning models, processing large datasets, or simply trying to understand the resource footprint of your Python applications, this resource tracker offers valuable insights that can help you write more efficient and reliable code.--DIVIDER--# Problem with tracemalloc
+
+The `tracemalloc` module, introduced in Python 3.4, is often the go-to solution for tracking memory allocation in Python programs. However, it has significant limitations when dealing with libraries that manage their own memory, such as NumPy and PyTorch. Let's examine this issue with a simple experiment:
+
+```python
+import torch
+import tracemalloc
+import numpy as np
+
+
+def get_memory_usage(obj):
+    samples = int(1e8)
+    tracemalloc.start()
+    if obj == "np":
+        x = np.zeros((samples, 1)).astype("float64")
+    elif obj == "torch":
+        x = torch.ones(samples, 1).to(torch.float64)
+    elif obj == "list":
+        x = [0.0] * samples
+
+    _, peak_usage = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+    return round(peak_usage / (1024**2), 3)
+
+print("Numpy memory usage", get_memory_usage("np"))
+print("PyTorch memory usage", get_memory_usage("torch"))
+print("Python list usage", get_memory_usage("list"))
+
+```
+
+This code creates three different objects of roughly similar size: a NumPy array, a PyTorch tensor, and a Python list. Each object contains 100 million elements of type float64. We then use `tracemalloc` to measure the peak memory usage for each object creation.
+
+The output of this code is surprising:
+
+```
+Numpy memory usage 1525.879
+PyTorch memory usage 0.019
+Python list memory usage 762.939
+```
+
+These results reveal a glaring inconsistency:
+
+1. The NumPy array shows about 1525 MB of memory usage.
+2. The PyTorch tensor shows nearly zero memory usage.
+3. The Python list shows about 763 MB of memory usage.
+
+In reality, each of these objects should occupy approximately the same amount of memory - around 763 MB
+$$
+MB =  10^8 * \frac{64}{8*1024*1024} \
+$$ 
+
+The discrepancies arise because `tracemalloc` only tracks memory allocations made by Python itself, not those made by external libraries using their own memory management systems.
+
+This inconsistency poses several problems:
+
+1. Underestimation of memory usage: For libraries like PyTorch, `tracemalloc` severely underreports memory consumption, potentially leading to unexpected out-of-memory errors.  <br>  <br>
+2. Overestimation in some cases: For NumPy, `tracemalloc` seems to overestimate the memory usage, which could lead to overly conservative resource allocation.  <br>  <br>
+3. Inconsistent profiling: The varying results make it difficult to accurately compare memory usage across different parts of a program that use different libraries.  <br>
+These limitations highlight the need for a more comprehensive resource tracking solution, especially for projects that heavily rely on numerical computing and machine learning libraries. In the following sections, we'll introduce a custom resource tracker that addresses these issues and provides a more accurate and holistic view of memory usage in Python applications.
+--DIVIDER--# Introducing the ResourceTracker
+
+To address the limitations of `tracemalloc` and provide a more accurate and comprehensive view of resource usage, we've developed the `ResourceTracker`. This custom implementation offers a robust solution for monitoring memory usage and execution time across various Python libraries and hardware resources.
+
+## Key Features of the ResourceTracker
+
+1. **Multi-faceted Memory Tracking**: Unlike `tracemalloc`, our `ResourceTracker` uses multiple methods to capture memory usage:
+   - Python memory via `tracemalloc`
+   - System RAM usage through `psutil`
+   - GPU memory for CUDA-enabled devices <br><br>
+2. **Continuous Monitoring**: Instead of just capturing snapshots, the `ResourceTracker` continuously monitors memory usage, ensuring that peak usage is accurately recorded. <br><br>
+3. **GPU Support**: For machine learning applications, the tracker includes GPU memory monitoring, a critical feature missing in standard Python profiling tools.<br><br>
+4. **Execution Time Measurement**: Along with memory usage, the tracker also measures the execution time of the code block it's monitoring.<br><br>
+5. **Easy Integration**: Implemented as a context manager, the `ResourceTracker` can be easily integrated into existing code with minimal changes.
+
+Let's take a closer look at the main components of the `ResourceTracker`:
+
+```python
+import time
+import psutil
+import threading
+import tracemalloc
+import torch
+import os
+import numpy as np
+
+class ResourceTracker(object):
+    """
+    This class serves as a context manager to track time and
+    memory allocated by code executed inside it.
+    """
+
+    def __init__(self, logger, monitoring_interval):
+        self.logger = logger
+        self.monitor = MemoryMonitor(logger=logger, interval=monitoring_interval)
+
+    def __enter__(self):
+        self.start_time = time.time()
+        tracemalloc.start()
+        self.monitor.start()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.end_time = time.time()
+        self.monitor.stop()
+        _, peak = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+
+        elapsed_time = self.end_time - self.start_time
+        peak_python_memory_mb = peak / 1024**2
+        process_cpu_peak_memory_mb = self.monitor.get_peak_memory_usage()
+        gpu_peak_memory_mb = self.get_peak_gpu_memory_usage()
+
+        self.logger.info(f"Execution time: {elapsed_time:.2f} seconds")
+        self.logger.info(
+            f"Peak Python Allocated Memory: {peak_python_memory_mb:.2f} MB"
+        )
+        self.logger.info(
+            f"Peak CUDA GPU Memory Usage (Incremental): {gpu_peak_memory_mb:.2f} MB"
+        )
+        self.logger.info(
+            f"Peak System RAM Usage (Incremental): {process_cpu_peak_memory_mb:.2f} MB"
+        )
+
+    def get_peak_gpu_memory_usage(self):
+        """
+        Returns the peak memory usage by current cuda device (in MB) if available
+        """
+        if not torch.cuda.is_available():
+            return 0
+
+        current_device = torch.cuda.current_device()
+        peak_memory = torch.cuda.max_memory_allocated(current_device)
+        return peak_memory / (1024 * 1024)
+
+```
+
+The `ResourceTracker` class serves as a context manager, starting the monitoring process when entered and collecting and logging the results when exited. It utilizes the `MemoryMonitor` class for continuous memory tracking:
+
+```python
+class MemoryMonitor:
+    initial_cpu_memory = None
+    peak_cpu_memory = 0  # Class variable to store peak memory usage
+
+    def __init__(self, interval=0.1, logger=print):
+        self.interval = interval
+        self.logger = logger or print
+        self.running = False
+        self.thread = threading.Thread(target=self.monitor_loop)
+
+    def monitor_memory(self):
+        process = psutil.Process(os.getpid())
+        total_memory = process.memory_info().rss
+
+        # Check if the current memory usage is a new peak and update accordingly
+        self.peak_cpu_memory = max(self.peak_cpu_memory, total_memory)
+        if self.initial_cpu_memory is None:
+            self.initial_cpu_memory = self.peak_cpu_memory
+
+    def monitor_loop(self):
+        """Runs the monitoring process in a loop."""
+        while self.running:
+            self.monitor_memory()
+            time.sleep(self.interval)
+
+    def start(self):
+        """Starts the memory monitoring."""
+        if not self.running:
+            self.running = True
+            self.thread.start()
+
+    def stop(self):
+        """Stops the periodic monitoring"""
+        self.running = False
+        self.thread.join()  # Wait for the monitoring thread to finish
+
+    def get_peak_memory_usage(self):
+        # Convert both CPU and GPU memory usage from bytes to megabytes
+        incremental_cpu_peak_memory = (
+            self.peak_cpu_memory - self.initial_cpu_memory
+        ) / (1024**2)
+
+        return incremental_cpu_peak_memory
+
+    @classmethod
+    def get_peak_memory(cls):
+        """Returns the peak memory usage"""
+        return cls.peak_cpu_memory
+```
+
+The `MemoryMonitor` runs in a separate thread, periodically checking and updating the peak memory usage.
+
+By combining these components, the `ResourceTracker` provides a comprehensive view of resource usage, addressing the inconsistencies we observed with `tracemalloc` and offering additional insights into GPU memory usage and execution time.
+
+In the next section, we'll demonstrate how to use the `ResourceTracker` in practice and compare its results with our earlier `tracemalloc` examples.
+
+
+:::info{title="Important Note"}
+The following method is specific to PyTorch. You may want to update it if you are working with other libraries like TensorFlow. 
+```python
+    def get_peak_gpu_memory_usage(self):
+        """
+        Returns the peak memory usage by current cuda device (in MB) if available
+        """
+        if not torch.cuda.is_available():
+            return 0
+
+        current_device = torch.cuda.current_device()
+        peak_memory = torch.cuda.max_memory_allocated(current_device)
+        return peak_memory / (1024 * 1024)
+```
+:::--DIVIDER--# Putting ResourceTracker to the Test
+
+Now that we've introduced the ResourceTracker, let's see how it performs in practice with a more demanding scenario. We'll use it to measure memory usage for large data structures, allowing us to demonstrate its accuracy and comprehensiveness in real-world situations.
+
+Here's our test function using the ResourceTracker:
+
+```python
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def measure_with_resource_tracker(obj_type):
+    with ResourceTracker(logger, monitoring_interval=0.001):
+        samples = int(1e8)
+        time.sleep(1)
+        if obj_type == "list":
+            x = [0.0] * samples
+        elif obj_type == "np":
+            x = np.zeros((samples, 1)).astype("float64")
+        elif obj_type == "torch_cpu":
+            x = torch.ones(samples, 1).to(torch.float64)
+        elif obj_type == "torch_gpu":
+            x = torch.ones(samples, 1).to(torch.float64).cuda()
+        
+        print("--" * 10)
+
+print('Python list')
+measure_with_resource_tracker("list")
+
+print('Numpy array')
+measure_with_resource_tracker("np")
+
+print('PyTorch CPU')
+measure_with_resource_tracker("torch_cpu")
+
+print('PyTorch GPU')
+measure_with_resource_tracker("torch_gpu")
+```
+
+This function creates a data structure with 100 million elements (1e8) of type float64, which should theoretically occupy about 763 MB of memory. Let's analyze the results for each case:
+
+```
+Python list
+INFO:__main__:Execution time: 1.99 seconds
+INFO:__main__:Peak Python Allocated Memory: 763.03 MB
+INFO:__main__:Peak CUDA GPU Memory Usage (Incremental): 0.00 MB
+INFO:__main__:Peak System RAM Usage (Incremental): 763.12 MB
+--------------------
+Numpy array
+INFO:__main__:Execution time: 1.47 seconds
+INFO:__main__:Peak Python Allocated Memory: 1525.96 MB
+INFO:__main__:Peak CUDA GPU Memory Usage (Incremental): 0.00 MB
+INFO:__main__:Peak System RAM Usage (Incremental): 762.95 MB
+--------------------
+PyTorch CPU
+INFO:__main__:Execution time: 1.86 seconds
+INFO:__main__:Peak Python Allocated Memory: 0.08 MB
+INFO:__main__:Peak CUDA GPU Memory Usage (Incremental): 0.00 MB
+INFO:__main__:Peak System RAM Usage (Incremental): 1145.65 MB
+--------------------
+PyTorch GPU
+INFO:__main__:Execution time: 2.29 seconds
+INFO:__main__:Peak Python Allocated Memory: 0.09 MB
+INFO:__main__:Peak CUDA GPU Memory Usage (Incremental): 762.94 MB
+INFO:__main__:Peak System RAM Usage (Incremental): 1141.33 MB
+--------------------
+```
+
+Let's analyze these results:
+
+1. Python list:
+   - Both the Python Allocated Memory and System RAM Usage are close to `763 MB` which is the expected number.
+2. NumPy array:
+   - The ResourceTracker shows a peak Python Allocated Memory of `1525.96 MB` and a System RAM Usage of `762.95 MB`.
+   - This is higher than the expected `763 MB`, likely due to memory overhead in NumPy's allocation strategy and potential temporary allocations during array creation. <br><br>
+3. PyTorch tensor (CPU):
+   - Interestingly, the Peak Python Allocated Memory is only `0.08 MB`, while the System RAM Usage is `1145.65 MB`.
+   - This demonstrates that PyTorch manages its own memory outside of Python's memory allocator, which ResourceTracker correctly captures in the System RAM Usage. <br><br>
+4. PyTorch tensor (GPU):
+   - The Peak Python Allocated Memory is very low at `0.09 MB`, similar to the CPU tensor case.
+   - The System RAM Usage is `1141.33 MB`, which is close to the CPU tensor case.
+   - Most importantly, we see a Peak CUDA GPU Memory Usage of `762.94 MB`.
+   - This clearly demonstrates that PyTorch is allocating the tensor on the GPU, using CUDA memory.
+   - The GPU memory usage (762.94 MB) is very close to the expected `763 MB` for our data.
+   - This shows that ResourceTracker successfully captures GPU memory allocation, which is crucial for machine learning workloads using GPUs.
+   - The similar System RAM usage to the CPU case might indicate some CPU-side overhead or memory mirroring that PyTorch performs even for GPU tensors.
+
+This last observation highlights the ResourceTracker's ability to monitor both CPU and GPU memory usage, providing a complete picture of resource utilization in deep learning scenarios. It accurately captures the shift of memory allocation from CPU to GPU when using CUDA-enabled PyTorch tensors, which is a significant advantage over simpler memory profiling tools.
+
+Key observations:
+
+1. Accuracy: The ResourceTracker provides a much more accurate picture of memory usage compared to tracemalloc, especially for libraries like NumPy and PyTorch that manage their own memory.<br><br>
+2. Comprehensive monitoring: It captures both Python-allocated memory and system RAM usage, providing a complete view of memory consumption.<br><br>
+3. Execution time: The tracker also provides execution time for each operation, which includes the 1-second sleep we added.<br><br>
+4. GPU monitoring: The tracker is capable of monitoring GPU memory usage when applicable.<br><br>
+5. Continuous tracking: The low monitoring interval (0.001 seconds) ensures that we capture peak memory usage accurately, even for short-lived allocations.
+
+These results demonstrate that ResourceTracker successfully addresses the limitations of simpler memory profiling tools. It provides a more accurate and comprehensive view of resource usage across different Python libraries and data structures. This makes it an invaluable tool for developers working on memory-intensive applications, particularly in fields like data science and machine learning where efficient resource management is crucial.
+
+The ResourceTracker's ability to differentiate between Python-allocated memory and system RAM usage is particularly valuable when working with libraries like NumPy and PyTorch, which may use memory allocation strategies that aren't captured by Python's built-in memory profiling tools.
+
+--DIVIDER--:::warning{title="Warning"}
+
+When using the ResourceTracker, it is crucial to create only one ResourceTracker object and use it only once. This is because the ResourceTracker monitors global memory usage at the operating system level.
+
+Creating multiple ResourceTracker instances in the same script can lead to inaccurate and potentially misleading results. Each instance would independently track the global memory state, which could result in:
+
+1. Double-counting of memory usage
+2. Inconsistent baseline measurements
+3. Difficulty in interpreting which memory changes are associated with which part of your code
+
+To avoid these issues, create a single ResourceTracker instance at the beginning of your script and wrap the entire code that you want to track inside your tracker
+
+Example of correct usage:
+
+```python
+tracker = ResourceTracker(logger, monitoring_interval=0.001)
+
+# Use the same tracker instance for different parts of your code
+with tracker:
+    # The entire code goes here
+    pass
+
+```
+By adhering to this practice, you ensure that your memory usage measurements remain consistent and accurate throughout your application.
+:::--DIVIDER--# Summary
+In this publication, we explored the challenges of accurate memory tracking in Python, particularly when using libraries like NumPy and PyTorch that manage their own memory allocations. We demonstrated that the built-in `tracemalloc` module, while useful, often fails to capture true memory usage by these libraries, leading to underestimations or overestimations that can affect program performance and resource management.
+
+To address these limitations, we introduced a custom solution, the ResourceTracker. This tool enhances memory tracking by integrating multiple methods such as `tracemalloc`, `psutil` for system RAM tracking, and specific tracking for CUDA-enabled GPU devices. Unlike `tracemalloc`, ResourceTracker provides a comprehensive view by continuously monitoring memory usage, which ensures that peak usage is accurately recorded, and by measuring execution time, which adds another layer of analysis to resource management.
+
+Key features of ResourceTracker include:
+
+- Multi-faceted Memory Tracking: It combines Python memory tracking with system and GPU memory monitoring.
+- Continuous Monitoring: It updates memory usage continuously rather than just at snapshots.
+- Execution Time Measurement: It measures the total execution time of the monitored code block.
+- GPU Support: It supports memory tracking on GPU, crucial for machine learning applications.
+- Easy Integration: Implemented as a context manager, it allows for seamless integration into existing Python code.
+
+Through practical tests, ResourceTracker has proven to offer more accurate and detailed insights into memory usage compared to tracemalloc, particularly with high-memory-use libraries. It not only tracks Python-allocated memory but also captures system RAM usage, providing a holistic view of an application's resource consumption. This makes ResourceTracker an invaluable tool for developers working on complex data science and machine learning projects, where efficient and accurate resource management is critical.
+
