@@ -1,0 +1,17 @@
+flowchart TD
+    start --> analyze_pub1
+    analyze_pub1 --> analyze_pub2
+    analyze_pub2 --> compare
+    compare --> aggregate_trends
+    aggregate_trends --> summarize
+    summarize --> fact_check_node
+    fact_check_node --> react_agent_tool
+    react_agent_tool --> end_node
+    end_node[End]
+    style analyze_pub1 fill:#e0f7fa,stroke:#333,stroke-width:1px
+    style analyze_pub2 fill:#e0f7fa,stroke:#333,stroke-width:1px
+    style compare fill:#fff9c4,stroke:#333,stroke-width:1px
+    style aggregate_trends fill:#fff9c4,stroke:#333,stroke-width:1px
+    style summarize fill:#dcedc8,stroke:#333,stroke-width:1px
+    style fact_check_node fill:#f8bbd0,stroke:#333,stroke-width:1px
+    style react_agent_tool fill:#d1c4e9,stroke:#333,stroke-width:1px
