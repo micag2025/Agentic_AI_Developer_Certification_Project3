@@ -74,8 +74,8 @@ All fields must be present for validation. Structured, machine-readable JSON ena
 Basic logging and monitoring are implemented via Python’s logging module and node tracing. Future enhancements will include integration with dedicated observability platforms (e.g., LangSmith). TO BE ENCLOSED  
 To productionize the multi-agent system, Observability is a crucial pillar. It enables you to monitor, trace, and debug your application effectively during real-world deployment.
 
-Observability in Multi-Agent Systems
-Below is a complete solution that integrates logging, metrics, and execution tracing to provide observability across your PublicationExplorer system.
+Observability in Multi-Agent Systems  
+Below is a complete solution that integrates logging, metrics, and execution tracing to provide observability across the PublicationExplorer system.
 
 #### Key Observability Features  
 
