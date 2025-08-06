@@ -16,7 +16,7 @@ Requirements:
 
 ## Project Description
 
-This project builds on the multi-agent system developed for Ready Tensor (enclose link), enhancing it for production use by integrating:
+This project builds on the multi-agent system developed for Ready Tensor in the publication [Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X), enhancing it for production use by integrating:
 - **Guardrails:** Input/output validation, prompt protection, and structured response constraints.
 - **Observability:** Logging, feedback capture, and instrumentation.
 - **Deployment:** Streamlit-based app, Docker support, and cloud hosting options.
