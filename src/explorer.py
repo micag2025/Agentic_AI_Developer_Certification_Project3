@@ -22,8 +22,13 @@ from paths import SRC_DIR
 import json
 from datetime import datetime
 
-OUTPUT_DIR = Path("outputs")
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+#OUTPUT_DIR = Path("outputs")
+#OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+PROFILES_DIR = Path("outputs/profiles")
+PROFILES_DIR.mkdir(parents=True, exist_ok=True)
+COMPARISONS_DIR = Path("outputs/comparisons")
+COMPARISONS_DIR.mkdir(parents=True, exist_ok=True)
 
 LOGS_DIR = Path("logs")
 LOGS_DIR.mkdir(parents=True, exist_ok=True)
@@ -62,7 +67,8 @@ def save_validated_profile(profile: dict, name: str) -> str:
         str: Path to saved file.
     """
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    file_path = OUTPUT_DIR / f"validated_profile_{name}_{timestamp}.json"
+    #file_path = OUTPUT_DIR / f"validated_profile_{name}_{timestamp}.json"
+    file_path = PROFILES_DIR / f"validated_profile_{name}_{timestamp}.json"
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(profile, f, indent=2)
     #print(f"✅ Saved validated profile to {file_path}")

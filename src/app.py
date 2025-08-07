@@ -5,6 +5,8 @@
 Streamlit UI for comparing scientific publications.
 """
 
+# 🧠 STREAMLIT APP FOR PUBLICATION COMPARATOR
+
 import os
 import json
 from datetime import datetime
@@ -13,61 +15,104 @@ from pathlib import Path
 
 import streamlit as st
 from dotenv import load_dotenv
-src_dir = Path("src")
-from paths import SRC_DIR
-from explorer import PublicationExplorer
-#from paths import SAMPLE_PUBLICATION_DIR, OUTPUTS_DIR
-from src.paths import SAMPLE_PUBLICATION_DIR, OUTPUTS_DIR
 
-# Load environment variables
+from explorer import PublicationExplorer
+from src.paths import SAMPLE_PUBLICATION_DIR, COMPARISONS_DIR, OUTPUTS_DIR, LOGS_DIR, PROFILES_DIR
+
+# 🌍 Load .env configuration
 load_dotenv()
 
-# Load API keys
+# 🔐 API keys
 openai_key = os.getenv("OPENAI_API_KEY", "")
 tavily_key = os.getenv("TAVILY_API_KEY", "")
 
-# Streamlit configuration
+# 📱 Streamlit UI Setup
 st.set_page_config(page_title="Publication Comparator", layout="wide")
-st.title("📊 Scientific Publication Comparator")
+#st.title("📊 Scientific Publication Comparator")
+st.title("📊 AI-Powered Ready Tensor Publication Comparator")
+st.markdown("""
+Simply select two `.txt` publication files and a query type to compare:
 
-# Sidebar: API Key status
+- Tools  
+- Tasks  
+- Datasets  
+- Evaluation Methods  
+- Results  
+
+---
+
+🧠 **The backend ensures**:
+- Structured extraction  
+- Robust validation  
+- Traceable output
+""")
+
+
+# 📂 Sidebar Info
 with st.sidebar:
-    st.subheader("🔐 API Keys")
-    st.write("✅ OPENAI_API_KEY loaded." if openai_key else "❌ OPENAI_API_KEY not found.")
-    st.write("✅ TAVILY_API_KEY loaded." if tavily_key else "❌ TAVILY_API_KEY not found.")
-    if openai_key:
-        st.text(f"OPENAI: {openai_key[:5]}{'*' * (len(openai_key) - 10)}{openai_key[-5:]}")
-    if tavily_key:
-        st.text(f"TAVILY: {tavily_key[:5]}*****")
+    st.markdown("## 🤖 About this App")
+    st.markdown("""
+This AI-powered comparison tool uses:
 
-# Load publication files
+- 🔗 **LangChain** for LLM orchestration  
+- 💬 **OpenAI** for LLM completions  
+- 🔎 **Tavily** for web-based fact checks  
+- 🖥 **Streamlit** for interactive visualization
+
+---
+### 📁 Output Locations
+- 🧪 Validated profiles → `outputs/profiles/`
+- 🔄 Comparisons → `outputs/comparisons/`
+- 📝 Logs → `logs/`
+
+---
+""")
+
+    # ⬇️ Download buttons
+    #profiles_dir = OUTPUTS_DIR / "profiles"
+    profiles_dir = PROFILES_DIR
+    comparisons_dir = COMPARISONS_DIR
+    logs_dir = LOGS_DIR
+
+    latest_profile = sorted(profiles_dir.glob("validated_profile_pub*.json"), reverse=True)
+    if latest_profile:
+        with open(latest_profile[0], "rb") as f:
+            st.download_button("⬇️ Download Latest Validated Profile", f, file_name=latest_profile[0].name)
+
+    latest_cmp = sorted(comparisons_dir.glob("comparison_*.json"), reverse=True)
+    if latest_cmp:
+        with open(latest_cmp[0], "rb") as f:
+            st.download_button("⬇️ Download Latest Comparison", f, file_name=latest_cmp[0].name)
+
+    latest_log = sorted(logs_dir.glob("*.log"), reverse=True)
+    if latest_log:
+        with open(latest_log[0], "rb") as f:
+            st.download_button("⬇️ Download Latest Log", f, file_name=latest_log[0].name)
+
+# 📄 Load publications
 pub_dir = Path(SAMPLE_PUBLICATION_DIR)
 pub_files = sorted(f.name for f in pub_dir.glob("*.txt"))
-pub_file_options = [""] + pub_files  # Empty default
+pub1 = st.selectbox("Select Publication 1", [""] + pub_files, key="pub1")
+pub2 = st.selectbox("Select Publication 2", [""] + pub_files, key="pub2")
 
-pub1 = st.selectbox("Select Publication 1", pub_file_options, index=0, key="pub1")
-pub2 = st.selectbox("Select Publication 2", pub_file_options, index=0, key="pub2")
-
-# Query selection with empty default
+# 🧠 Query Selection
 query_options = [""] + [
     "Tool Usage", "Evaluation Methods", "Task Types", "Datasets", "Results", "Other (custom)"
 ]
-query_choice = st.selectbox("Select a query type", query_options, index=0)
+query_choice = st.selectbox("Select a query type", query_options)
 
-# Handle user query input
-if query_choice == "":
-    user_query = ""
-elif query_choice == "Other (custom)":
+user_query = ""
+if query_choice == "Other (custom)":
     user_query = st.text_input("Type your custom query:")
-else:
+elif query_choice:
     user_query = query_choice
 
-# Comparison logic
+# 🚀 Comparison Trigger
 if st.button("🚀 Run Comparison"):
     if not pub1 or not pub2:
         st.warning("Please select both publications before running the comparison.")
     elif not user_query:
-        st.warning("Please select or enter a valid query before running the comparison.")
+        st.warning("Please enter or select a valid query.")
     else:
         explorer = PublicationExplorer()
         state = {
@@ -85,12 +130,10 @@ if st.button("🚀 Run Comparison"):
             "count": 0
         }
 
-        #result = explorer.graph.invoke(state)
         with st.spinner("🔍 Processing publications... This may take a moment."):
             result = explorer.graph.invoke(state)
 
-
-        # Display results
+        # ✅ Display Results
         st.subheader("✅ Summary")
         st.text_area("Summary", result.get("summary", "[No summary]"), height=300)
 
@@ -100,46 +143,55 @@ if st.button("🚀 Run Comparison"):
         with st.expander("🧠 Enrichment"):
             st.text_area("ReAct Agent Output", result.get("extra_info", "[No enrichment]"), height=300)
 
-        # Save results
+        # 📝 Save Results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        base_filename = f"comparison_{Path(pub1).stem}_vs_{Path(pub2).stem}_{timestamp}"
-        output_json_path = Path(OUTPUTS_DIR) / f"{base_filename}.json"
-        output_html_path = Path(OUTPUTS_DIR) / f"{base_filename}.html"
+        base_name = f"comparison_{Path(pub1).stem}_vs_{Path(pub2).stem}_{timestamp}"
+        json_path = COMPARISONS_DIR / f"{base_name}.json"
+        html_path = COMPARISONS_DIR / f"{base_name}.html"
 
         try:
-            # Save JSON
-            with open(output_json_path, "w", encoding="utf-8") as f:
+            with open(json_path, "w", encoding="utf-8") as f:
                 json.dump(result, f, indent=2, ensure_ascii=False)
 
-            # Save HTML
-            html_content = f"""
+
+            # Save HTML report
+            html_report = f"""
             <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <title>Comparison Report - {escape(pub1)} vs {escape(pub2)}</title>
-                <style>
-                    body {{ font-family: Arial, sans-serif; margin: 2rem; }}
-                    h1 {{ color: #2a4d69; }}
-                    h2 {{ color: #4b86b4; }}
-                    pre {{ background: #f4f4f4; padding: 1em; border-radius: 5px; overflow-x: auto; }}
-                </style>
-            </head>
+            <html>
+            <head><meta charset="UTF-8"><title>Comparison</title></head>
             <body>
-                <h1>📊 Scientific Publication Comparison</h1>
+                <h1>📊 Comparison</h1>
                 <p><strong>Query:</strong> {escape(user_query)}</p>
-                <h2>✅ Summary</h2>
-                <pre>{escape(result.get("summary", "[No summary]"))}</pre>
-                <h2>📘 Fact Check</h2>
-                <pre>{escape(result.get("fact_check", "[No fact check]"))}</pre>
-                <h2>🧠 Enrichment</h2>
-                <pre>{escape(result.get("extra_info", "[No enrichment]"))}</pre>
+                <h2>✅ Summary</h2><pre>{escape(result.get("summary", "[No summary]"))}</pre>
+                <h2>📘 Fact Check</h2><pre>{escape(result.get("fact_check", "[No fact check]"))}</pre>
+                <h2>🧠 Enrichment</h2><pre>{escape(result.get("extra_info", "[No enrichment]"))}</pre>
             </body>
             </html>
             """
-            with open(output_html_path, "w", encoding="utf-8") as f:
-                f.write(html_content)
+            with open(html_path, "w", encoding="utf-8") as f:
+                f.write(html_report)
 
-            st.success(f"📝 Results saved:\n• {output_json_path.name}\n• {output_html_path.name}")
+            # Get latest validated profiles
+            #profile_files = sorted((OUTPUTS_DIR / "profiles").glob("validated_profile_pub*.json"), reverse=True)
+            profile_files = sorted((PROFILES_DIR).glob("validated_profile_pub*.json"), reverse=True)
+            latest_profiles = [p.name for p in profile_files[:2]]  # pub1 and pub2
+
+            # Get latest log
+            log_files = sorted((Path("logs")).glob("*.log"), reverse=True)
+            latest_log = log_files[0].name if log_files else "No log file found"
+
+            # Display success message
+            st.success(
+                f"📝 Results saved:\n"
+                f"• 🧪 Comparison JSON: `{json_path.name}`\n"
+                f"• 📄 Comparison HTML: `{html_path.name}`\n"
+                f"• ✅ Validated Profiles: `{', '.join(latest_profiles)}`\n"
+                f"• 🗒 Log File: `{latest_log}`"
+            )
+
         except Exception as e:
             st.error(f"❌ Failed to save results: {e}")
+
+            #st.success(f"📝 Results saved:\n• {json_path.name}\n• {html_path.name}")
+        #except Exception as e:
+            #st.error(f"❌ Failed to save results: {e}")

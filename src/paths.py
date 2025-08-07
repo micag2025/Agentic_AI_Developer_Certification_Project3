@@ -22,14 +22,23 @@ except NameError:
 DATA_DIR = ROOT_DIR / "data"
 SAMPLE_PUBLICATION_DIR = DATA_DIR / "sample_publications"
 OUTPUTS_DIR = ROOT_DIR / "outputs"
+
+PROFILES_DIR = OUTPUTS_DIR / "profiles"
+COMPARISONS_DIR = OUTPUTS_DIR / "comparisons"
+
 #PUBLICATION_FPATH = DATA_DIR / "project_1_publications.json"
 DOCS_DIR = ROOT_DIR / "docs"
 SRC_DIR = ROOT_DIR / "src"
 RAILS_DIR = SRC_DIR / "rails"
+
 # Convert to str for os compatibility
 DATA_DIR = str(DATA_DIR)
 SAMPLE_PUBLICATION_DIR = str(SAMPLE_PUBLICATION_DIR)
 OUTPUTS_DIR = str(OUTPUTS_DIR)
+
+#PROFILES_DIR = str(PROFILES_DIR)
+#COMPARISONS_DIR = str(COMPARISONS_DIR)
+
 #PUBLICATION_FPATH = str(PUBLICATION_FPATH)
 DOCS_DIR = str(DOCS_DIR)
 #print(f"[DEBUG] ROOT_DIR resolved to: {ROOT_DIR}")
@@ -47,5 +56,7 @@ if __name__ == "__main__":
     print(f"SAMPLE_PUBLICATION_DIR: {SAMPLE_PUBLICATION_DIR}")
     print(f"DOCS_DIR: {DOCS_DIR}")
     print(f"LOGS_DIR: {LOGS_DIR}")
+    print(f"PROFILES_DIR:{PROFILES_DIR}")
+    print(f"COMPARISONS_DIR: {COMPARISONS_DIR}")      
     #print(f"PUBLICATION_FPATH: {PUBLICATION_FPATH}")
    
