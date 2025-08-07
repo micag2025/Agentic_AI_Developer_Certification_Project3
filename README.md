@@ -1,9 +1,27 @@
 # Agentic AI Developer Certification: Productionizing LangGraph-Orchestrated Research Assistant for Ready Tensor
 
-This repository is part of the **Agentic AI Developer Certification program** by [Ready Tensor](https://www.readytensor.ai).
-It is based on the following publications:
-- **Agentic AI Developer Certification: Productionizing LangGraph-Orchestrated Research Assistant for Ready Tensor**
-- **[Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X)**  
+This repository is part of the **Agentic AI Developer Certification program** by [Ready Tensor](https://www.readytensor.ai) and it is linked to the publication **Agentic AI Developer Certification: Productionizing LangGraph-Orchestrated Research Assistant for Ready Tensor**.
+
+
+## Project Description
+
+The multi-agent system (prototype) developed in the publication [Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X) has been transformed into a production-grade AI application — tested, safe, user-ready, and portfolio-worthy (into a production-ready application that meets professional software standards). Thus, the objective of this project is to make ready the existing agentic AI system (multi-agent system) for real-world use by enhancing it with capabilities such as 
+_Production Readiness (Transform the prototype into a robust, deployable system), _Quality Assurance_ (Implement comprehensive testing strategies for multi-agent workflows), _Security & Safety_ (Add guardrails, input validation, and safety mechanisms), User Experience (Create an intuitive, user-friendly interface_, _Operational Excellence_ (Integrate monitoring, logging, and resilience features) and _Documentation_ (Produce clear technical documentation for maintainability and handoff). 
+ Focus on stability, safety, and clarity. The goal is to make the existing system presented in Module2 robust, trustworthy, and easy to use, including testing, guardrails, resilience, and documentation — in the context of the specific project.
+
+
+
+
+This project builds on the multi-agent system developed in the publication [Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X), enhancing it for production use by integrating:
+- **Guardrails:** Input/output validation, prompt protection, and structured response constraints.
+- **Observability:** Logging, feedback capture, and instrumentation.
+- **Deployment:** Streamlit-based app, Docker support, and cloud hosting options.
+- **Documentation:** Limitations, usage guides, walkthroughs, and safety considerations.
+
+This is an AI-powered Streamlit web app that allows users to compare the content of two scientific publications, available in a sample Ready Tensor dataset, side-by-side using natural language queries. Powered by LangChain, LangGraph, and OpenAI APIs, it automates the extraction of key attributes such as tools, datasets, evaluation methods, and results from publications. The system supports visual flowchart generation with Mermaid and Graphviz, handles publication profiling, trend aggregation, fact-checking, and contextual enrichment via external search tools. It follows secure development practices using .env for API keys, includes modular design for testability, and provides Mermaid and Graphviz diagrams for transparent orchestration logic.  
+
+This project is part of the Agentic AI Developer Certification Program, demonstrating the use of agent-based workflows for real-world tasks such as document comparison, summarization, fact-checking and enrichment to be used by Ready Tensor Users, Developers/Engineers and Enterprises/Institutions.
+
 
 This project demonstrates how to enhance a multi-agent system with robustness, safety, and deployment features, reflecting a full lifecycle from ideation to production.
 
@@ -12,15 +30,6 @@ Requirements:
 - Includes detailed setup, deployment, and usage documentation  
 - Demonstrates security measures and monitoring capabilities  
 - Provides working UI application with clear user workflows  
-
-
-## Project Description
-
-This project builds on the multi-agent system developed for Ready Tensor in the publication [Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X), enhancing it for production use by integrating:
-- **Guardrails:** Input/output validation, prompt protection, and structured response constraints.
-- **Observability:** Logging, feedback capture, and instrumentation.
-- **Deployment:** Streamlit-based app, Docker support, and cloud hosting options.
-- **Documentation:** Limitations, usage guides, walkthroughs, and safety considerations.
 
 The repository demonstrates best practices for agentic AI development, from initial design to real-world deployment.
 
