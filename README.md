@@ -87,7 +87,7 @@ Below is a complete solution that integrates logging, metrics, and execution tra
 | Tracing         | `uuid` session ID + node info        | Track LLM invocation paths & failures    |
 
 #### Step-by-Step Implementation  
-1. Install Logging Tools    
+1. Install `Logging Tools`    
 2. Create logger.py  
 
 Enhancements to Include
