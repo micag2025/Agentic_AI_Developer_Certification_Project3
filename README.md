@@ -120,6 +120,7 @@ Comprehensive documentation is provided, including:
 /Agentic_AI_Developer_Certification_Project3-main
 ├── LICENSE
 ├── README.md                  # Project overview and instructions
+├── deployment.md                 # Project overview and instructions
 ├── requirements-test.txt      # List of packages needed for development and testing
 ├── requirements.txt           # Project dependencies / # Example environment file storing secret API keys
 ├── .gitignore        	       # This file specifies the files and folders that should be ignored by Git.
@@ -145,7 +146,7 @@ Comprehensive documentation is provided, including:
 │   └── comparisons/      ← Comparison results (HTML + JSON)
 │       ├── comparison_pub1_vs_pub2_*.json
 │       └── comparison_pub1_vs_pub2_*.html
-├── src/                                # This directory holds the source code for the project. It is further divided into various subdirectories:
+├── src/                                # This directory holds the source code for the project. 
 │   ├── app.py                          # Main Streamlit App
 │   ├── explorer.py                     # LLM-based publication comparison engine
 │   ├── generate_flowchart_graphviz.py  # Generates a Graphviz PNG diagram of the LangGraph orchestration flow
