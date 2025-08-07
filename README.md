@@ -280,7 +280,24 @@ You’re logging like a production-grade system:
 You're capturing both Raw: model responses and the Validated: subset. 
 
 ### Example Deployment	Streamlit Cloud, Docker, or CLI runner  
-TO BE ENCLOSED    
+
+### Streamlit App Example
+🖥️ _Launch the UI_
+```
+streamlit run src/app.py
+```
+📘 _Example Updated Streamlit Interface User   
+
+
+🔍 _Example: Side-by-Side Comparison_  
+![Streamlit comparison example](examples_screens/5_Screenshot_Streamlit_example_usage1.jpeg)
+
+📋 Profile Extraction
+![Extracted attributes per publication](examples_screens/6_Screenshot_Streamlit_example_usage1_processing.jpeg)
+
+📈 Trend Analysis
+![Trend extraction UI](examples_screens/7_Screenshot_Streamlit_example_outputs_example_usage1.jpeg)
+
 
 ### Example Documentation	README, screenshots, docstrings, diagram  
 TO BE ENCLOSED    
