@@ -286,17 +286,57 @@ You're capturing both Raw: model responses and the Validated: subset.
 ```
 streamlit run src/app.py
 ```
-📘 _Example Updated Streamlit Interface User   
-
+📘 _Example Updated Streamlit Interface User and   
+![examples_screens/1_Screenshot_improved_initial_StreamLit_interface.jpeg](examples_screens/1_Screenshot_improved_initial_StreamLit_interface.jpeg)
 
 🔍 _Example: Side-by-Side Comparison_  
-![Streamlit comparison example](examples_screens/5_Screenshot_Streamlit_example_usage1.jpeg)
+![examples_screens/2_Screenshot_improved_Streamlit_example_usage1.jpeg](examples_screens/2_Screenshot_improved_Streamlit_example_usage1.jpeg)
 
-📋 Profile Extraction
-![Extracted attributes per publication](examples_screens/6_Screenshot_Streamlit_example_usage1_processing.jpeg)
+📁 Example: Output Summary in the UI message  
+![examples_screens/5_Screenshot_improved_message_results_saved_example_usage1.jpeg](examples_screens/5_Screenshot_improved_message_results_saved_example_usage1.jpeg)  
 
-📈 Trend Analysis
-![Trend extraction UI](examples_screens/7_Screenshot_Streamlit_example_outputs_example_usage1.jpeg)
+> _Note_ ✅ Changes Applied  
+1. 📁 Clear Location Indicators in Sidebar:  
+- Where comparison results are saved (outputs/comparisons/)  
+- Where validated profiles are saved (outputs/profiles/)    
+- Where logs are stored (logs/)  
+
+2. ⬇️ Download Buttons:  
+- Download the latest validated profile  
+- Download the latest comparison JSON  
+- Download the latest log file
+
+Add `File Links` (`Download Buttons`) to let users download the latest validated profile or log file from the interface
+
+
+Modified version of the app.py with clear messages in the Streamlit interface that:
+
+✅ Inform users:  
+📂 Where validated profiles are saved (JSON in outputs/)  
+📁 Where logs are stored (in .log format in logs/)  
+
+This version includes a section at the top of the sidebar with helpful information about storage:
+
+all saved outputs (comparison JSON + HTML, validated profiles, and logs) in the UI message
+
+add a kind of introductory information to enhance clarity and sets expectations for the user.  💡 Result in the Streamlit Interface:
+This will appear as a well-structured paragraph with bullet points and horizontal divider (---), helping orient the user before they start interacting with the UI.  
+
+update the `app.py` according to the requirement toReplace the sidebar display of API keys with an informative "About this App" section that outlines the stack being used (OpenAI, LangChain, Streamlit), and do not expose API keys or mask them.
+
+revised and production-secure version, keeping all your current logic and modifying just the sidebar contentThese have now been removed. This is a best practice because:  
+- Even partial API keys can be scraped or leaked  
+- It serves no purpose for most end users
+
+✅ the  app remains functional
+Keys are still loaded via os.getenv() using .env  
+The app logic (PublicationExplorer()) continues to use them under the hood  
+Only the UI is hardened  
+
+To modify your app.py so that it shows "About this App" instead of exposing sensitive API keys (OPENAI_API_KEY, TAVILY_API_KEY), you should:  
+Hide or remove any Streamlit output of environment variables (like st.write(os.getenv("OPENAI_API_KEY"))).  
+Add a clean "About this App" section with markdown to display the technologies used.  
+
 
 
 ### Example Documentation	README, screenshots, docstrings, diagram  
