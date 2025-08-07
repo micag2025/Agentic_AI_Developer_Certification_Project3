@@ -100,7 +100,20 @@ Comprehensive documentation is provided, including:
 - Docstrings in code
 - Architectural diagrams (Mermaid, Graphviz)
 
-  
+### 🔁 How the Multi-Agent Workflow Was Improved
+
+| Feature              | Before                         | After                                  |
+| -------------------  | -------------------------------| ---------------------------------------- |
+| Guardrails           | ❌ None                        | ✅ Included .rail schema with fallback |
+|Logging               | ⚠️ Basic	                     | ✅ Structured log with timestamps + directory  |
+| Output Separation    | ❌ Mixed                       | ✅ outputs/profiles/, outputs/comparison/   |
+|Validation            | ❌ Ad-hoc	                    | ✅ Schema-driven, strict validation |
+| Resilience           |❌ Fragile                     | ✅ Robust with safe fallbacks and logs |
+|Deployment            | ❌ Prototype	                | ✅ Docker + cloud ready|
+| Interface            |⚠️ Raw API key in UI           | ✅ Clean sidebar info only |
+| Documentation        |⚠️ Incomplete                  | ✅ README.md, deployment.md, code docstrings |
+
+ 
 ## Repository Structure  
 
 ```text
