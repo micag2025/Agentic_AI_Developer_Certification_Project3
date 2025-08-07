@@ -120,7 +120,7 @@ Comprehensive documentation is provided, including:
 /Agentic_AI_Developer_Certification_Project3-main
 ├── LICENSE
 ├── README.md                  # Project overview and instructions
-├── deployment.md                 # Project overview and instructions
+├── deployment.md                 # Deployment guide to deploy the application in different environment  
 ├── requirements-test.txt      # List of packages needed for development and testing
 ├── requirements.txt           # Project dependencies / # Example environment file storing secret API keys
 ├── .gitignore        	       # This file specifies the files and folders that should be ignored by Git.
