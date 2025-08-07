@@ -2,15 +2,13 @@
 
 ## TAGS: AAIDC, AAIDC-M3, Agentic AI, Multi-Agent Systems, AI Agents, Guardrails, Production Systems, Resilience, Security, Testing, UI, API Design, Deployment, Streamlit, Streamlit Cloud, LangChain, LangGraph (Agent), AI Orchestration, Pytest(?)
 
-## Author : Michela Agostini, others? 
-
 ## Models : Github
 
 ## Dataset: project_1_publications.json
 
 ## TL;DR
 The multi-agent system developed in the Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor (from Module 2) has been transformed it into a production-grade AI application — tested, safe, user-ready, and portfolio-worthy. This project is based on the multi-agent system built in the Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor (from Module 2). The objective is to take the Module 2 multi-agent prototype and transform it into a production-ready application that meets professional software standards. Thus, the objective of this project is to demonstrate the ability to prepare an agentic AI system for real-world use by enhancing it with the following capabilities:  
-- Production Readiness: Transform your prototype into a robust, deployable system    
+- Production Readiness: Transform the prototype into a robust, deployable system    
 - Quality Assurance: Implement comprehensive testing strategies for multi-agent workflows    
 - Security & Safety: Add guardrails, input validation, and safety mechanisms    
 - User Experience: Create an intuitive, user-friendly interface    
@@ -23,7 +21,7 @@ Required Components:
 
 ✅ _Comprehensive Testing Suite_ : Unit tests for individual agent functions and tools, Integration tests for agent-to-agent communication, End-to-end system tests for complete workflows, Test coverage of at least 70% for core functionality.  
 ✅ _Safety & Security Guardrails_: Input validation and sanitization, Output filtering and content safety measures, Error handling with graceful degradation, Logging for compliance and debugging  
-✅ _User Interface_: Interactive web application using Gradio, Streamlit, or similar framework, Intuitive design that abstracts away technical complexity, Clear error messages and user guidance
+✅ _User Interface_: Interactive web application using  Streamlit Intuitive design that abstracts away technical complexity, Clear error messages and user guidance
 ✅ _Resilience & Monitoring_:Retry logic with exponential backoff for failed tool or LLM calls, Timeout handling to prevent long-running or stalled workflows, Basic loop limits or iteration caps to avoid infinite cycles, Graceful handling of agent failures and timeouts, Logging of failures, retries, and fallback events for debugging and traceability
 > _Note_: just choose the ones most relevant to the system’s risks. The goal is to handle failure gracefully and avoid silent breakage.  
 
