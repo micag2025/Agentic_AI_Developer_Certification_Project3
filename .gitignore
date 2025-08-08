@@ -1,24 +1,32 @@
+# Python cache
 __pycache__/
 
-
+# Virtual environments
 .venv/
 env/
 venv/
+
+# Environment configuration
 *.env
 
-
+# IDE/editor config
 .vscode/
 
 
+# Streamlit generated data
 .streamlit/
 **/.streamlit/
 
-.env
+# Output directories (auto-generated)
+outputs/profiles/
+outputs/comparison/
 
-outputs/
+# Logs and temporary files
+logs/
 *.log
 *.tmp
 
+# Jupyter artifacts
 .ipynb_checkpoints/
 
 
