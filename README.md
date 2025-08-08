@@ -289,11 +289,11 @@ streamlit run src/app.py
 
 
 ### 📊 Technologies Used  
-- Streamlit – UI Framework    
-- LangChain – LLM Orchestration    
-- OpenAI – LLM backend      
-- Tavily – Web search API    
-- Guardrails – Output validation    
+- [Streamlit](https://docs.streamlit.io/) – UI Framework      
+- [LangChain](https://www.langchain.com/langgraph) – LLM Orchestration      
+- [OpenAI](https://platform.openai.com/account/api-keys) – LLM backend        
+- [Tavily](https://www.tavily.com/) – Web search API    
+- [Guardrails](https://hub.guardrailsai.com/)  – Output validation      
 
 
 ### 🔒 Security  
