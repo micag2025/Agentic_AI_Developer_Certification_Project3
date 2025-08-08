@@ -162,8 +162,10 @@ Comprehensive documentation is provided, including:
 
 
 ## Prerequisites
-* Python 3.10+
-* An [Openai API](https://platform.openai.com/account/api-keys) key and a [Tavily API](https://www.tavily.com/) key (OPENAI_API_KEY and TAVILY_API_KEY environment variable) 
+- Python 3.10+  
+- [Openai API key](https://platform.openai.com/account/api-keys)  
+- [Tavily API key](https://www.tavily.com/)  
+ (set as OPENAI_API_KEY and TAVILY_API_KEY environment variables)    
 
 
 ## Installation
@@ -178,9 +180,8 @@ Comprehensive documentation is provided, including:
    pip install -r requirements.txt
    # For testing:
    pip install -r requirements-test.txt
-     ```
-
-   > _Note_ Test dependencies are keeping separated from runtime dependencies (`requirements.txt`) since production systems don't need the test tools. Therefore, by using a `requirements-test.txt` , it is more clear what is needed during development and testing. The `requirements-test.txt` file contains a list of packages needed for testing.
+     ```  
+   > _Note_ Test dependencies are separated from runtime dependencies.   
   
 3. **Set up environment variables**  
   Copy `.env.example` to .env and add your OpenAI and Tavily API keys.
@@ -195,36 +196,33 @@ Comprehensive documentation is provided, including:
 ### Running the Application
 
 1. Ensure `project_1_publications.json` is present in `data/`.
-  > _Note:_ The `sample dataset` is available in the "Datasets" section of the related publication.  
+  > _Note:_ The `sample dataset` is available in the "Datasets" section of the related publication.
+  
 2. Launch the [Streamlit](https://docs.streamlit.io/) app:
    ```bash
    streamlit run src/app.py
+   ```
           
 3. Open your browser to the local Streamlit URL (usually http://localhost:8501).        
 
 You can now interact with the LangGraph-Orchestrated Research Assistant for Ready Tensor!  
 
-📁 Output Locations  
-  - 📂 Validated Profiles: outputs/profiles/*.json  
-  - 📂 Comparison Reports: outputs/comparison/*.json and .html  
-  - 📁 Log Files: logs/*.log  
-💡 You can download the latest validated profile and log file directly from the Streamlit interface.
+**Output Locations**  
+  - 📂 Validated Profiles: `outputs/profiles/*.json`  
+  - 📂 Comparison Reports: `outputs/comparison/*.json and .html`    
+  - 📁 Log Files: `logs/*.log`    
+You can download the latest validated profile and log file directly from the Streamlit interface.
 
+**Debugging Guardrails Integration**:  
+Run the app and monitor the terminal for raw vs. validated outputs. The pipeline will:  
+- Trigger the PublicationExplorer  
+- Invoke analyze_pub1 and analyze_pub2  
+- Print both raw and validated outputs in the terminal  
 
+## Usage Examples  
+### Example: Validated Profile (Guardrails-AI)
+Sample output in `outputs/`:
 
-To debug `Guardrails` integration, run the app as above and monitor the terminal for raw vs. validated outputs.
-
-This will:  
-- Trigger the PublicationExplorer pipeline
-- Automatically invoke analyze_pub1 and analyze_pub2  
-- Print the raw vs. validated outputs in the terminal (because of the print() statements)
-
-
-## Usage Examples   
-### Example validated profile guardrails-ai
-The outputs can be found in the directory layout outputs/ 
-
-Sample validated by Guardrails output:
 ```json
 {
   "tools": ["LangGraph", "Microsoft AutoGen"],
@@ -234,124 +232,61 @@ Sample validated by Guardrails output:
   "results": []
 }
 ```
-Explanation:
-If evaluation_methods is empty, it indicates the publication lacks evaluation details or the model did not extract any.
+If `evaluation_methods` is empty, it means the publication lacks evaluation details or the model did not extract any.  
+Guardrails validated the output using the `.rail schema`. The output matched the expected format, even if some fields were empty.
 
-Reasons may include:
-No evaluation section in the text
-LLM extraction limitations
-Preprocessing/truncation
-Schema-constrained validation
- - Guardrails validated it using the .rail schema.    
- - The output matched the expected format, even if some fields (like evaluation_methods) were empty — which is allowed.    
+### Example: Observability (Logging, Tracing, Monitoring)     
+Logs can be found in `/logs`  
 
+Your (The) system now logs like a production-grade application:  
 
-### Example Observability	Python logging, node tracing, monitoring      
-The output can be foung in /logs 
+- **Structured**: Function, line, module, process, thread, etc.  
+- **Informative**: Timestamps, clean tagging (📊, 📈, 📝, 🔍, 🤖)
+- **Validated Output vs Raw**: Captures both model responses and validated subset.  
 
-The logs confirm that your full multi-agent system is running flawlessly with Guardrails + Observability in place. Here's a structured breakdown of what this means and next actions:
+### Example: Deployment (Streamlit Cloud, Docker, CLI)
+**Streamlit Deployment Notes**  
 
-✅ Summary of Log Behavior
-🔐 Guardrails Output (for both publications)
-| Field               | Publication 1                       | Publication 2                            |
-| ------------------ | ------------------------------------ | ---------------------------------------- |
-| tools              | 	["LangGraph", "Microsoft AutoGen"]  |["PyTorch"]                               |
-| evaluation_methods | ❌ Empty → filtered out              | ❌ Empty → filtered out                 |
-| datasets           | ❌ Empty → filtered ou               | ❌ Empty → filtered out                 |
-| task_types         | ✅ Present                           |✅ Present               |
-| results            | ❌ Empty → filtered ou               | ❌ Empty → filtered out                 |
+- Ensure outputs/profiles/, outputs/comparison/, and logs/ directories exist and are writable.  
+- Validated profiles and logs are downloadable via the UI.  
+- For Docker, map local volumes as needed.  
 
-✅ Guardrails successfully removed empty fields from the final validated output, keeping your state clean and safe for downstream processing.
-
-📂 Output Files Created
-bash
-
-outputs/
-├── validated_profile_pub1_20250802_152830.json
-├── validated_profile_pub2_20250802_152831.json
-These contain the validated subset of the original profile—only populated fields.
-
-📈 Graph Execution: All Nodes
-analyze_pub1 → ✅  
-analyze_pub2 → ✅  
-compare → ✅  
-aggregate_trends → ✅    
-summarize → ✅  
-fact_check → ✅  
-react_agent_tool → ✅  
-
-All are clearly logged and show no signs of error or exception.
-
-🔍 Log Output Interpretation
-You’re logging like a production-grade system:
-
-✅ Structured  
-
-- function, line, module, process, thread, etc.
-
-✅ Informative  
-
-- Timestamps  
-
-- Clean tagging: 📊, 📈, 📝, 🔍, 🤖  
-
-✅ Validated Output vs Raw  
-You're capturing both Raw: model responses and the Validated: subset. 
-
-### Example Deployment	Streamlit Cloud, Docker, or CLI runner  
-#### Streamlit Deployment Notes
-
-- Ensure `outputs/profiles/`, `outputs/comparison/`, and `logs/` directories exist and are writable by the app.  
-- Validated profiles and logs are now downloadable via the UI. If deploying in Docker, map local volumes accordingly.  
-
-### Streamlit App Example
-🖥️ _Launch the UI_
+### Streamlit App Example  
+Launch the UI
 ```
 streamlit run src/app.py
 ```
-📘 _Example Updated Streamlit Interface User and   
+**Screenshots:**
+
+📘 Initial Streamlit interface
 ![examples_screens/1_Screenshot_improved_initial_StreamLit_interface.jpeg](examples_screens/1_Screenshot_improved_initial_StreamLit_interface.jpeg)
 
-🔍 _Example: Side-by-Side Comparison_  
+🔍Side-by-side comparison: 
 ![examples_screens/2_Screenshot_improved_Streamlit_example_usage1.jpeg](examples_screens/2_Screenshot_improved_Streamlit_example_usage1.jpeg)
 
-📁 Example: Output Summary in the UI message  
+📁 Output summary in UI:
 ![examples_screens/5_Screenshot_improved_message_results_saved_example_usage1.jpeg](examples_screens/5_Screenshot_improved_message_results_saved_example_usage1.jpeg)  
 
-> _Note_ ✅ Changes Applied  
-1. 📁 Clear Location Indicators in Sidebar:  
-- Where comparison results are saved (outputs/comparisons/)  
-- Where validated profiles are saved (outputs/profiles/)    
-- Where logs are stored (logs/)  
+**Key UI Features:**  
 
-2. ⬇️ Download Buttons:  
-- Download the latest validated profile  
-- Download the latest comparison JSON  
-- Download the latest log file
-
-`File Links` (`Download Buttons`) have been enclosed to let users download the latest validated profile or log file from the interface. Besides, the modified version of the `app.py` has been improved with clear messages in the Streamlit interface that inform users:    
-📂 Where validated profiles are saved (JSON in outputs/)    
-📁 Where logs are stored (in .log format in logs/)    
-
-This version includes a section at the top of the sidebar with helpful information about storage:
-all saved outputs (comparison JSON + HTML, validated profiles, and logs) in the UI message
-
-- A kind of `introductory information` has been enclosed in the Streamlit UI to enhance clarity and sets expectations for the user.  This appears as a well-structured paragraph, helping orient the user before starting interacting with the UI.    
-
-- The `app.py` has been modified so that it shows "About this App"  a clean "About this App" section with markdown to display the technologies used, instead of exposing sensitive API keys (OPENAI_API_KEY, TAVILY_API_KEY). The `app.py` has been updated (according to the requirement) to replace the sidebar display of API keys with an informative `About this App` section that outlines the stack being used (OpenAI, LangChain, Streamlit), and do not expose API keys or mask them. The revised and production-secure version keeps all the current logic of the prototype and what it is been modified is  just the sidebar content. Partial API keys have now been removed. This is a best practice because:    
-  - Even partial API keys can be scraped or leaked    
-  - It serves no purpose for most end users  
-The  app remains however functional.  
+1. **Clear Location Indicators**:    
+    - Where comparison results, validated profiles, and logs are saved.  
+2. **Download Buttons:**
+    - Download the latest validated profile, comparison JSON, or log file.
+3. **Introductory Information:**    
+    - The sidebar provides clear information about storage and outputs.
+4. **About this App:**  
+    - The sidebar includes a clean section outlining the technologies used. Sensitive API keys are never exposed.
 
 
-### Example Documentation	README, screenshots, docstrings, diagram  
+### Example: Documentation (README, Screenshots, Docstrings, Diagrams)
+**Streamlit Interface Enhancements:**  
 
-#### Streamlit Interface Enhancements
+- Sidebar section “About this App” to explain key technologies.  
+- Messages clarify where logs and profiles are saved.  
+- File download buttons for recent outputs.  
+- Improved layout for selecting publications and query types.  
 
-- Added sidebar section “About this App” to explain key technologies.
-- Displayed messages clarifying where logs and profiles are saved.
-- Included file download buttons for latest validated profile and log files.
-- Improved layout for selecting publications and query types.
 
 ### 📊 Technologies Used  
 - Streamlit – UI Framework    
@@ -360,16 +295,17 @@ The  app remains however functional.
 - Tavily – Web search API    
 - Guardrails – Output validation    
 
+
 ### 🔒 Security  
 - API keys are never exposed in the interface.    
 - All results are stored locally in JSON/HTML format.  
 - Logs provide full traceability of the extraction and comparison process.  
+
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 
 ## Contact Information 
-If you encounter bugs, have questions, or would like to request a new feature, please [open an issue](https://github.com/micag2025/Agentic_AI_Developer_Certification_Project3/issues) on this repository.  
-Contributions and feedback are welcome!
+If you encounter bugs, have questions, or would like to request a new feature, please [open an issue](https://github.com/micag2025/Agentic_AI_Developer_Certification_Project3/issues) on this repository.  Contributions and feedback are welcome!  
 
