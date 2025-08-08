@@ -121,10 +121,11 @@ Comprehensive documentation is provided, including:
 ├── LICENSE
 ├── README.md                  # Project overview and instructions
 ├── deployment.md              # Deployment guide for various environments
+├── Dokerfile                  # Instructions for building a Docker image
 ├── requirements-test.txt      # Development and test dependencies
 ├── requirements.txt           # Project dependencies 
-├── .gitignore        	        # Ignored files and folders
-├── .env.example        	      # Example environment file for API keys
+├── .gitignore        	       # Ignored files and folders
+├── .env.example        	     # Example environment file for API keys
 ├── data/
 │   ├── project_1_publications.json  # Sample Ready Tensor dataset
 │   ├── sample_publications/         # Input publication `.txt` files
