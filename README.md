@@ -9,7 +9,7 @@ The multi-agent system (prototype) developed in the publication [Agentic AI Deve
 The objective of this project is to take this existing agentic AI system to the next level, making it ready for real-world use, transforming this into a tested, safe, user-ready production-ready AI application that meets professional standards, (having enclosing) enhancing it for production use by integrating:
 - **Guardrails:** Input/output validation, prompt protection, and structured response constraints.
 - **Observability:** Logging, feedback capture, and instrumentation.
-- **Deployment:** Streamlit-based app, Docker support, and cloud hosting options.(Create an intuitive, user-friendly web interface 
+- **Deployment:** Streamlit-based app, Docker support, and cloud hosting options.Create an intuitive, user-friendly web interface _User Interface_: Interactive web application using  Streamlit Intuitive design that abstracts away technical complexity, Clear error messages and user guidance
 - **Documentation:** Limitations, usage guides, walkthroughs, and safety considerations.
 
 This project demonstrates how to enhance a multi-agent system with robustness, safety, and deployment features, reflecting a full lifecycle from ideation to production. The repository demonstrates best practices for agentic AI development, from initial design to real-world deployment.
@@ -99,6 +99,10 @@ Comprehensive documentation is provided, including:
 - Screenshots of the Streamlit interface
 - Docstrings in code
 - Architectural diagrams (Mermaid, Graphviz) tO BE ENCLOSED?
+
+_Professional Documentation_:  
+- High-level system overview including purpose, architecture, and key components, 
+- Deployment and configuration guide with setup, instructions (README, .env.sample, etc.), API or interface specifications and expected input/output formats (if applicable),
 
 ### 🔁 How the Multi-Agent Workflow Was Improved
 
@@ -320,37 +324,19 @@ streamlit run src/app.py
 - Download the latest comparison JSON  
 - Download the latest log file
 
-Add `File Links` (`Download Buttons`) to let users download the latest validated profile or log file from the interface
-
-
-Modified version of the app.py with clear messages in the Streamlit interface that:
-
-✅ Inform users:  
-📂 Where validated profiles are saved (JSON in outputs/)  
-📁 Where logs are stored (in .log format in logs/)  
+`File Links` (`Download Buttons`) have been enclosed to let users download the latest validated profile or log file from the interface. Besides, the modified version of the `app.py` has been improved with clear messages in the Streamlit interface that inform users:    
+📂 Where validated profiles are saved (JSON in outputs/)    
+📁 Where logs are stored (in .log format in logs/)    
 
 This version includes a section at the top of the sidebar with helpful information about storage:
-
 all saved outputs (comparison JSON + HTML, validated profiles, and logs) in the UI message
 
-add a kind of introductory information to enhance clarity and sets expectations for the user.  💡 Result in the Streamlit Interface:
-This will appear as a well-structured paragraph with bullet points and horizontal divider (---), helping orient the user before they start interacting with the UI.  
+- A kind of `introductory information` has been enclosed in the Streamlit UI to enhance clarity and sets expectations for the user.  This appears as a well-structured paragraph, helping orient the user before starting interacting with the UI.    
 
-update the `app.py` according to the requirement toReplace the sidebar display of API keys with an informative "About this App" section that outlines the stack being used (OpenAI, LangChain, Streamlit), and do not expose API keys or mask them.
-
-revised and production-secure version, keeping all your current logic and modifying just the sidebar contentThese have now been removed. This is a best practice because:  
-- Even partial API keys can be scraped or leaked  
-- It serves no purpose for most end users
-
-✅ the  app remains functional
-Keys are still loaded via os.getenv() using .env  
-The app logic (PublicationExplorer()) continues to use them under the hood  
-Only the UI is hardened  
-
-To modify your app.py so that it shows "About this App" instead of exposing sensitive API keys (OPENAI_API_KEY, TAVILY_API_KEY), you should:  
-Hide or remove any Streamlit output of environment variables (like st.write(os.getenv("OPENAI_API_KEY"))).  
-Add a clean "About this App" section with markdown to display the technologies used.  
-
+- The `app.py` has been modified so that it shows "About this App"  a clean "About this App" section with markdown to display the technologies used, instead of exposing sensitive API keys (OPENAI_API_KEY, TAVILY_API_KEY). The `app.py` has been updated (according to the requirement) to replace the sidebar display of API keys with an informative `About this App` section that outlines the stack being used (OpenAI, LangChain, Streamlit), and do not expose API keys or mask them. The revised and production-secure version keeps all the current logic of the prototype and what it is been modified is  just the sidebar content. Partial API keys have now been removed. This is a best practice because:    
+  - Even partial API keys can be scraped or leaked    
+  - It serves no purpose for most end users  
+The  app remains however functional.  
 
 
 ### Example Documentation	README, screenshots, docstrings, diagram  
