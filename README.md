@@ -5,8 +5,8 @@ This repository is part of the **Agentic AI Developer Certification program** by
 
 ## Project Description
 
-The multi-agent system (prototype) developed in the publication [Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X)  allows users, such as Ready Tensor Users or Developers, to compare the content of two select scientific publications, side-by-side using natural language queries, LangChain, LangGraph, and OpenAI APIs.   
-The objective of this project is to take this existing agentic AI system to the next level, making it ready for real-world use, thus transforming this into a tested, safe, user-ready, and portfolio-worthy production-ready AI application (that meets professional standards), (having enclosing) enhancing it for production use by integrating:
+The multi-agent system (prototype) developed in the publication [Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X)  allows users (Ready Tensor Users or Developers), to compare the content of two select scientific publications, side-by-side using natural language queries, LangChain, LangGraph, and OpenAI APIs.   
+The objective of this project is to take this existing agentic AI system to the next level, making it ready for real-world use, transforming this into a tested, safe, user-ready production-ready AI application that meets professional standards, (having enclosing) enhancing it for production use by integrating:
 - **Guardrails:** Input/output validation, prompt protection, and structured response constraints.
 - **Observability:** Logging, feedback capture, and instrumentation.
 - **Deployment:** Streamlit-based app, Docker support, and cloud hosting options.(Create an intuitive, user-friendly web interface 
@@ -90,7 +90,7 @@ Enhancements to Include
 
 ### Deployment
 
-The application can be run locally via Streamlit, or deployed to cloud platforms like Streamlit Cloud, Docker, or Hugging Face Spaces. TO BE ENCLOSED    
+The application can be run locally via Streamlit, or deployed to cloud platforms like Streamlit Cloud, Docker, or Hugging Face Spaces. A `deployment.md`has been enclosed to guide the user to deploy the application in different environments. 
 
 ### Documentation (README, screenshots, docstrings, diagram) 
 
@@ -98,7 +98,7 @@ Comprehensive documentation is provided, including:
 - Usage instructions
 - Screenshots of the Streamlit interface
 - Docstrings in code
-- Architectural diagrams (Mermaid, Graphviz)
+- Architectural diagrams (Mermaid, Graphviz) tO BE ENCLOSED?
 
 ### 🔁 How the Multi-Agent Workflow Was Improved
 
@@ -112,7 +112,7 @@ Comprehensive documentation is provided, including:
 |Deployment            | ❌ Prototype	                | ✅ Docker + cloud ready|
 | Interface            |⚠️ Raw API key in UI           | ✅ Clean sidebar info only |
 | Documentation        |⚠️ Incomplete                  | ✅ README.md, deployment.md, code docstrings |
-
+ > _Note_ Before refers to the multi-agent workflow in [Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X)  
  
 ## Repository Structure  
 
