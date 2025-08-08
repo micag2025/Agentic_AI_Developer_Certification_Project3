@@ -1,0 +1,30 @@
+# This Dockerfile is optimized for Streamlit apps and includes best practices:
+# - Installs dependencies before copying the entire source (for build caching).
+# - Exposes the correct port and sets recommended environment variables.
+# - Runs your app from the src/app.py entry point.
+
+
+# Use an official Python runtime as a parent image
+FROM python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy requirements.txt first to leverage Docker cache for dependencies
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the port Streamlit uses
+EXPOSE 8501
+
+# Default environment variables (can be overridden at runtime)
+ENV STREAMLIT_SERVER_PORT=8501 \
+    STREAMLIT_SERVER_ADDRESS=0.0.0.0
+
+# Run the Streamlit app
+CMD ["streamlit", "run", "src/app.py"]
