@@ -1,18 +1,17 @@
 # Agentic AI Developer Certification: Productionizing LangGraph-Orchestrated Research Assistant for Ready Tensor
 
-This repository is part of the **Agentic AI Developer Certification program** by [Ready Tensor](https://www.readytensor.ai) and it is linked to the publication **Agentic AI Developer Certification: Productionizing LangGraph-Orchestrated Research Assistant for Ready Tensor**.
+This repository is part of the **Agentic AI Developer Certification program** by [Ready Tensor](https://www.readytensor.ai) and it is linked to the publication **Agentic AI Developer Certification: Productionizing LangGraph-Orchestrated Research Assistant for Ready Tensor**.  
 
 
-## Project Description
+## Project Description  
 
-The multi-agent system (prototype) developed in the publication [Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X)  allows users (Ready Tensor Users or Developers), to compare the content of two select scientific publications, side-by-side using natural language queries, LangChain, LangGraph, and OpenAI APIs.   
-The objective of this project is to take this existing agentic AI system to the next level, making it ready for real-world use, transforming this into a tested, safe, user-ready production-ready AI application that meets professional standards, (having enclosing) enhancing it for production use by integrating:
-- **Guardrails:** Input/output validation, prompt protection, and structured response constraints.
-- **Observability:** Logging, feedback capture, and instrumentation.
-- **Deployment:** Streamlit-based app, Docker support, and cloud hosting options.Create an intuitive, user-friendly web interface _User Interface_: Interactive web application using  Streamlit Intuitive design that abstracts away technical complexity, Clear error messages and user guidance
+This project builds upon the multi-agent system (prototype) described in the publication [Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X). The objective is to advance this prototype to a fully production-ready, robust, and user-friendly agentic AI system. This involves enhancing it with:  
+
+- **Guardrails:**  Input/output validation, prompt protection, and structured response constraints.
+- **Observability:**  Logging, feedback capture, and instrumentation.
+- **Deployment:** Streamlit-based app, Docker support, and cloud hosting options. An interactive web interface is provided using Streamlit.
 - **Documentation:** Limitations, usage guides, walkthroughs, and safety considerations.
-
-This project demonstrates how to enhance a multi-agent system with robustness, safety, and deployment features, reflecting a full lifecycle from ideation to production. The repository demonstrates best practices for agentic AI development, from initial design to real-world deployment.
+This repository demonstrates how to take a multi-agent system from ideation to production, focusing on robustness, safety, and deployment best practices.  
 
 
 ## Features
@@ -54,65 +53,54 @@ This project demonstrates how to enhance a multi-agent system with robustness, s
 - `datasets`: Benchmarks used  
 - `task_types`: Types of tasks addressed  
 - `results`: Key findings
-- `user query`: DECIDE WHETHER THIS SHOULD BE ENCLOSED OR NOT
-
+- `user query`: DECIDE WHETHER THIS SHOULD BE ENCLOSED OR NOT  
 All fields must be present for validation. Structured, machine-readable JSON enables downstream analytics and reproducibility.
 
 
 ### Observability
 
-Basic logging and monitoring are implemented via Python’s logging module and node tracing. Future enhancements will include integration with dedicated observability platforms (e.g., LangSmith). TO BE ENCLOSED  
-To productionize the multi-agent system, Observability is a crucial pillar becasue it enables  to monitor, trace, and debug the application effectively during real-world deployment.
-
-Observability in Multi-Agent Systems  
-Below is a complete solution that integrates logging, metrics, and execution tracing to provide observability across the LangGraph-Orchestrated Research Assistant for Ready Tensor system.
+Observability is crucial for monitoring, tracing, and debugging the application during (real-world) deployment. Logging and monitoring use Python’s logging module and node tracing. Below is a complete solution that integrates logging and execution tracing to provide observability across the LangGraph-Orchestrated Research Assistant for Ready Tensor system.
 
 #### Key Observability Features  
-
 
 | Feature         | Tool/Technique                       | Purpose                                  |
 | --------------- | ------------------------------------ | ---------------------------------------- |
 | Structured Logs | Python’s `logging` + JSON formatting | Centralized log collection + readability |
-| Metrics         | `prometheus_client` (optional)       | Export request counts, latency, etc.     |
 | Tracing         | `uuid` session ID + node info        | Track LLM invocation paths & failures    |
 
-#### Step-by-Step Implementation  
-1. Install `Logging Tools`    
-2. Create logger.py  
+#### Implementation Steps   
+1. Install Logging Tools.      
+2. Create `logger.py`.    
 
-Enhancements to Include
+#### Enhancements Include:  
 - Structured logging using loguru  
-- Session traceability using uuid  
-- Centralized logs to both console and file  
-- Logging across all major graph nodes  
+- Session traceability via uuid  
+- Centralized logs to console and file  
+- Logging across all major graph nodes    
 
-### Deployment
 
-The application can be run locally via Streamlit, or deployed to cloud platforms like Streamlit Cloud, Docker, or Hugging Face Spaces. A `deployment.md`has been enclosed to guide the user to deploy the application in different environments.   
-Mention only if relevant to deployment setup, such as:  
-- New folders required (e.g. outputs/profiles/, logs/)  
-- File permissions or volume mappings for downloads in Docker/cloud  
-- Environment variable changes for UI behavior (if any)  
+### Deployment  
 
-### Documentation (README, screenshots, docstrings, diagram) 
+The application runs locally via Streamlit, or can be deployed to cloud platforms such as Streamlit Cloud, Docker, or Hugging Face Spaces. See `deployment.md` for deployment instructions.
 
-Comprehensive documentation is provided, including:
-- Usage instructions
-- Screenshots of the Streamlit interface
-- Docstrings in code
-- Architectural diagrams (Mermaid, Graphviz) tO BE ENCLOSED?
+Deployment setup considerations:  
+- Ensure relevant folders exist (e.g., outputs/profiles/, logs/)  
+- Set file permissions or volume mappings for Docker/cloud  
+- Set environment variables as needed for UI behavior    
 
-_Professional Documentation_:  
-- High-level system overview including purpose, architecture, and key components, 
-- Deployment and configuration guide with setup, instructions (README, .env.sample, etc.), API or interface specifications and expected input/output formats (if applicable),
+
+### Documentation  
 
 Comprehensive documentation is provided, including:  
-- **New UI features** or components (e.g. download buttons, explanation sections)  
-- **Changes in layout** or user interaction (e.g. sidebars, success messages)  
-- **User-facing messages** (e.g. where files are saved)  
-- **Any new behavior** that affects user experience (e.g. selecting queries, viewing summaries)  
+- Clear usage instructions (e.g.: Layout changes and new user interactions(e.g. sidebars, success messages),New UI features or components (e.g. download buttons, explanation sections)),  
+- Annotated UI screenshots (Screenshots of the Streamlit interface),
+- Code docstrings, ?? 
+- Architecture diagrams (Architectural diagrams (Mermaid, Graphviz), 
+- Deployment guidance,
+- and details on system features and user interactions to support both developers and end users (e.g.: New UI features (e.g., download buttons, explanation sections), User-facing messages (e.g., file save locations/ where files are saved))  
 
-### 🔁 How the Multi-Agent Workflow Was Improved
+
+### How the Multi-Agent Workflow Was Improved
 
 | Feature              | Before                         | After                                  |
 | -------------------  | -------------------------------| ---------------------------------------- |
@@ -124,7 +112,7 @@ Comprehensive documentation is provided, including:
 |Deployment            | ❌ Prototype	                | ✅ Docker + cloud ready|
 | Interface            |⚠️ Raw API key in UI           | ✅ Clean sidebar info only |
 | Documentation        |⚠️ Incomplete                  | ✅ README.md, deployment.md, code docstrings |
- > _Note_ Before refers to the multi-agent workflow in [Agentic AI Developer Certification: LangGraph-Orchestrated Research Assistant for Ready Tensor](https://app.readytensor.ai/publications/agentic-ai-developer-certification-langgraph-orchestrated-research-assistant-for-ready-tensor-IQBETLgAsJ9X)  
+ > _Note_ Before refers to the workflow in the original publication.  
  
 ## Repository Structure  
 
@@ -132,46 +120,44 @@ Comprehensive documentation is provided, including:
 /Agentic_AI_Developer_Certification_Project3-main
 ├── LICENSE
 ├── README.md                  # Project overview and instructions
-├── deployment.md                 # Deployment guide to deploy the application in different environment  
-├── requirements-test.txt      # List of packages needed for development and testing
-├── requirements.txt           # Project dependencies / # Example environment file storing secret API keys
-├── .gitignore        	       # This file specifies the files and folders that should be ignored by Git.
-├── .env.example        	     # This file specifies the OPEN API keys required.
+├── deployment.md              # Deployment guide for various environments
+├── requirements-test.txt      # Development and test dependencies
+├── requirements.txt           # Project dependencies 
+├── .gitignore        	        # Ignored files and folders
+├── .env.example        	      # Example environment file for API keys
 ├── data/
 │   ├── project_1_publications.json  # Sample Ready Tensor dataset
-│   ├── sample_publications/         # Directory containing input publication `.txt` files
+│   ├── sample_publications/         # Input publication `.txt` files
 │   │   ├── <publication1 .txt>      #     ↳ Each text file represents a single publication 
 │   │   ├── <publication2 .txt> 
-│   │   ├──
 ├── docs/
-│   ├── Untitled diagram _ Mermaid Chart-2025-07-09-115351.png   #  ↳output Mermaid diagram (flowchart) in png
-│   ├── langgraph_flowchart.mmd     #  ↳ output file Mermaid diagram (flowchart)
-│   ├── publication_flowchart.png   #  ↳ output image file Graphiz
+│   ├── Untitled diagram _ Mermaid Chart-2025-07-09-115351.png   # output Mermaid diagram (flowchart) in png
+│   ├── langgraph_flowchart.mmd                                  #  output file Mermaid diagram (flowchart)
+│   ├── publication_flowchart.png                                #  output image file Graphiz
 ├── examples_screens/
-│   ├── <screenshot .jpeg>   # Section of screenshot of example usage of the StreamLit interface 
-│   ├──
-├── logs/                               # Runtime log output (excluded from Git)
+│   ├── <screenshot .jpeg>          # Streamlit interface screenshots
+├── logs/                           # Runtime log output 
 │   └── pipeline.log
-├── outputs/                            # Final validated profiles and comparisons
-│   ├── profiles/         ← Validated profiles (from Guardrails)
+├── outputs/                       # Validated profiles and comparison results
+│   ├── profiles/        
 │   │   └── validated_profile_pub1_*.json
-│   └── comparisons/      ← Comparison results (HTML + JSON)
+│   └── comparisons/      
 │       ├── comparison_pub1_vs_pub2_*.json
 │       └── comparison_pub1_vs_pub2_*.html
-├── src/                                # This directory holds the source code for the project. 
+├── src/                                # Source code
 │   ├── app.py                          # Main Streamlit App
 │   ├── explorer.py                     # LLM-based publication comparison engine
-│   ├── generate_flowchart_graphviz.py  # Generates a Graphviz PNG diagram of the LangGraph orchestration flow
-│   ├── generate_flowchart_mermaid.py   # Generates a Mermaid diagram of the LangGraph orchestration flow
+│   ├── generate_flowchart_graphviz.py  
+│   ├── generate_flowchart_mermaid.py   
 │   ├── loader.py                       # Converts JSON into individual .txt files
-│   ├── paths.py                        # Centralized path definitions / This file includes paths to files used in the project.
+│   ├── paths.py                        # Centralized path definitions
 │   ├── utils.py                        # Helper functions for path and string handling
-│   ├── logger.py                       # Centralized log configuration (to be used in the Observability)
+│   ├── logger.py                       # Centralized log configuration used in the Observability
 │   ├── docs/
 │   │   ├── langgraph_flowchart.mmd
 │   │   ├── publication_flowchart.png
 │   ├── rails/                          # Guardrails XML schemas
-│   │   ├── profile_extraction.rail     # .rail schema for publication profiling  (to be used in the Guardrails)
+│   │   ├── profile_extraction.rail     # Guardrails .rail schema schema used in the Guardrails
 ```
 
 
