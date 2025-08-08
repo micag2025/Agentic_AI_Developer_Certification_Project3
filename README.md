@@ -86,11 +86,13 @@ Enhancements to Include
 - Centralized logs to both console and file  
 - Logging across all major graph nodes  
 
-
-
 ### Deployment
 
-The application can be run locally via Streamlit, or deployed to cloud platforms like Streamlit Cloud, Docker, or Hugging Face Spaces. A `deployment.md`has been enclosed to guide the user to deploy the application in different environments. 
+The application can be run locally via Streamlit, or deployed to cloud platforms like Streamlit Cloud, Docker, or Hugging Face Spaces. A `deployment.md`has been enclosed to guide the user to deploy the application in different environments.   
+Mention only if relevant to deployment setup, such as:  
+- New folders required (e.g. outputs/profiles/, logs/)  
+- File permissions or volume mappings for downloads in Docker/cloud  
+- Environment variable changes for UI behavior (if any)  
 
 ### Documentation (README, screenshots, docstrings, diagram) 
 
@@ -103,6 +105,12 @@ Comprehensive documentation is provided, including:
 _Professional Documentation_:  
 - High-level system overview including purpose, architecture, and key components, 
 - Deployment and configuration guide with setup, instructions (README, .env.sample, etc.), API or interface specifications and expected input/output formats (if applicable),
+
+Comprehensive documentation is provided, including:  
+- **New UI features** or components (e.g. download buttons, explanation sections)  
+- **Changes in layout** or user interaction (e.g. sidebars, success messages)  
+- **User-facing messages** (e.g. where files are saved)  
+- **Any new behavior** that affects user experience (e.g. selecting queries, viewing summaries)  
 
 ### 🔁 How the Multi-Agent Workflow Was Improved
 
@@ -210,6 +218,13 @@ _Professional Documentation_:
 
 You can now interact with the LangGraph-Orchestrated Research Assistant for Ready Tensor!  
 
+📁 Output Locations  
+  - 📂 Validated Profiles: outputs/profiles/*.json  
+  - 📂 Comparison Reports: outputs/comparison/*.json and .html  
+  - 📁 Log Files: logs/*.log  
+💡 You can download the latest validated profile and log file directly from the Streamlit interface.
+
+
 
 To debug `Guardrails` integration, run the app as above and monitor the terminal for raw vs. validated outputs.
 
@@ -298,6 +313,10 @@ You’re logging like a production-grade system:
 You're capturing both Raw: model responses and the Validated: subset. 
 
 ### Example Deployment	Streamlit Cloud, Docker, or CLI runner  
+#### Streamlit Deployment Notes
+
+- Ensure `outputs/profiles/`, `outputs/comparison/`, and `logs/` directories exist and are writable by the app.  
+- Validated profiles and logs are now downloadable via the UI. If deploying in Docker, map local volumes accordingly.  
 
 ### Streamlit App Example
 🖥️ _Launch the UI_
@@ -340,8 +359,25 @@ The  app remains however functional.
 
 
 ### Example Documentation	README, screenshots, docstrings, diagram  
-TO BE ENCLOSED    
 
+#### Streamlit Interface Enhancements
+
+- Added sidebar section “About this App” to explain key technologies.
+- Displayed messages clarifying where logs and profiles are saved.
+- Included file download buttons for latest validated profile and log files.
+- Improved layout for selecting publications and query types.
+
+### 📊 Technologies Used  
+- Streamlit – UI Framework    
+- LangChain – LLM Orchestration    
+- OpenAI – LLM backend      
+- Tavily – Web search API    
+- Guardrails – Output validation    
+
+### 🔒 Security  
+- API keys are never exposed in the interface.    
+- All results are stored locally in JSON/HTML format.  
+- Logs provide full traceability of the extraction and comparison process.  
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
