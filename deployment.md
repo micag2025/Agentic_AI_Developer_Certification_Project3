@@ -10,10 +10,11 @@ TAVILY_API_KEY (from Tavily)
 
 ## 📦 Local Deployment
 1. Clone the Repository 
-```bash 
-git clone https://github.com/your-org/publication-comparator.git
-cd publication-comparator
+```bash
+   git clone https://github.com/micag2025/Agentic_AI_Developer_Certification_Project3
+   cd Agentic_AI_Developer_Certification_Project3
 ```
+
 2. Set Up a Virtual Environment  
 ```bash
 python -m venv venv
@@ -30,9 +31,10 @@ TAVILY_API_KEY=your-tavily-key
 ```
 5. Run the Application (Streamlit App) 
 ```bash
-streamlit run app.py
+streamlit run src/app.py
 ```
 Your app will be available at: http://localhost:8501  
+
 
 ## 🐳 Docker Deployment  
 1. Build the Docker Image  
@@ -52,11 +54,11 @@ Your app will be available at: http://localhost:8501
 
 ## ☁️  Streamlit Cloud Deployment
 1. Push your project to GitHub.  
-2. Go to streamlit.io/cloud and log in.  
+2. Go to [streamlit.io/cloud](https://streamlit.io/cloud) and log in.  
 3. Click New app → Connect to your repo.  
 4. Set your Python version and run command:  
 ```bash
-streamlit run app.py
+streamlit run src/app.py
 ```  
 5. Add environment variables under “Advanced Settings”:  
 OPENAI_API_KEY  
@@ -65,7 +67,7 @@ TAVILY_API_KEY
 Your app will be available at: https://share.streamlit.io/your-username/publication-comparator/main/app.py  
 
 ## 🌐 Hugging Face Spaces Deployment  
-1. Go to huggingface.co/spaces  
+1. Go to [huggingface.co/spaces](https://huggingface.co/spaces)  
 2. Create a new Space → Choose Streamlit  
 3. Upload your code
 4. Define secrets in the Secrets tab:  
