@@ -1,6 +1,6 @@
 # Agentic AI Developer Certification: Production LangGraph-Orchestrated Research Assistant for Ready Tensor  
 
-This repository is part of the **Agentic AI Developer Certification program** by [Ready Tensor](https://www.readytensor.ai). It demonstrates how to take a multi-agent system from ideation to production, focusing on robustness, safety, and deployment best practices. The project is linked to the publication **Agentic AI Developer Certification: Production LangGraph-Orchestrated Research Assistant for Ready Tensor**.
+This repository is part of the **Agentic AI Developer Certification program** by [Ready Tensor](https://www.readytensor.ai). It demonstrates how to take a multi-agent system from prototype to robust production, with a focus on *guardrails*, *observability*, *deployment*, and *documentation*. The project is linked to the publication **Agentic AI Developer Certification: Production LangGraph-Orchestrated Research Assistant for Ready Tensor**.
 
 ---  
 
@@ -26,9 +26,9 @@ This project builds upon the multi-agent system (prototype) described in the pub
 
 ---
 
-## Productionizing the Multi-Agent System
+## From Prototype to Production
 
-### Guardrails
+### 1. Guardrails
 
 [Guardrails-AI](https://hub.guardrailsai.com/) enforces structured, validated outputs from LLMs.
 
@@ -36,13 +36,13 @@ This project builds upon the multi-agent system (prototype) described in the pub
 
 | Feature              | Without Guardrails-AI         | With Guardrails-AI                |
 |----------------------|------------------------------|-----------------------------------|
-| Output format        | Free-form, unstructured text  | Schema-validated JSON             |
+| Output format        | Unstructured text  | Schema-validated JSON             |
 | Input flexibility    | High                         | Moderate (requires schema)        |
 | Retry on invalid     | No                           | Yes                               |
 | Production-safety    | Risk of LLM drift            | Robust                            |
-| Dev speed            | Fast                         | Requires setup effort             |
+| Dev speed            | Fast                         | Needs some setup           |
 
-#### Integration Steps
+**Integration Steps**    
 
 1. Install `guardrails-ai`.
 2. Create a `.rail` schema for publication profiling.
@@ -56,58 +56,59 @@ This project builds upon the multi-agent system (prototype) described in the pub
 - `task_types`: Types of tasks addressed  
 - `results`: Key findings
 
-All fields must be present for validation. Structured, machine-readable JSON enables downstream analytics and reproducibility.
+ All fields are required for validation. Structured, machine-readable JSON enables analytics and reproducibility.
 
 ---
 
-### Observability
+### 2. Observability (Logging & Tracing)  
 
-Observability is essential for monitoring, tracing, and debugging during real-world deployment. Logging and monitoring use Python’s logging module and node tracing.
+Observability allows for monitoring, tracing, and debugging during real-world use.  
 
 #### Key Observability Features
 
 | Feature         | Tool/Technique                       | Purpose                                  |
 | --------------- | ------------------------------------ | ---------------------------------------- |
-| Structured Logs | Python’s `logging` + JSON formatting | Centralized log collection & readability |
+| Structured Logs | Python’s `logging` + JSON formatting | Centralized, readable logs |
 | Tracing         | `uuid` session ID + node info        | Track LLM invocation paths & failures    |
 
-#### Implementation Steps
+**Implementation Steps**
 
 1. Install logging tools.
 2. Create `logger.py`.
 
-**Enhancements Include:**  
-- Structured logging using loguru  
-- Session traceability via uuid  
-- Centralized logs to console and file  
-- Logging across all major graph nodes  
+**Enhancements:**  
+- Structured logging using [loguru](https://github.com/Delgan/loguru)
+- Session traceability via UUID  
+- Centralized logs (console + file)  
+- Logging at all major graph nodes    
 
 ---
 
-### Deployment
+### 3. Deployment
 
-The application runs locally via Streamlit, or can be deployed to cloud platforms (Streamlit Cloud, Docker, Hugging Face Spaces). See `deployment.md` for deployment instructions.
+ The app runs locally via Streamlit, or can be deployed to cloud platforms (Streamlit Cloud, Docker, Hugging Face Spaces).  
+See [`deployment.md`](deployment.md) for instructions.
 
-**Deployment considerations:**
 
-- Ensure relevant folders exist (e.g., `outputs/profiles/`, `logs/`)
-- Set file permissions or volume mappings for Docker/cloud
-- Set environment variables for UI behavior
+**Considerations:**
 
----
+- Ensure folders exist: `outputs/profiles/`, `logs/`
+- Set file permissions/volume mappings for Docker/cloud
+- Set environment variables for API keys and UI behavior
 
-### Documentation
+---  
+
+### 4. Documentation  
 
 Comprehensive documentation includes:
 
 - Clear usage instructions
-- Annotated UI screenshots (see `examples_screens/`)
+- Annotated UI screenshots (`examples_screens/`)
 - Code docstrings
 - Architecture diagrams (Mermaid, Graphviz)
-- Deployment guidance
-- Details on system features and user interactions for both developers and end users
+- Deployment guidance for developers and end-users  
 
----
+--- 
 
 ### Improvements Over the Prototype
 
@@ -122,7 +123,7 @@ Comprehensive documentation includes:
 | Interface            | ⚠️ Exposed API key             | ✅ Clean sidebar info, no key exposure        |
 | Documentation        | ⚠️ Incomplete                  | ✅ README, deployment.md, code docstrings     |
 
-> _Note: "Before" refers to the workflow in the original publication._
+> _Note: "Before" refers to the original published workflow._
 
 ---  
 
@@ -133,7 +134,7 @@ Comprehensive documentation includes:
 ├── LICENSE
 ├── README.md                  # Project overview and instructions
 ├── deployment.md              # Deployment guide for various environments
-├── Dockerfile                 # Instructions for building a Docker image
+├── Dockerfile                 # Instructions for Docker image config
 ├── requirements-test.txt      # Development and test dependencies
 ├── requirements.txt           # Project dependencies 
 ├── .gitignore                 # Ignored files and folders
@@ -169,7 +170,10 @@ Comprehensive documentation includes:
 
 ---
 
-## Prerequisites
+## Getting Started
+
+### **Prerequisites**
+
 
 - Python 3.10+  
 - [OpenAI API key](https://platform.openai.com/account/api-keys)  
@@ -178,7 +182,7 @@ Comprehensive documentation includes:
 
 ---
 
-## Installation
+### Installation  
 
 1. **Clone the repository**
    ```bash
@@ -208,8 +212,7 @@ Comprehensive documentation includes:
 
 ## Running the Application
 
-1. Ensure `project_1_publications.json` is present in `data/`.
-   > _The sample dataset is available in the "Datasets" section of the related publication._
+1. Ensure `project_1_publications.json` is present in `data/`.  
 
 2. Launch the Streamlit app:
    ```bash
@@ -233,9 +236,9 @@ Download the latest validated profile and log file directly from the Streamlit i
 
 **Debugging Guardrails Integration**
 
-Run the app and monitor the terminal for raw vs. validated outputs. The pipeline will:
+Run the application and monitor the terminal for raw vs. validated outputs. The pipeline will:
 
-- Trigger the PublicationExplorer
+- Trigger the `PublicationExplorer`
 - Invoke `analyze_pub1` and `analyze_pub2`
 - Print both raw and validated outputs in the terminal
 
@@ -243,9 +246,9 @@ Run the app and monitor the terminal for raw vs. validated outputs. The pipeline
 
 ## Usage Examples
 
-### Example: Validated Profile (Guardrails-AI)
+### 1. Example: Validated Profile (Guardrails-AI Output)
 
-Sample output in `outputs/`with query_type selected as "evaluation_method":
+Sample output in `outputs/`when `query_type="evaluation_method"`:
 
 ```json
 {
@@ -256,15 +259,15 @@ Sample output in `outputs/`with query_type selected as "evaluation_method":
   "results": []
 }
 ```
-If `evaluation_methods` is empty, this means the publication lacks evaluation details or the model did not extract any. Guardrails validated the output using the `.rail` schema.
+> If `evaluation_methods` is empty, the publication lacks evaluation details or the model did not extract any. Guardrails validated the output using the `.rail` schema.
 
 ---
 
-### Example: Observability (Logging, Tracing, Monitoring)
+### 2. Example: Observability (Logging, Tracing, Monitoring)
 
-Logs can be found in `/logs`.
+Logs are in `/logs`.
 
-System logs like a production-grade application, capturing:
+System logs like a production-grade application, captures:
 
 - Function, line, module, process, thread, timestamps
 - Informative tags (📊, 📈, 📝, 🔍, 🤖)
@@ -272,15 +275,15 @@ System logs like a production-grade application, capturing:
 
 ---
 
-### Example: Deployment (Streamlit Cloud, Docker, CLI)
+### 3. Example: Deployment (Streamlit, Docker, CLI)
 
-- Ensure `outputs/profiles/`, `outputs/comparisons/`, and `logs/` directories exist and are writable.
+- Ensure `outputs/profiles/`, `outputs/comparisons/`, and `logs/` directories exist and writable.
 - Validated profiles and logs are downloadable via the UI.
 - For Docker, map local volumes as needed.
 
 ---
 
-### Streamlit App Example
+### 4. Streamlit UI Highlights
 
 Launch the UI:
 ```bash
@@ -309,7 +312,7 @@ streamlit run src/app.py
 
 ---
 
-### Documentation (README, Screenshots, Docstrings, Diagrams)
+### Documentation 
 
 - Sidebar section “About this App” explains key technologies
 - Messages clarify where logs and profiles are saved
@@ -332,7 +335,7 @@ streamlit run src/app.py
 
 - API keys are never exposed in the interface.
 - All results are stored locally in JSON/HTML format.
-- Logs provide full traceability of the extraction and comparison process.
+- Logs provide full traceability of extraction/comparison.
 
 ---
 
