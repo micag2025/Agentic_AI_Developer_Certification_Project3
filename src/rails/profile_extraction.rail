@@ -1,0 +1,43 @@
+
+
+<!-- src/rails/profile_extraction.rail -->
+<rail version="0.1">
+
+  <output>
+    <list name="tools" description="List of tools and libraries used" />
+    <list name="evaluation_methods" description="Metrics or evaluation strategies used" />
+    <list name="datasets" description="Datasets used in the publication" />
+    <list name="task_types" description="Types of tasks addressed in the paper" />
+    <list name="results" description="Key findings and performance outcomes" />
+  </output>
+
+  <prompt>
+
+You are an expert scientific reviewer.
+
+Extract the following attributes from the publication and return them in **valid JSON format** using these keys:
+- `tools`: tools and libraries used
+- `evaluation_methods`: evaluation strategies or metrics
+- `datasets`: datasets used in the publication  
+- `task_types`: NLP or ML tasks addressed (e.g., text classification, question answering)
+- `results`: any quantitative or qualitative findings
+
+Format your response **exactly like this**:
+```json
+{
+  "tools": ["..."],
+  "evaluation_methods": ["..."],
+  "datasets": ["..."],
+  "task_types": ["..."],
+  "results": ["..."]
+}
+
+Publication:
+{{text}}
+
+  </prompt>
+
+</rail>
+
+
+
