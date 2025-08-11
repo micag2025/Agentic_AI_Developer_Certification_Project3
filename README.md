@@ -245,7 +245,7 @@ Run the app and monitor the terminal for raw vs. validated outputs. The pipeline
 
 ### Example: Validated Profile (Guardrails-AI)
 
-Sample output in `outputs/`:
+Sample output in `outputs/`with seleted method as "evaluation_method":
 
 ```json
 {
