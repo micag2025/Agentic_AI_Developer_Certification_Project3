@@ -10,10 +10,8 @@ import os
 # Get project root 
 # Dynamic resolution for script + notebook/Streamlit
 try:
-    #ROOT_DIR = Path(__file__).resolve().parent
     ROOT_DIR = Path(__file__).resolve().parent.parent
 except NameError:
-    #ROOT_DIR = Path(inspect.stack()[0].filename).resolve().parent
     ROOT_DIR = Path(inspect.stack()[0].filename).resolve().parent.parent
 
 
@@ -58,5 +56,5 @@ if __name__ == "__main__":
     print(f"LOGS_DIR: {LOGS_DIR}")
     print(f"PROFILES_DIR:{PROFILES_DIR}")
     print(f"COMPARISONS_DIR: {COMPARISONS_DIR}")      
-    #print(f"PUBLICATION_FPATH: {PUBLICATION_FPATH}")
+   
    

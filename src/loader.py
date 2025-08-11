@@ -12,9 +12,6 @@ as an individual .txt file in data/sample_publications/.
 #os.chdir(ROOT_DIR)
 #print(f"[DEBUG] Changed working directory to project root: {ROOT_DIR}")
 
-
-
-
 import os
 import json
 import logging
@@ -23,8 +20,6 @@ from typing import Dict, Any
 from pathlib import Path
 from paths import SRC_DIR
 from paths import DATA_DIR, SAMPLE_PUBLICATION_DIR
-
-#from paths import DATA_DIR, SAMPLE_PUBLICATION_DIR
 from utils import clean_filename, ensure_directory_exists
 
 # Setup logging

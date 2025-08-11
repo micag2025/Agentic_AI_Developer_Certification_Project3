@@ -199,45 +199,16 @@ class PublicationExplorer:
         text = self.read_txt(state["pub1_path"])
         prompt = self.PROFILE_PROMPT.replace("{text}", text)
         raw = self.model.invoke([SystemMessage(content=prompt)]).content
-
         # Validate with Guardrails
-        #result = self.guard.parse(llm_output=raw)
-        #validated = result.validated_output or raw
         validated = self.validate_profile(raw, "pub1")
         return {**state, "pub1_profile": validated, "lnode": "analyze_pub1", "count": state["count"] + 1}
-
-
-        # Save validated profile
-        #if isinstance(validated, dict):
-            #save_validated_profile(validated, "pub1")
-
-        # 🚨 Debug prints
-        #print("\n[Raw Model Output]\n", raw)
-        #print("\n[Guardrails Validated Output]\n", validated)
-        #print("\n[Validation Result Object]\n", result)
-        #print("\n[Available Attributes on Result]\n", dir(result))
-
-        #return {**state, "pub1_profile": validated, "lnode": "analyze_pub1", "count": state["count"] + 1}
-
-
+       
     def analyze_pub2(self, state: AgentState) -> AgentState:
         text = self.read_txt(state["pub2_path"])
         prompt = self.PROFILE_PROMPT.replace("{text}", text)
         raw = self.model.invoke([SystemMessage(content=prompt)]).content
-        validated = self.validate_profile(raw, "pub2")
         # Validate with Guardrails
-        #result = self.guard.parse(llm_output=raw)
-        #validated = result.validated_output or raw
-        # Save validated profile
-        #if isinstance(validated, dict):
-        #    save_validated_profile(validated, "pub2")
-
-        # 🚨 Debug prints
-        #print("\n[Raw Model Output]\n", raw)
-        #print("\n[Guardrails Validated Output]\n", validated)
-        #print("\n[Validation Result Object]\n", result)
-        #print("\n[Available Attributes on Result]\n", dir(result))
-
+        validated = self.validate_profile(raw, "pub2")
         return {**state, "pub2_profile": validated, "lnode": "analyze_pub2", "count": state["count"] + 1}
 
     def compare(self, state: AgentState) -> AgentState:
