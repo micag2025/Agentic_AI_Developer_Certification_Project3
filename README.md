@@ -86,8 +86,7 @@ Observability allows for monitoring, tracing, and debugging during real-world us
 
 ### 3. Deployment
 
- The app runs locally via Streamlit, or can be deployed to cloud platforms (Streamlit Cloud, Docker, Hugging Face Spaces).  
-See [`deployment.md`](deployment.md) for instructions.
+ The app runs locally via Streamlit, or can be deployed to cloud platforms (Streamlit Cloud, Docker, Hugging Face Spaces). See [`deployment.md`](deployment.md) for instructions.
 
 
 **Considerations:**
