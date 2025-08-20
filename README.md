@@ -226,7 +226,8 @@ This project uses [pytest](https://docs.pytest.org/) for testing.
 
 2. **Run the test suite**
    ```bash
-   py -m pytest -v | tee pytest_output.log
+   py -m pytest     # See test results live in the terminal
+   py -m pytest -v | tee pytest_output.log    # See test results live in the terminal and save output
    ```
    > All tests are located in the `tests/` directory.
 
@@ -250,7 +251,9 @@ You can now interact with the LangGraph-Orchestrated Research Assistant for Read
 
 - Validated Profiles: `outputs/profiles/*.json`
 - Comparison Reports: `outputs/comparisons/*.json` and `.html`
-- Log Files: `logs/*.log`
+- Log Files:  
+  - `logs/pipeline.log` – Always running; contains all INFO/DEBUG logs.  
+  - `logs/errors.log` – Only appears when an error or crash occurs, even if not explicitly logged.
 
 Download the latest validated profile and log file directly from the Streamlit interface.
 
@@ -287,7 +290,11 @@ Sample output in `outputs/`when `query_type="evaluation_method"`:
 
 ### 2. Example: Observability (Logging, Tracing, Monitoring)
 
-Logs are in `/logs`.
+Logs are in `/logs`.  
+
+Log files:  
+- `pipeline.log` – Always running; contains all INFO and DEBUG logs for the entire pipeline.  
+- `errors.log` – Created only when an error or crash occurs; collects error and exception information even if not explicitly logged.
 
 System logs like a production-grade application, captures:
 
