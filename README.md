@@ -231,6 +231,24 @@ This project uses [pytest](https://docs.pytest.org/) for testing.
    ```
    > All tests are located in the `tests/` directory.
 
+> Example: Successful run test suite
+```text
+ ============================= test session starts =============================
+platform win32 -- Python 3.12.2, pytest-8.3.4, pluggy-1.5.0 -- C:\Users\Michela\AppData\Local\Programs\Python\Python312\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Michela\Agentic_AI_Developer_Certification_Project3-main
+plugins: anyio-4.9.0, Faker-25.9.2, langsmith-0.3.45, mock-3.14.1, typeguard-4.3.0
+collecting ... collected 7 items
+
+tests/test_app.py::test_app_runs PASSED                                  [ 14%]
+tests/test_explorer.py::test_analyze_pub1 PASSED                         [ 28%]
+tests/test_explorer.py::test_compare PASSED                              [ 42%]
+tests/test_explorer.py::test_react_agent_tool PASSED                     [ 57%]
+tests/test_guardrails.py::test_guardrails_schema_loads PASSED            [ 71%]
+tests/test_guardrails.py::test_guardrails_validation_wellformed PASSED   [ 85%]
+tests/test_guardrails.py::test_guardrails_resilient_to_malformed PASSED  [100%]
+```
+
 ---
 
 ## Running the Application
@@ -357,6 +375,7 @@ streamlit run src/app.py
 - [OpenAI](https://platform.openai.com/account/api-keys) – LLM backend
 - [Tavily](https://www.tavily.com/) – Web search API
 - [Guardrails](https://hub.guardrailsai.com/) – Output validation
+- [pytest](https://docs.pytest.org/) – Testing framework
 
 ---
 
