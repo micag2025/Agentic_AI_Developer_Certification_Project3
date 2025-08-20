@@ -165,6 +165,12 @@ Comprehensive documentation includes:
 │   │   ├── publication_flowchart.png
 │   ├── rails/                       # Guardrails XML schemas
 │   │   ├── profile_extraction.rail
+├── tests/
+│   ├── conftest.py                # Reusable fixtures for explorer and sample publications
+│   ├── test_app.py                # Checks app entrypoint doesn’t break imports
+│   ├── test_explorer.py           # Validates the core pipeline
+│   ├── test_guardrails.py         # Ensures Guardrails schema works
+├── pytest_output.log
 ```
 
 ---
