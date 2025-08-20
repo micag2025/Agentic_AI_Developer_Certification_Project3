@@ -206,6 +206,23 @@ Comprehensive documentation includes:
    source .venv/bin/activate   # Linux/macOS
    .\.venv\Scripts\activate    # Windows
    ```
+---
+
+## Running Tests
+
+This project uses [pytest](https://docs.pytest.org/) for testing.
+
+1. **Install test dependencies**  
+   (If you haven’t already)
+   ```bash
+   pip install -r requirements-test.txt
+   ```
+
+2. **Run the test suite**
+   ```bash
+   py -m pytest -v | tee pytest_output.log
+   ```
+   > All tests are located in the `tests/` directory.
 
 ---
 
