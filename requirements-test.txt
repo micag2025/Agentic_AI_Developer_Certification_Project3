@@ -4,3 +4,7 @@ guardrails-ai==0.3.2
 
 # Logging
 loguru==0.7.2
+
+# Testing Frameworks
+pytest
+pytest-mock

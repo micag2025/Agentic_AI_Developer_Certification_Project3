@@ -23,6 +23,7 @@ OUTPUTS_DIR = ROOT_DIR / "outputs"
 
 PROFILES_DIR = OUTPUTS_DIR / "profiles"
 COMPARISONS_DIR = OUTPUTS_DIR / "comparisons"
+TESTS_DIR = ROOT_DIR / "tests"
 
 #PUBLICATION_FPATH = DATA_DIR / "project_1_publications.json"
 DOCS_DIR = ROOT_DIR / "docs"
@@ -56,5 +57,5 @@ if __name__ == "__main__":
     print(f"LOGS_DIR: {LOGS_DIR}")
     print(f"PROFILES_DIR:{PROFILES_DIR}")
     print(f"COMPARISONS_DIR: {COMPARISONS_DIR}")      
-   
+    print(f"TESTS_DIR: {TESTS_DIR}") 
    

@@ -16,8 +16,22 @@ from pathlib import Path
 import streamlit as st
 from dotenv import load_dotenv
 
+#from paths import SRC_DIR
+#src = SRC_DIR
+
+src_dir = Path("src")
+from paths import SRC_DIR
+
+import sys
+sys.path.insert(0, str(SRC_DIR.parent))
+
+#from src.paths import SAMPLE_PUBLICATION_DIR, COMPARISONS_DIR, OUTPUTS_DIR, LOGS_DIR, PROFILES_DIR
+
+
 from explorer import PublicationExplorer
 from src.paths import SAMPLE_PUBLICATION_DIR, COMPARISONS_DIR, OUTPUTS_DIR, LOGS_DIR, PROFILES_DIR
+
+
 
 # 🌍 Load .env configuration
 load_dotenv()
@@ -28,7 +42,6 @@ tavily_key = os.getenv("TAVILY_API_KEY", "")
 
 # 📱 Streamlit UI Setup
 st.set_page_config(page_title="Publication Comparator", layout="wide")
-#st.title("📊 Scientific Publication Comparator")
 st.title("📊 AI-Powered Ready Tensor Publication Comparator")
 st.markdown("""
 Simply select two `.txt` publication files and a query type to compare:
@@ -47,7 +60,6 @@ Simply select two `.txt` publication files and a query type to compare:
 - Traceable output
 """)
 
-
 # 📂 Sidebar Info
 with st.sidebar:
     st.markdown("## 🤖 About this App")
@@ -57,37 +69,45 @@ This AI-powered comparison tool uses:
 - 🔗 **LangChain** for LLM orchestration  
 - 💬 **OpenAI** for LLM completions  
 - 🔎 **Tavily** for web-based fact checks  
-- 🖥 **Streamlit** for interactive visualization
+- 🖥 **Streamlit** for interactive visualization  
 
 ---
 ### 📁 Output Locations
 - 🧪 Validated profiles → `outputs/profiles/`
 - 🔄 Comparisons → `outputs/comparisons/`
 - 📝 Logs → `logs/`
-
 ---
 """)
 
-    # ⬇️ Download buttons
-    #profiles_dir = OUTPUTS_DIR / "profiles"
+    # Directories
     profiles_dir = PROFILES_DIR
     comparisons_dir = COMPARISONS_DIR
     logs_dir = LOGS_DIR
 
+    # ✅ Latest Validated Profile
     latest_profile = sorted(profiles_dir.glob("validated_profile_pub*.json"), reverse=True)
     if latest_profile:
         with open(latest_profile[0], "rb") as f:
             st.download_button("⬇️ Download Latest Validated Profile", f, file_name=latest_profile[0].name)
+    else:
+        st.info("⚠️ No validated profiles saved yet.")
 
+    # ✅ Latest Comparison
     latest_cmp = sorted(comparisons_dir.glob("comparison_*.json"), reverse=True)
     if latest_cmp:
         with open(latest_cmp[0], "rb") as f:
             st.download_button("⬇️ Download Latest Comparison", f, file_name=latest_cmp[0].name)
+    else:
+        st.info("⚠️ No comparisons saved yet.")
 
+    # ✅ Latest Log File
     latest_log = sorted(logs_dir.glob("*.log"), reverse=True)
     if latest_log:
         with open(latest_log[0], "rb") as f:
             st.download_button("⬇️ Download Latest Log", f, file_name=latest_log[0].name)
+    else:
+        st.info("⚠️ No logs found yet.")
+
 
 # 📄 Load publications
 pub_dir = Path(SAMPLE_PUBLICATION_DIR)
@@ -133,6 +153,18 @@ if st.button("🚀 Run Comparison"):
         with st.spinner("🔍 Processing publications... This may take a moment."):
             result = explorer.graph.invoke(state)
 
+        # ✅ Always save validated profiles
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        if result.get("pub1_profile"):
+            profile_path1 = PROFILES_DIR / f"validated_profile_pub1_{Path(pub1).stem}_{timestamp}.json"
+            with open(profile_path1, "w", encoding="utf-8") as f:
+                json.dump(result["pub1_profile"], f, indent=2, ensure_ascii=False)
+
+        if result.get("pub2_profile"):
+            profile_path2 = PROFILES_DIR / f"validated_profile_pub2_{Path(pub2).stem}_{timestamp}.json"
+            with open(profile_path2, "w", encoding="utf-8") as f:
+                json.dump(result["pub2_profile"], f, indent=2, ensure_ascii=False)
+
         # ✅ Display Results
         st.subheader("✅ Summary")
         st.text_area("Summary", result.get("summary", "[No summary]"), height=300)
@@ -143,8 +175,7 @@ if st.button("🚀 Run Comparison"):
         with st.expander("🧠 Enrichment"):
             st.text_area("ReAct Agent Output", result.get("extra_info", "[No enrichment]"), height=300)
 
-        # 📝 Save Results
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # 📝 Save Comparison Results
         base_name = f"comparison_{Path(pub1).stem}_vs_{Path(pub2).stem}_{timestamp}"
         json_path = COMPARISONS_DIR / f"{base_name}.json"
         html_path = COMPARISONS_DIR / f"{base_name}.html"
@@ -152,7 +183,6 @@ if st.button("🚀 Run Comparison"):
         try:
             with open(json_path, "w", encoding="utf-8") as f:
                 json.dump(result, f, indent=2, ensure_ascii=False)
-
 
             # Save HTML report
             html_report = f"""
@@ -171,27 +201,18 @@ if st.button("🚀 Run Comparison"):
             with open(html_path, "w", encoding="utf-8") as f:
                 f.write(html_report)
 
-            # Get latest validated profiles
-            #profile_files = sorted((OUTPUTS_DIR / "profiles").glob("validated_profile_pub*.json"), reverse=True)
-            profile_files = sorted((PROFILES_DIR).glob("validated_profile_pub*.json"), reverse=True)
-            latest_profiles = [p.name for p in profile_files[:2]]  # pub1 and pub2
-
             # Get latest log
-            log_files = sorted((Path("logs")).glob("*.log"), reverse=True)
+            log_files = sorted(LOGS_DIR.glob("*.log"), reverse=True)
             latest_log = log_files[0].name if log_files else "No log file found"
 
-            # Display success message
+            # ✅ Display success message
             st.success(
                 f"📝 Results saved:\n"
                 f"• 🧪 Comparison JSON: `{json_path.name}`\n"
                 f"• 📄 Comparison HTML: `{html_path.name}`\n"
-                f"• ✅ Validated Profiles: `{', '.join(latest_profiles)}`\n"
-                f"• 🗒 Log File: `{latest_log}`"
+                f"• ✅ Profiles: saved in `outputs/profiles/`\n"
+                f"• 🗒 Logs: `{latest_log}`"
             )
 
         except Exception as e:
             st.error(f"❌ Failed to save results: {e}")
-
-            #st.success(f"📝 Results saved:\n• {json_path.name}\n• {html_path.name}")
-        #except Exception as e:
-            #st.error(f"❌ Failed to save results: {e}")
