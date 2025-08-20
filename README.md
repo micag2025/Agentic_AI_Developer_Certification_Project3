@@ -226,8 +226,8 @@ This project uses [pytest](https://docs.pytest.org/) for testing.
 
 2. **Run the test suite**
    ```bash
-   py -m pytest     # See test results live in the terminal
-   py -m pytest -v | tee pytest_output.log    # See test results live in the terminal and save output
+   pytest     # See test results live in the terminal
+   pytest -v | tee pytest_output.log    # See test results live in the terminal and save output
    ```
    > All tests are located in the `tests/` directory.
 
