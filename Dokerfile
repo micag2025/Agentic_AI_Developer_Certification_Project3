@@ -4,21 +4,43 @@
 # - Runs your app from the src/app.py entry point.
 
 
-# Use an official Python runtime as a parent image
-FROM python:3.10-slim
+# --------------------
+# 1. Base Image
+# --------------------
 
-# Set the working directory in the container
+# Use an official Python runtime as a parent image
+FROM python:3.10-slim AS base
+
+# Set working directory in the container
 WORKDIR /app
 
-# Copy requirements.txt first to leverage Docker cache for dependencies for Production image
-COPY requirements.txt .
+# System dependencies (e.g., for building some Python wheels)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential curl git \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy requirement files first to leverage Docker cache for Development/testing image
-#COPY requirements.txt requirements-test.txt ./
+# Install pip-tools for dependency management (optional but useful)
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
+# --------------------
+# 2. Dependencies Layer
+# --------------------
+FROM base AS deps
 
-# Install dependencies
+# Copy requirements separately for better caching
+COPY requirements.txt requirements-test.txt ./
+
+# Install production dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Install testing dependencies (optional, only if running tests inside container)
+ARG INSTALL_DEV=false
+RUN if [ "$INSTALL_DEV" = "true" ] ; then pip install --no-cache-dir -r requirements-test.txt ; fi
+
+# --------------------
+# 3. Final Runtime Image
+# --------------------
+FROM deps AS runtime
 
 # Copy the rest of the application code
 COPY . .
@@ -26,9 +48,21 @@ COPY . .
 # Expose the port Streamlit uses
 EXPOSE 8501
 
-# Default environment variables (can be overridden at runtime)
+# Set environment variables (runtime defaults)/ 
 ENV STREAMLIT_SERVER_PORT=8501 \
-    STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    STREAMLIT_SERVER_ADDRESS=0.0.0.0 \
+    PYTHONUNBUFFERED=1
+
+# Healthcheck for container monitoring
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:8501/_stcore/health || exit 1
 
 # Run the Streamlit app
-CMD ["streamlit", "run", "src/app.py"]
+CMD ["streamlit", "run", "src/app.py", "--server.headless=true"]
+
+
+
+
+
+
+
