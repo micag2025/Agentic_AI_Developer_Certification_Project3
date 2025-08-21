@@ -25,9 +25,22 @@ outputs/comparison/
 logs/
 *.log
 *.tmp
+*.out
 
 # Jupyter artifacts
 .ipynb_checkpoints/
 
+# Docker
+*.pid
+*.tar
+*.sock
 
-
+# Test/coverage
+htmlcov/
+.coverage
+.coverage.*
+.cache
+pytest_cache/
+.tox/
+.mypy_cache/
+.pytest_cache/
