@@ -1,7 +1,14 @@
-# This Dockerfile is optimized for Streamlit apps and includes best practices:
-# - Installs dependencies before copying the entire source (for build caching).
-# - Exposes the correct port and sets recommended environment variables.
-# - Runs your app from the src/app.py entry point.
+# This Dockerfile provides a production-ready, multi-stage build for Streamlit applications.
+# Key features and best practices include:
+# - Efficient build caching: Installs Python and system dependencies before copying your application code.
+# - Multi-stage layering: Separates base, dependency, and runtime stages for smaller, more secure images.
+# - Proper environment configuration: Exposes the default Streamlit port and sets environment variables for optimal runtime operation.
+# - Dependency isolation: Installs both production and optional development/testing dependencies, supporting flexible development workflows.
+# - Reliable health monitoring: Adds a healthcheck to ensure the Streamlit server is running and healthy.
+# - Secure, reproducible builds: Uses minimal Python images and avoids unnecessary packages.
+# - Runs your app from the 'src/app.py' entry point in headless mode for containerized deployments.
+
+
 
 
 # --------------------
